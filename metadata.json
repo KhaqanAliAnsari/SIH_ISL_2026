@@ -1,0 +1,6 @@
+{
+  "name": "SignKYC — V-CIP Assist Console",
+  "description": "Bank official console during Video-CIP with deaf/ISL-signing customers, featuring AI sign translation, confidence meters, human-in-the-loop verification, and RBI compliance workflows.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
