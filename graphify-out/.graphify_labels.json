@@ -10,5 +10,7 @@
   "8": "vite.config.ts",
   "9": "rules/graphify.md",
   "10": "workflows/graphify.md",
-  "11": "vercel.json"
+  "11": "vercel.json",
+  "12": "Action Plan: Tasks to be Completed (In Sequence)",
+  "13": "CustomerSideModal.tsx"
 }

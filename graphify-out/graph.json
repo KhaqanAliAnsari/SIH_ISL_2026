@@ -701,8 +701,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_customersidemodal",
-      "community": 2,
-      "community_name": "App.tsx",
+      "community": 13,
+      "community_name": "CustomerSideModal.tsx",
       "norm_label": "customersidemodal.tsx"
     },
     {
@@ -714,8 +714,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_customersidemodal_customersidemodalprops",
-      "community": 2,
-      "community_name": "App.tsx",
+      "community": 13,
+      "community_name": "CustomerSideModal.tsx",
       "norm_label": "customersidemodalprops"
     },
     {
@@ -726,8 +726,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_customersidemodal_customersidemodal",
-      "community": 2,
-      "community_name": "App.tsx",
+      "community": 13,
+      "community_name": "CustomerSideModal.tsx",
       "norm_label": "customersidemodal()"
     },
     {
@@ -737,8 +737,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_editfieldmodal",
-      "community": 4,
-      "community_name": "AuditModal.tsx",
+      "community": 2,
+      "community_name": "App.tsx",
       "norm_label": "editfieldmodal.tsx"
     },
     {
@@ -750,8 +750,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_editfieldmodal_editfieldmodalprops",
-      "community": 4,
-      "community_name": "AuditModal.tsx",
+      "community": 2,
+      "community_name": "App.tsx",
       "norm_label": "editfieldmodalprops"
     },
     {
@@ -762,8 +762,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_editfieldmodal_editfieldmodal",
-      "community": 4,
-      "community_name": "AuditModal.tsx",
+      "community": 2,
+      "community_name": "App.tsx",
       "norm_label": "editfieldmodal()"
     },
     {
@@ -1038,8 +1038,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_kycfield",
-      "community": 4,
-      "community_name": "AuditModal.tsx",
+      "community": 2,
+      "community_name": "App.tsx",
       "norm_label": "kycfield"
     },
     {
@@ -1463,6 +1463,127 @@
       "community": 6,
       "community_name": "SignKYC \u2014 Bank Official Console (V-CIP Assist View)",
       "norm_label": "\ud83d\udee0\ufe0f technology stack"
+    },
+    {
+      "label": "needToDone.md",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "needtodone",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "needtodone.md"
+    },
+    {
+      "label": "SignKYC \u2014 Need To Be Done",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "needtodone_signkyc_need_to_be_done",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "signkyc \u2014 need to be done"
+    },
+    {
+      "label": "Current Status & Completed Items",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "needtodone_current_status_completed_items",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "current status & completed items"
+    },
+    {
+      "label": "What NOT to build (Out of Scope for Demo)",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "needtodone_what_not_to_build_out_of_scope_for_demo",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "what not to build (out of scope for demo)"
+    },
+    {
+      "label": "Action Plan: Tasks to be Completed (In Sequence)",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "action plan: tasks to be completed (in sequence)"
+    },
+    {
+      "label": "Phase 1: Core AI Recognition Pipeline",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "needtodone_phase_1_core_ai_recognition_pipeline",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "phase 1: core ai recognition pipeline"
+    },
+    {
+      "label": "Phase 2: Environment & Backend Polish",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "needtodone_phase_2_environment_backend_polish",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "phase 2: environment & backend polish"
+    },
+    {
+      "label": "Phase 3: Liveness Verification (Optional / Scripted)",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "needtodone_phase_3_liveness_verification_optional_scripted",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "phase 3: liveness verification (optional / scripted)"
+    },
+    {
+      "label": "Phase 4: Data Persistence (Optional)",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "needtodone_phase_4_data_persistence_optional",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "phase 4: data persistence (optional)"
+    },
+    {
+      "label": "Phase 5: Customer-Side View",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "needtodone_phase_5_customer_side_view",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "phase 5: customer-side view"
+    },
+    {
+      "label": "Project Flow Reference",
+      "file_type": "document",
+      "source_file": "needToDone.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "needtodone_project_flow_reference",
+      "community": 12,
+      "community_name": "Action Plan: Tasks to be Completed (In Sequence)",
+      "norm_label": "project flow reference"
     }
   ],
   "links": [
@@ -3313,8 +3434,118 @@
       "source": "readme_signkyc_bank_official_console_v_cip_assist_view",
       "target": "readme_technology_stack",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone",
+      "target": "needtodone_signkyc_need_to_be_done",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_signkyc_need_to_be_done",
+      "target": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_signkyc_need_to_be_done",
+      "target": "needtodone_current_status_completed_items",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_signkyc_need_to_be_done",
+      "target": "needtodone_what_not_to_build_out_of_scope_for_demo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_phase_1_core_ai_recognition_pipeline",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_phase_2_environment_backend_polish",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_phase_3_liveness_verification_optional_scripted",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_phase_4_data_persistence_optional",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_phase_5_customer_side_view",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "needToDone.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "needtodone_action_plan_tasks_to_be_completed_in_sequence",
+      "target": "needtodone_project_flow_reference",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f874c2c1027ad39c0e935dcc0fe04f08a8bba445"
+  "built_at_commit": "74f2bbff87039ea2ebede6d42daeb572699f1e53"
 }
