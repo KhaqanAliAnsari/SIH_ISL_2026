@@ -68,7 +68,7 @@ export const FooterControls: React.FC<FooterControlsProps> = ({
           className="px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-800 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <Save className="w-3.5 h-3.5 text-gray-600" />
-          <span className="hidden sm:inline">Save & Continue Later</span>
+          <span className="hidden sm:inline">Save &amp; Continue Later</span>
         </button>
 
         {/* commit_approved_kyc_button */}

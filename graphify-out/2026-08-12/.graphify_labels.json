@@ -3,12 +3,11 @@
   "1": "compilerOptions",
   "2": "App.tsx",
   "3": "devDependencies",
-  "4": "AuditModal.tsx",
+  "4": "types.ts",
   "5": "package.json",
   "6": "SignKYC — Bank Official Console (V-CIP Assist View)",
-  "7": "index.ts",
+  "7": "server.ts",
   "8": "vite.config.ts",
   "9": "rules/graphify.md",
-  "10": "workflows/graphify.md",
-  "11": "vercel.json"
+  "10": "workflows/graphify.md"
 }

@@ -97,7 +97,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
       <div className="p-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between shrink-0">
         <div>
           <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-sans">
-            AI Sign Translation & Active Field Card
+            AI Sign Translation &amp; Active Field Card
           </h2>
           <p className="text-[11px] text-gray-500 font-mono">
             Human-in-the-Loop Official Workstation

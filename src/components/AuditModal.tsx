@@ -165,7 +165,7 @@ export const AuditModal: React.FC<AuditModalProps> = ({
               {/* Verified Fields */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                  Verified KYC Fields & Officer Approvals
+                  Verified KYC Fields &amp; Officer Approvals
                 </h4>
                 <div className="space-y-1.5">
                   {fields.map((f) => (

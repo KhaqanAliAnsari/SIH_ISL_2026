@@ -366,7 +366,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-screen h-screen font-sans flex flex-col bg-gray-50 text-gray-900 overflow-hidden select-none">
+    <div className="w-full h-full min-h-screen font-sans flex flex-col bg-gray-50 text-gray-900 overflow-hidden select-none">
       {/* 1. Header Bar */}
       <HeaderBar
         status={status}

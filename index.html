@@ -3,9 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <title>SignKYC V-CIP Console</title>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        document.body.innerHTML += '<div style="color:red; font-size:20px; padding:20px; z-index:9999; position:absolute; top:0; left:0; background:white;">Error: ' + message + '<br>' + source + ':' + lineno + '</div>';
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        document.body.innerHTML += '<div style="color:red; font-size:20px; padding:20px; z-index:9999; position:absolute; top:0; left:0; background:white;">Unhandled Promise Rejection: ' + event.reason + '</div>';
+      });
+    </script>
   </head>
-  <body>
+  <body className="bg-gray-50">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
