@@ -44,3 +44,11 @@ export interface SessionData {
   livenessCode: string;
   confidenceAverage: number;
 }
+
+export interface Customer {
+  id?: string;
+  full_name: string;
+  aadhaar_no: string;
+  address: string;
+  dob: string;
+}
