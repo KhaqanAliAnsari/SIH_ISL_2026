@@ -14,6 +14,17 @@ export function Login({ onSuccess, onRegister }: LoginProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const formatAadhaar = (value: string) => {
+    const cleaned = value.replace(/\D/g, '');
+    const truncated = cleaned.slice(0, 12);
+    const match = truncated.match(/.{1,4}/g);
+    return match ? match.join(' ') : '';
+  };
+
+  const handleAadhaarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAadhaarNo(formatAadhaar(e.target.value));
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -63,9 +74,10 @@ export function Login({ onSuccess, onRegister }: LoginProps) {
             <input
               type="text"
               required
+              maxLength={14}
               className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
               value={aadhaarNo}
-              onChange={(e) => setAadhaarNo(e.target.value)}
+              onChange={handleAadhaarChange}
               placeholder="e.g. 4829 1049 8821"
             />
           </div>
