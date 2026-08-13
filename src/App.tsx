@@ -19,9 +19,19 @@ import {
   KYCField,
   ProgressStep,
   SessionData,
+  Customer,
 } from "./types";
+import { Login } from "./components/Login";
+import { Registration } from "./components/Registration";
+
+type AppView = 'login' | 'register' | 'console';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<AppView>('login');
+  const [customerData, setCustomerData] = useState<Customer | null>(null);
+  const [pendingFullName, setPendingFullName] = useState('');
+  const [pendingAadhaar, setPendingAadhaar] = useState('');
+
   // Demo State switcher
   const [demoState, setDemoState] = useState<DemoState>("normal_recognition");
   const [status, setStatus] = useState<SessionStatus>("LIVE");
@@ -35,8 +45,10 @@ export default function App() {
   const [officialName] = useState("Rajesh V.");
   const [empId] = useState("EMP-4092");
   const [branch] = useState("Bandra Kurla Complex");
-  const [customerName] = useState("Priya Sharma");
-  const [customerAadhaar] = useState("4829 1049 8821");
+  
+  const customerName = customerData?.full_name || "Priya Sharma";
+  const customerAadhaar = customerData?.aadhaar_no || "4829 1049 8821";
+  
   const [livenessCode, setLivenessCode] = useState("8429");
   const [officialNotes, setOfficialNotes] = useState(
     "Identity document verified. Customer ISL sign clear."
@@ -158,6 +170,20 @@ export default function App() {
     fields.find((f) => !f.isConfirmed && f.stepIndex === currentStepIndex) ||
     fields.find((f) => !f.isConfirmed) ||
     null;
+
+  useEffect(() => {
+    if (customerData) {
+      setFields((prev) => 
+        prev.map(f => {
+          if (f.id === "1") return { ...f, aiValue: customerData.full_name, confirmedValue: customerData.full_name };
+          if (f.id === "2") return { ...f, aiValue: customerData.aadhaar_no, confirmedValue: customerData.aadhaar_no };
+          if (f.id === "3") return { ...f, aiValue: customerData.address };
+          if (f.id === "4") return { ...f, aiValue: customerData.dob, confirmedValue: customerData.dob };
+          return f;
+        })
+      );
+    }
+  }, [customerData]);
 
   // Recording timer
   useEffect(() => {
@@ -364,6 +390,32 @@ export default function App() {
     livenessCode,
     confidenceAverage: confidenceScore,
   };
+
+  if (currentView === 'login') {
+    return <Login 
+      onSuccess={(customer) => {
+        setCustomerData(customer);
+        setCurrentView('console');
+      }} 
+      onRegister={(name, aadhaar) => {
+        setPendingFullName(name);
+        setPendingAadhaar(aadhaar);
+        setCurrentView('register');
+      }} 
+    />;
+  }
+
+  if (currentView === 'register') {
+    return <Registration 
+      initialFullName={pendingFullName}
+      initialAadhaarNo={pendingAadhaar}
+      onSuccess={(customer) => {
+        setCustomerData(customer);
+        setCurrentView('console');
+      }}
+      onCancel={() => setCurrentView('login')}
+    />;
+  }
 
   return (
     <div className="w-full h-full min-h-screen font-sans flex flex-col bg-gray-50 text-gray-900 overflow-hidden select-none">
