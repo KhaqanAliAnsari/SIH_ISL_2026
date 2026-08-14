@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1786615855.3611434,
-    "ast_hash": "dd1ad5cd76c2cd42a1f565b11b42b515",
+    "mtime": 1786513391.3388355,
+    "ast_hash": "53632d795129dc9f26b8b9615415771c",
     "semantic_hash": ""
   },
   "src/components/AIAssistPanel.tsx": {
@@ -55,7 +55,7 @@
     "semantic_hash": "d16fc12aa3f223a9c277f8413955c1c8"
   },
   "src/components/VideoPanel.tsx": {
-    "mtime": 1786562307.6338372,
+    "mtime": 1786446257.8255491,
     "ast_hash": "aab7a096d254ee449600d78183e3242d",
     "semantic_hash": ""
   },
@@ -65,9 +65,9 @@
     "semantic_hash": "2b36426d5ad7e08ef79746aa524f4fb7"
   },
   "src/types.ts": {
-    "mtime": 1786615792.259266,
-    "ast_hash": "c066ae4420335a9f55ce495980b3ff8e",
-    "semantic_hash": ""
+    "mtime": 1786438118.559093,
+    "ast_hash": "e59ac1c1b272b78af9905eaad2e8bca1",
+    "semantic_hash": "e59ac1c1b272b78af9905eaad2e8bca1"
   },
   "tsconfig.json": {
     "mtime": 1786513370.4577076,
@@ -100,13 +100,13 @@
     "semantic_hash": ""
   },
   "api/index.ts": {
-    "mtime": 1786562307.6338372,
+    "mtime": 1786447247.0400383,
     "ast_hash": "9e6676ba3d0ab258b9ff931210007b55",
     "semantic_hash": ""
   },
   "src/lib/supabase.ts": {
-    "mtime": 1786704962.3959136,
-    "ast_hash": "144bc7f96ed9893cf6d6c6950c75b5f7",
+    "mtime": 1786514239.0123265,
+    "ast_hash": "c8b8357395bc426476061a3e3790af4c",
     "semantic_hash": ""
   },
   "vercel.json": {
@@ -117,16 +117,6 @@
   "needToDone.md": {
     "mtime": 1786516889.8449626,
     "ast_hash": "c575bf86c183311dd0785252325782a7",
-    "semantic_hash": ""
-  },
-  "src/components/Login.tsx": {
-    "mtime": 1786704976.087111,
-    "ast_hash": "7f99795301c7cdba40a46c6b665869be",
-    "semantic_hash": ""
-  },
-  "src/components/Registration.tsx": {
-    "mtime": 1786704983.8437035,
-    "ast_hash": "82c24e8dad4c5ed0f98d6bd2602ac0f0",
     "semantic_hash": ""
   }
 }
