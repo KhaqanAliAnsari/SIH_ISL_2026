@@ -97,11 +97,15 @@ export function extractFeatureVector(
   const primaryHand = landmarks[0];
   if (primaryHand.length < 21) return featureVector;
 
-  const wristX = primaryHand[0].x;
+  // IMPORTANT: Python's record_template.py applies cv2.flip(frame, 1) before extracting
+  // landmarks. To match the recorded template's feature space exactly, we MUST
+  // flip the x coordinates (1.0 - x) here in the browser since the videoElement feed is unflipped.
+  const wristX = 1.0 - primaryHand[0].x;
   const wristY = primaryHand[0].y;
 
   for (let i = 0; i < 21; i++) {
-    featureVector[i * 2] = primaryHand[i].x - wristX;
+    const flippedX = 1.0 - primaryHand[i].x;
+    featureVector[i * 2] = flippedX - wristX;
     featureVector[i * 2 + 1] = primaryHand[i].y - wristY;
   }
 

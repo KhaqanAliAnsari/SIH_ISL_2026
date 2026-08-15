@@ -97,7 +97,6 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
     }
   }, [templatesLoaded]);
 
-  // ─── Webcam Toggle ─────────────────────────────────────────────────
   const toggleWebcam = async () => {
     if (!useWebcam) {
       try {
@@ -152,6 +151,16 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       setBufferFill(0);
     }
   };
+
+  // ─── Auto-start Webcam on Mount ────────────────────────────────────
+  useEffect(() => {
+    let mounted = true;
+    if (!useWebcam) {
+      toggleWebcam().catch(err => console.error("Auto-start failed", err));
+    }
+    return () => { mounted = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // ─── Draw Real Landmarks on Canvas ─────────────────────────────────
   const drawLandmarks = useCallback(
