@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { HeaderBar } from "./components/HeaderBar";
 import { VideoPanel } from "./components/VideoPanel";
 import { AIAssistPanel } from "./components/AIAssistPanel";
@@ -376,6 +376,17 @@ export default function App() {
 
   const isAllConfirmed = fields.every((f) => f.isConfirmed);
 
+  // DTW Gesture Recognition Handler
+  const handleGestureRecognized = useCallback(
+    (gesture: string, distance: number, confidence: number) => {
+      setLiveCaptionText(
+        `RECOGNIZED ISL GESTURE: "${gesture.toUpperCase()}" (DTW: ${distance.toFixed(1)})`
+      );
+      setConfidenceScore(confidence);
+    },
+    []
+  );
+
   const currentSessionData: SessionData = {
     sessionId,
     timestamp,
@@ -447,6 +458,7 @@ export default function App() {
           currentStepLabel={
             steps[currentStepIndex]?.label || "Identity Verification"
           }
+          onGestureRecognized={handleGestureRecognized}
         />
 
         <AIAssistPanel

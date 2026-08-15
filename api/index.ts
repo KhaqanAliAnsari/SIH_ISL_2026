@@ -1,11 +1,51 @@
 import express from "express";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json({ limit: "10mb" }));
+
+// ─── DTW Template Serving ────────────────────────────────────────────
+const TEMPLATES_DIR = path.join(process.cwd(), "isl_dtw", "templates");
+
+// GET /api/templates — List all .npy template files
+app.get("/api/templates", (_req, res) => {
+  try {
+    if (!fs.existsSync(TEMPLATES_DIR)) {
+      return res.json([]);
+    }
+    const files = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith(".npy"));
+    return res.json(files);
+  } catch (err: any) {
+    console.error("Error listing templates:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/templates/:filename — Serve raw .npy binary file
+app.get("/api/templates/:filename", (req, res) => {
+  try {
+    const filename = req.params.filename;
+    // Security: only allow .npy files, no path traversal
+    if (!filename.endsWith(".npy") || filename.includes("..") || filename.includes("/") || filename.includes("\\")) {
+      return res.status(400).json({ error: "Invalid filename" });
+    }
+    const filePath = path.join(TEMPLATES_DIR, filename);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    return res.sendFile(filePath);
+  } catch (err: any) {
+    console.error("Error serving template:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 // Helper for Gemini AI client
 function getGeminiClient() {
