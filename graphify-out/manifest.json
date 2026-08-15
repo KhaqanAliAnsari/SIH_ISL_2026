@@ -1,7 +1,7 @@
 {
   "package.json": {
-    "mtime": 1786447184.620134,
-    "ast_hash": "9eff902392ae5a1ca756eb9fa8efd133",
+    "mtime": 1786797968.2151656,
+    "ast_hash": "a185bc1c720ee10fdfbf4a00847aa999",
     "semantic_hash": ""
   },
   "server.ts": {
@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1786615855.3611434,
-    "ast_hash": "dd1ad5cd76c2cd42a1f565b11b42b515",
+    "mtime": 1786798397.3578863,
+    "ast_hash": "dd9a76fee39b76df63872f0a684afa5e",
     "semantic_hash": ""
   },
   "src/components/AIAssistPanel.tsx": {
@@ -55,8 +55,8 @@
     "semantic_hash": "d16fc12aa3f223a9c277f8413955c1c8"
   },
   "src/components/VideoPanel.tsx": {
-    "mtime": 1786562307.6338372,
-    "ast_hash": "aab7a096d254ee449600d78183e3242d",
+    "mtime": 1786798264.429357,
+    "ast_hash": "c511afb5a15edf230f6d9380f4bb0245",
     "semantic_hash": ""
   },
   "src/main.tsx": {
@@ -100,8 +100,8 @@
     "semantic_hash": ""
   },
   "api/index.ts": {
-    "mtime": 1786562307.6338372,
-    "ast_hash": "9e6676ba3d0ab258b9ff931210007b55",
+    "mtime": 1786798136.5301845,
+    "ast_hash": "445a5e2c960343fb2e8457f3d0747115",
     "semantic_hash": ""
   },
   "src/lib/supabase.ts": {
@@ -130,13 +130,13 @@
     "semantic_hash": ""
   },
   "isl_dtw/main.py": {
-    "mtime": 1786785106.7664886,
-    "ast_hash": "314f0565dedba4c18c1f236caed1462d",
+    "mtime": 1786796880.9380083,
+    "ast_hash": "c5e5c19e5bc4bb0756be26317ab8ecf4",
     "semantic_hash": ""
   },
   "isl_dtw/record_template.py": {
-    "mtime": 1786785089.2670267,
-    "ast_hash": "12d3fb36822799ccc935bf45927851b9",
+    "mtime": 1786797084.718902,
+    "ast_hash": "46b7b6efde21b5be93ff151e503808cd",
     "semantic_hash": ""
   },
   "isl_dtw/test_pipeline.py": {
@@ -157,6 +157,16 @@
   "isl_dtw/requirements.txt": {
     "mtime": 1786785117.684313,
     "ast_hash": "d9c2b059976c4ff8287bfc793f99f297",
+    "semantic_hash": ""
+  },
+  "src/lib/dtwEngine.ts": {
+    "mtime": 1786798092.8217947,
+    "ast_hash": "74445aef08ea7ec1e7ca60a4143f5a95",
+    "semantic_hash": ""
+  },
+  "src/lib/handLandmarker.ts": {
+    "mtime": 1786798023.1831295,
+    "ast_hash": "10289fdd352eec17b61a4b083f2c4e68",
     "semantic_hash": ""
   }
 }

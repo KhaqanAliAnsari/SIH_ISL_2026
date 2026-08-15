@@ -1,16 +1,16 @@
 # Graph Report - SIH_ISL_2026  (2026-08-15)
 
 ## Corpus Check
-- 32 files · ~13,695 words
+- 34 files · ~16,590 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 190 nodes · 257 edges · 15 communities (11 shown, 4 thin omitted)
+- 218 nodes · 313 edges · 16 communities (12 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3f332dff`
+- Built from commit: `4f1f93ff`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -29,18 +29,19 @@
 - Action Plan: Tasks to be Completed (In Sequence)
 - extract_landmarks
 - 🚀 Quickstart Guide
+- VideoPanel.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 16 edges
-2. `extract_landmarks()` - 9 edges
-3. `DemoState` - 8 edges
-4. `KYCField` - 8 edges
-5. `main()` - 7 edges
-6. `HandDetector` - 7 edges
-7. `get_hand_detector()` - 7 edges
-8. `draw_landmarks_on_frame()` - 7 edges
-9. `Action Plan: Tasks to be Completed (In Sequence)` - 7 edges
-10. `main()` - 6 edges
+2. `VideoPanel()` - 13 edges
+3. `extract_landmarks()` - 9 edges
+4. `DemoState` - 8 edges
+5. `KYCField` - 8 edges
+6. `main()` - 7 edges
+7. `HandDetector` - 7 edges
+8. `get_hand_detector()` - 7 edges
+9. `draw_landmarks_on_frame()` - 7 edges
+10. `Action Plan: Tasks to be Completed (In Sequence)` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `EditFieldModalProps` --references--> `KYCField`  [EXTRACTED]
@@ -57,11 +58,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (15 total, 4 thin omitted)
+## Communities (16 total, 4 thin omitted)
 
 ### Community 0 - "dependencies"
-Cohesion: 0.09
-Nodes (23): dotenv, express, @google/genai, lucide-react, motion, dependencies, dotenv, express (+15 more)
+Cohesion: 0.08
+Nodes (25): dotenv, express, @google/genai, lucide-react, @mediapipe/tasks-vision, motion, dependencies, dotenv (+17 more)
 
 ### Community 1 - "compilerOptions"
 Cohesion: 0.09
@@ -69,7 +70,7 @@ Nodes (21): DOM, DOM.Iterable, ES2022, node, vite/client, compilerOptions, allow
 
 ### Community 2 - "App.tsx"
 Cohesion: 0.11
-Nodes (26): App(), AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps (+18 more)
+Nodes (25): App(), AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps (+17 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.13
@@ -99,8 +100,12 @@ Nodes (24): draw_hud(), load_templates(), main(), parse_args(), ndarray, Loads a
 Cohesion: 0.22
 Nodes (8): 1. Install Dependencies, 2. Record Reference Templates, 3. Run Real-time Gesture Recognition, Custom Options:, 📁 Project Structure, 🚀 Quickstart Guide, Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition, 🧠 Technical Highlights
 
+### Community 15 - "VideoPanel.tsx"
+Cohesion: 0.15
+Nodes (22): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwDistance(), euclideanDistance(), frameBuffer, GestureTemplate, getBufferFill() (+14 more)
+
 ## Knowledge Gaps
-- **71 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+66 more)
+- **77 isolated node(s):** `TEMPLATES_DIR`, `name`, `private`, `version`, `type` (+72 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -108,16 +113,16 @@ Nodes (8): 1. Install Dependencies, 2. Record Reference Templates, 3. Run Real-t
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `package.json`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **What connects `name`, `private`, `version` to the rest of the system?**
-  _71 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `VideoPanel()` connect `VideoPanel.tsx` to `App.tsx`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **What connects `TEMPLATES_DIR`, `name`, `private` to the rest of the system?**
+  _77 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.10810810810810811 - nodes in this community are weakly interconnected._
-- **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
