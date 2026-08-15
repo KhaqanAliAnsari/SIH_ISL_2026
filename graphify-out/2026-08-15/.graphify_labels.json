@@ -3,7 +3,7 @@
   "1": "compilerOptions",
   "2": "App.tsx",
   "3": "devDependencies",
-  "4": "types.ts",
+  "4": "Login.tsx",
   "5": "package.json",
   "6": "SignKYC — Bank Official Console (V-CIP Assist View)",
   "7": "index.ts",
@@ -11,5 +11,7 @@
   "9": "rules/graphify.md",
   "10": "workflows/graphify.md",
   "11": "vercel.json",
-  "12": "Action Plan: Tasks to be Completed (In Sequence)"
+  "12": "Action Plan: Tasks to be Completed (In Sequence)",
+  "13": "extract_landmarks",
+  "14": "🚀 Quickstart Guide"
 }

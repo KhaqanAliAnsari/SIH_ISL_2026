@@ -14,6 +14,7 @@ from utils import get_hand_detector, extract_landmarks, draw_landmarks_on_frame
 BUFFER_SIZE = 30
 DEFAULT_THRESHOLD = 15.0
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+WINDOW_NAME = "SignKYC - Real-time ISL Gesture Recognition (DTW)"
 
 
 def parse_args():
@@ -240,8 +241,18 @@ def main():
     print("Press 'Q' or ESC to exit.")
     print("=" * 70)
 
+    # Create named window upfront so it registers for keyboard focus
+    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_AUTOSIZE)
+
     try:
         while True:
+            # Detect if user closed window via the X button
+            try:
+                if cv2.getWindowProperty(WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1:
+                    break
+            except cv2.error:
+                break
+
             ret, frame = cap.read()
             if not ret:
                 print("Failed to grab frame from webcam.")
@@ -309,7 +320,7 @@ def main():
                 fps=fps,
             )
 
-            cv2.imshow("SignKYC - Real-time ISL Gesture Recognition (DTW)", frame)
+            cv2.imshow(WINDOW_NAME, frame)
 
             key = cv2.waitKey(1) & 0xFF
             if key in [ord("q"), ord("Q"), 27]:  # 27 = ESC
@@ -319,6 +330,9 @@ def main():
         detector.close()
         cap.release()
         cv2.destroyAllWindows()
+        # Pump event loop so Windows actually tears down the window
+        for _ in range(5):
+            cv2.waitKey(1)
 
 
 if __name__ == "__main__":

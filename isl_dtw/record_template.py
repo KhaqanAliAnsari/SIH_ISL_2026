@@ -9,6 +9,7 @@ from utils import get_hand_detector, extract_landmarks, draw_landmarks_on_frame
 
 RECORD_FRAMES = 30
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+WINDOW_NAME = "SignKYC - Record ISL Template"
 
 
 def parse_args():
@@ -37,6 +38,7 @@ def draw_overlay(
     recorded_count: int,
     total_frames: int,
     save_path: str = "",
+    countdown_remaining: float = 0.0,
 ):
     """
     Draws informative HUD UI and recording progress bar on the video frame.
@@ -84,9 +86,39 @@ def draw_overlay(
             cv2.LINE_AA,
         )
     elif state == "COUNTDOWN":
+        sec_left = int(np.ceil(max(0.1, countdown_remaining)))
+        # Big center countdown text
+        center_text = f"GET READY... {sec_left}"
+        text_size = cv2.getTextSize(center_text, cv2.FONT_HERSHEY_SIMPLEX, 1.4, 3)[0]
+        cx = (w - text_size[0]) // 2
+        cy = (h + text_size[1]) // 2
+
+        # Dim background box for center countdown
+        box_pad = 20
+        box_overlay = frame.copy()
+        cv2.rectangle(
+            box_overlay,
+            (cx - box_pad, cy - text_size[1] - box_pad),
+            (cx + text_size[0] + box_pad, cy + box_pad),
+            (10, 10, 10),
+            -1,
+        )
+        cv2.addWeighted(box_overlay, 0.6, frame, 0.4, 0, frame)
+
         cv2.putText(
             frame,
-            "Get Ready... Starting in 1 second",
+            center_text,
+            (cx, cy),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.4,
+            (0, 165, 255),
+            3,
+            cv2.LINE_AA,
+        )
+
+        cv2.putText(
+            frame,
+            f"Starting in {countdown_remaining:.1f}s — Position your hand...",
             (15, h - 25),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.65,
@@ -178,19 +210,32 @@ def main():
 
     detector = get_hand_detector()
 
-    state = "IDLE"  # IDLE, RECORDING, SAVED
+    state = "IDLE"  # IDLE, COUNTDOWN, RECORDING, SAVED
     recorded_frames = []
+    countdown_start_time = 0.0
+    countdown_duration = 2.0
+    countdown_remaining = 0.0
     
     print("=" * 60)
     print(f"SignKYC ISL Template Recorder - Gesture: [{gesture_name}]")
     print(f"Destination: {save_path}")
     print("Instructions:")
-    print("  - Press 'S' to begin recording 30 dynamic hand frames.")
+    print("  - Press 'S' to begin a 2-second countdown, then record 30 dynamic hand frames.")
     print("  - Press 'Q' or ESC to quit.")
     print("=" * 60)
 
+    # Create named window upfront so it registers for keyboard focus
+    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_AUTOSIZE)
+
     try:
         while True:
+            # Detect if user closed window via the X button
+            try:
+                if cv2.getWindowProperty(WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1:
+                    break
+            except cv2.error:
+                break
+
             ret, frame = cap.read()
             if not ret:
                 print("Failed to grab frame from camera.")
@@ -206,7 +251,15 @@ def main():
             frame = draw_landmarks_on_frame(frame, results)
 
             # Handle state logic
-            if state == "RECORDING":
+            if state == "COUNTDOWN":
+                elapsed = time.time() - countdown_start_time
+                countdown_remaining = max(0.0, countdown_duration - elapsed)
+                if countdown_remaining <= 0:
+                    print(f"[INFO] Countdown complete! Recording 30 frames for '{gesture_name}'...")
+                    recorded_frames = []
+                    state = "RECORDING"
+
+            elif state == "RECORDING":
                 recorded_frames.append(feature_vector)
                 if len(recorded_frames) >= RECORD_FRAMES:
                     # Save exactly 30 frames to .npy file
@@ -223,22 +276,28 @@ def main():
                 recorded_count=len(recorded_frames),
                 total_frames=RECORD_FRAMES,
                 save_path=save_path,
+                countdown_remaining=countdown_remaining,
             )
 
-            cv2.imshow("SignKYC - Record ISL Template", frame)
+            cv2.imshow(WINDOW_NAME, frame)
 
             key = cv2.waitKey(1) & 0xFF
             if key in [ord("q"), ord("Q"), 27]:  # 27 = ESC
                 break
             elif key in [ord("s"), ord("S")]:
-                print(f"[INFO] Starting 30-frame recording for '{gesture_name}'...")
-                recorded_frames = []
-                state = "RECORDING"
+                if state in ["IDLE", "SAVED"]:
+                    print(f"[INFO] Get ready! 2-second countdown started for '{gesture_name}'...")
+                    countdown_start_time = time.time()
+                    countdown_remaining = countdown_duration
+                    state = "COUNTDOWN"
 
     finally:
         detector.close()
         cap.release()
         cv2.destroyAllWindows()
+        # Pump event loop so Windows actually tears down the window
+        for _ in range(5):
+            cv2.waitKey(1)
 
 
 if __name__ == "__main__":
