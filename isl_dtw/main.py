@@ -9,17 +9,17 @@ import numpy as np
 from fastdtw import fastdtw
 from scipy.spatial.distance import euclidean
 
-from utils import get_hand_detector, extract_landmarks, draw_landmarks_on_frame
+from utils import init_holistic, extract_holistic_features, draw_holistic_landmarks, FEATURE_DIM
 
 BUFFER_SIZE = 30
-DEFAULT_THRESHOLD = 15.0
+DEFAULT_THRESHOLD = 30.0
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-WINDOW_NAME = "SignKYC - Real-time ISL Gesture Recognition (DTW)"
+WINDOW_NAME = "SignKYC - Real-time ISL Gesture Recognition (Holistic DTW)"
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition."
+        description="Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition using MediaPipe Holistic."
     )
     parser.add_argument(
         "--threshold",
@@ -45,8 +45,10 @@ def parse_args():
 def load_templates(templates_dir: str):
     """
     Loads all .npy reference gesture templates from the specified directory.
+    Only loads templates whose second dimension matches FEATURE_DIM.
+
     Returns:
-        dict: { "gesture_name": np.ndarray of shape (N, 42) }
+        dict: { "gesture_name": np.ndarray of shape (N, FEATURE_DIM) }
     """
     templates = {}
     if not os.path.exists(templates_dir):
@@ -60,11 +62,15 @@ def load_templates(templates_dir: str):
         gesture_name = base_name.replace("reference_", "")
         try:
             data = np.load(file_path)
-            if data.ndim == 2 and data.shape[1] == 42:
+            if data.ndim == 2 and data.shape[1] == FEATURE_DIM:
                 templates[gesture_name] = data
                 print(f"[LOADED] Template '{gesture_name}' from {os.path.basename(file_path)} (Shape: {data.shape})")
             else:
-                print(f"[WARNING] Skipping '{file_path}' — invalid shape {data.shape}, expected (N, 42).")
+                print(
+                    f"[WARNING] Skipping '{os.path.basename(file_path)}' — "
+                    f"shape {data.shape} does not match expected (N, {FEATURE_DIM}). "
+                    f"Re-record with the holistic pipeline."
+                )
         except Exception as e:
             print(f"[ERROR] Failed to load template '{file_path}': {e}")
 
@@ -95,7 +101,7 @@ def draw_hud(
     # Title & FPS
     cv2.putText(
         frame,
-        "SignKYC - Real-time ISL DTW Gesture Recognizer",
+        "SignKYC - Real-time ISL Holistic DTW Recognizer",
         (15, 26),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.65,
@@ -212,7 +218,8 @@ def main():
 
     if not templates:
         print("=" * 70)
-        print(f"[!] No reference templates found in '{args.templates_dir}'.")
+        print(f"[!] No compatible reference templates found in '{args.templates_dir}'.")
+        print(f"    Expected template shape: (N, {FEATURE_DIM}).")
         print("Please record at least one reference template first by running:")
         print("    python record_template.py --name <gesture_name>")
         print("=" * 70)
@@ -222,7 +229,7 @@ def main():
         print(f"Error: Could not open camera {args.camera}.")
         sys.exit(1)
 
-    detector = get_hand_detector()
+    holistic = init_holistic()
     landmark_buffer = deque(maxlen=BUFFER_SIZE)
 
     # Recognition persistence state for UI display
@@ -235,7 +242,8 @@ def main():
     fps = 0.0
 
     print("=" * 70)
-    print("SignKYC Real-Time Dynamic ISL Gesture Recognition (DTW)")
+    print("SignKYC Real-Time ISL Gesture Recognition (Holistic DTW)")
+    print(f"Feature dimension: {FEATURE_DIM} (upper body + head + both hands)")
     print(f"Loaded {len(templates)} templates: {list(templates.keys())}")
     print(f"Rolling Buffer: {BUFFER_SIZE} frames | Distance Threshold: {threshold}")
     print("Press 'Q' or ESC to exit.")
@@ -266,18 +274,18 @@ def main():
             # Flip frame horizontally for intuitive mirror view
             frame = cv2.flip(frame, 1)
 
-            # Extract normalized translation-invariant landmarks
-            feature_vector, results = extract_landmarks(frame, detector)
+            # Extract normalized holistic features (106-dim)
+            feature_vector, results = extract_holistic_features(frame, holistic)
 
-            # Draw MediaPipe hand skeleton overlay
-            frame = draw_landmarks_on_frame(frame, results)
+            # Draw MediaPipe holistic skeleton overlay (pose + both hands)
+            frame = draw_holistic_landmarks(frame, results)
 
             # Push vector into rolling buffer
             landmark_buffer.append(feature_vector)
 
             # When the buffer is full (30 frames), perform DTW against templates
             if len(landmark_buffer) == BUFFER_SIZE and len(templates) > 0:
-                current_sequence = np.array(landmark_buffer, dtype=np.float32)  # Shape: (30, 42)
+                current_sequence = np.array(landmark_buffer, dtype=np.float32)  # Shape: (30, FEATURE_DIM)
 
                 best_gesture = None
                 min_distance = float("inf")
@@ -327,7 +335,7 @@ def main():
                 break
 
     finally:
-        detector.close()
+        holistic.close()
         cap.release()
         cv2.destroyAllWindows()
         # Pump event loop so Windows actually tears down the window

@@ -12,13 +12,15 @@ import {
 } from "lucide-react";
 import { DemoState } from "../types";
 import {
-  initHandLandmarker,
-  detectHands,
-  extractFeatureVector,
-  isHandDetected,
-  closeHandLandmarker,
+  initHolisticLandmarker,
+  detectHolistic,
+  extractHolisticFeatureVector,
+  isBodyDetected,
+  closeHolisticLandmarker,
   HAND_CONNECTIONS,
-} from "../lib/handLandmarker";
+  POSE_UPPER_BODY_CONNECTIONS,
+  type HolisticResult,
+} from "../lib/holisticLandmarker";
 import {
   loadTemplates,
   pushFrame,
@@ -77,11 +79,11 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
     if (modelReady || modelLoading) return;
     setModelLoading(true);
     try {
-      await initHandLandmarker();
+      await initHolisticLandmarker();
       setModelReady(true);
-      console.log("[VideoPanel] HandLandmarker initialized");
+      console.log("[VideoPanel] HolisticLandmarker initialized");
     } catch (err) {
-      console.error("[VideoPanel] Failed to init HandLandmarker:", err);
+      console.error("[VideoPanel] Failed to init HolisticLandmarker:", err);
     }
     setModelLoading(false);
   }, [modelReady, modelLoading]);
@@ -166,30 +168,37 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const drawLandmarks = useCallback(
     (
       ctx: CanvasRenderingContext2D,
-      landmarks: NormalizedLandmark[][],
+      result: HolisticResult,
       width: number,
       height: number
     ) => {
       ctx.clearRect(0, 0, width, height);
-      if (!showMesh || !landmarks || landmarks.length === 0) return;
+      if (!showMesh) return;
 
       const strokeColor = demoState === "low_confidence_or_escalated" ? "#D97706" : "#00FFB4";
-      const dotColor = demoState === "low_confidence_or_escalated" ? "#D97706" : "#00FFB4";
       const keyDotColor = demoState === "low_confidence_or_escalated" ? "#F59E0B" : "#008CFF";
 
-      for (const hand of landmarks) {
-        // Convert normalized coords to pixel coords
-        const pts = hand.map((lm) => ({
+      // Helper to draw a set of landmarks
+      const drawPart = (
+        landmarks: NormalizedLandmark[],
+        connections: [number, number][],
+        baseColor: string,
+        isHand: boolean,
+        label: string
+      ) => {
+        if (!landmarks || landmarks.length === 0) return;
+
+        const pts = landmarks.map((lm) => ({
           x: lm.x * width,
           y: lm.y * height,
         }));
 
-        // Draw skeletal connections (2px semi-transparent lines)
-        ctx.strokeStyle = strokeColor;
+        // Connections
+        ctx.strokeStyle = baseColor;
         ctx.lineWidth = 2;
         ctx.globalAlpha = 0.8;
         ctx.beginPath();
-        for (const [from, to] of HAND_CONNECTIONS) {
+        for (const [from, to] of connections) {
           if (from < pts.length && to < pts.length) {
             ctx.moveTo(pts[from].x, pts[from].y);
             ctx.lineTo(pts[to].x, pts[to].y);
@@ -198,18 +207,17 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         ctx.stroke();
         ctx.globalAlpha = 1.0;
 
-        // Draw joint dots
+        // Dots
         for (let i = 0; i < pts.length; i++) {
-          const isKey = KEY_LANDMARKS.has(i);
+          const isKey = isHand ? KEY_LANDMARKS.has(i) : false; // for hand use KEY, for pose don't highlight
           const radius = isKey ? 6 : 4;
-          const color = isKey ? keyDotColor : dotColor;
+          const color = isKey ? keyDotColor : baseColor;
 
           ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(pts[i].x, pts[i].y, radius, 0, 2 * Math.PI);
           ctx.fill();
 
-          // White outline on key landmarks
           if (isKey) {
             ctx.strokeStyle = "#FFFFFF";
             ctx.lineWidth = 1;
@@ -228,7 +236,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           if (p.y > maxY) maxY = p.y;
         }
         const pad = 14;
-        ctx.strokeStyle = strokeColor;
+        ctx.strokeStyle = baseColor;
         ctx.lineWidth = 1.5;
         ctx.globalAlpha = 0.6;
         ctx.strokeRect(minX - pad, minY - pad, (maxX - minX) + pad * 2, (maxY - minY) + pad * 2);
@@ -236,12 +244,18 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
         // Label
         ctx.font = "11px monospace";
-        ctx.fillStyle = strokeColor;
-        ctx.fillText(
-          `21-Pt Hand [X:${Math.round(minX)} Y:${Math.round(minY)}]`,
-          minX - pad,
-          minY - pad - 6
-        );
+        ctx.fillStyle = baseColor;
+        ctx.fillText(label, minX - pad, minY - pad - 6);
+      };
+
+      if (result.pose) {
+        drawPart(result.pose, POSE_UPPER_BODY_CONNECTIONS, strokeColor, false, "Upper Body");
+      }
+      if (result.leftHand) {
+        drawPart(result.leftHand, HAND_CONNECTIONS, "#00E5FF", true, "Left Hand");
+      }
+      if (result.rightHand) {
+        drawPart(result.rightHand, HAND_CONNECTIONS, "#FF9100", true, "Right Hand");
       }
     },
     [showMesh, demoState]
@@ -275,16 +289,16 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         return;
       }
 
-      // 1. Detect hands
-      const landmarks = detectHands(video);
+      // 1. Detect pose + hands
+      const result = detectHolistic(video);
 
       // 2. Extract feature vector
-      const featureVec = extractFeatureVector(landmarks);
-      const detected = isHandDetected(featureVec);
+      const featureVec = extractHolisticFeatureVector(result);
+      const detected = isBodyDetected(featureVec);
       setHandVisible(detected);
 
       // 3. Draw landmarks on canvas
-      drawLandmarks(ctx, landmarks, canvas.width, canvas.height);
+      drawLandmarks(ctx, result, canvas.width, canvas.height);
 
       // 4. Push to DTW buffer and attempt match
       if (detected) {
@@ -324,7 +338,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
       }
-      closeHandLandmarker();
+      closeHolisticLandmarker();
     };
   }, []);
 
@@ -443,8 +457,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       ctx.font = "10px monospace";
       ctx.fillText(
         demoState === "low_confidence_or_escalated"
-          ? "21-Pt Hand [62% Match]"
-          : `21-Pt Hand [X:${Math.round(minX - pad)} Y:${Math.round(minY - pad)}]`,
+          ? "Holistic [62% Match]"
+          : `Holistic [X:${Math.round(minX - pad)} Y:${Math.round(minY - pad)}]`,
         minX - pad - 5,
         minY - pad - 6
       );
@@ -563,7 +577,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           <div className="absolute bottom-3 left-3 z-20 bg-black/70 backdrop-blur-sm rounded-lg px-3 py-2 text-white space-y-1">
             <div className="flex items-center gap-2 text-[10px] font-mono">
               <span className={`w-2 h-2 rounded-full ${handVisible ? "bg-green-400" : "bg-red-400"}`}></span>
-              <span>{handVisible ? "Hand Detected" : "No Hand"}</span>
+              <span>{handVisible ? "Body Detected" : "No Subject"}</span>
             </div>
             <div className="flex items-center gap-2 text-[10px] font-mono">
               <span>Buffer:</span>

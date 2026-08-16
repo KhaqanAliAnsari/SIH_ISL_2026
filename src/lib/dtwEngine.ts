@@ -11,8 +11,8 @@
 
 // ─── Constants ───────────────────────────────────────────────────────
 const BUFFER_SIZE = 30;
-const DEFAULT_THRESHOLD = 15.0;
-const FEATURE_DIM = 42;
+const DEFAULT_THRESHOLD = 30.0;
+const FEATURE_DIM = 106;
 
 // ─── Types ───────────────────────────────────────────────────────────
 export interface GestureTemplate {
