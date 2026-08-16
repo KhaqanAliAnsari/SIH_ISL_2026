@@ -1,11 +1,11 @@
 # Graph Report - SIH_ISL_2026  (2026-08-16)
 
 ## Corpus Check
-- 34 files · ~17,423 words
+- 34 files · ~16,972 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 221 nodes · 315 edges · 16 communities (12 shown, 4 thin omitted)
+- 216 nodes · 308 edges · 16 communities (12 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -101,11 +101,11 @@ Cohesion: 0.20
 Nodes (9): 1. Install Dependencies, 2. Record Reference Templates, 3. Run Real-time Gesture Recognition, Custom Options:, 🧬 Feature Vector Layout (106 dimensions per frame), 📁 Project Structure, 🚀 Quickstart Guide, Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition (Holistic) (+1 more)
 
 ### Community 15 - "VideoPanel.tsx"
-Cohesion: 0.12
-Nodes (28): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwDistance(), euclideanDistance(), frameBuffer, GestureTemplate, getBufferFill() (+20 more)
+Cohesion: 0.15
+Nodes (23): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwDistance(), euclideanDistance(), frameBuffer, GestureTemplate, getBufferFill() (+15 more)
 
 ## Knowledge Gaps
-- **81 isolated node(s):** `TEMPLATES_DIR`, `name`, `private`, `version`, `type` (+76 more)
+- **78 isolated node(s):** `TEMPLATES_DIR`, `name`, `private`, `version`, `type` (+73 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -113,13 +113,13 @@ Nodes (28): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwDistance(), euclidean
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `package.json`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Why does `VideoPanel()` connect `VideoPanel.tsx` to `App.tsx`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `TEMPLATES_DIR`, `name`, `private` to the rest of the system?**
-  _81 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _78 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**

@@ -5,16 +5,16 @@ import argparse
 import cv2
 import numpy as np
 
-from utils import get_hand_detector, extract_landmarks, draw_landmarks_on_frame
+from utils import init_holistic, extract_holistic_features, draw_holistic_landmarks, FEATURE_DIM
 
 RECORD_FRAMES = 30
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-WINDOW_NAME = "SignKYC - Record ISL Template"
+WINDOW_NAME = "SignKYC - Record ISL Template (Holistic)"
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Record a 30-frame ISL gesture reference template using MediaPipe Hands."
+        description="Record a 30-frame ISL gesture reference template using MediaPipe Holistic."
     )
     parser.add_argument(
         "--name",
@@ -53,7 +53,7 @@ def draw_overlay(
     # Title & Gesture info
     cv2.putText(
         frame,
-        "SignKYC ISL Template Recorder",
+        "SignKYC ISL Template Recorder (Holistic)",
         (15, 28),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.75,
@@ -118,7 +118,7 @@ def draw_overlay(
 
         cv2.putText(
             frame,
-            f"Starting in {countdown_remaining:.1f}s — Position your hand...",
+            f"Starting in {countdown_remaining:.1f}s — Position yourself...",
             (15, h - 25),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.65,
@@ -208,7 +208,7 @@ def main():
         print(f"Error: Could not open camera {args.camera}.")
         sys.exit(1)
 
-    detector = get_hand_detector()
+    holistic = init_holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
     state = "IDLE"  # IDLE, COUNTDOWN, RECORDING, SAVED
     recorded_frames = []
@@ -217,10 +217,11 @@ def main():
     countdown_remaining = 0.0
     
     print("=" * 60)
-    print(f"SignKYC ISL Template Recorder - Gesture: [{gesture_name}]")
+    print(f"SignKYC ISL Template Recorder (Holistic) - Gesture: [{gesture_name}]")
+    print(f"Feature vector: {FEATURE_DIM}-dim (upper body + head + both hands)")
     print(f"Destination: {save_path}")
     print("Instructions:")
-    print("  - Press 'S' to begin a 2-second countdown, then record 30 dynamic hand frames.")
+    print("  - Press 'S' to begin a 2-second countdown, then record 30 holistic frames.")
     print("  - Press 'Q' or ESC to quit.")
     print("=" * 60)
 
@@ -244,11 +245,11 @@ def main():
             # Flip frame horizontally for natural selfie view
             frame = cv2.flip(frame, 1)
 
-            # Extract hand landmarks
-            feature_vector, results = extract_landmarks(frame, detector)
+            # Extract holistic features
+            feature_vector, results = extract_holistic_features(frame, holistic)
 
-            # Draw MediaPipe hand skeleton overlay
-            frame = draw_landmarks_on_frame(frame, results)
+            # Draw MediaPipe holistic skeleton overlay (pose + both hands)
+            frame = draw_holistic_landmarks(frame, results)
 
             # Handle state logic
             if state == "COUNTDOWN":
@@ -262,8 +263,8 @@ def main():
             elif state == "RECORDING":
                 recorded_frames.append(feature_vector)
                 if len(recorded_frames) >= RECORD_FRAMES:
-                    # Save exactly 30 frames to .npy file
-                    template_array = np.array(recorded_frames, dtype=np.float32)  # Shape: (30, 42)
+                    # Save exactly 30 frames to .npy file — Shape: (30, FEATURE_DIM)
+                    template_array = np.array(recorded_frames, dtype=np.float32)
                     np.save(save_path, template_array)
                     print(f"\n[SUCCESS] Saved {RECORD_FRAMES} frames of shape {template_array.shape} to '{save_path}'")
                     state = "SAVED"
@@ -292,7 +293,7 @@ def main():
                     state = "COUNTDOWN"
 
     finally:
-        detector.close()
+        holistic.close()
         cap.release()
         cv2.destroyAllWindows()
         # Pump event loop so Windows actually tears down the window

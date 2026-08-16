@@ -1,171 +1,206 @@
-import os
-import urllib.request
 import cv2
 import numpy as np
 import mediapipe as mp
 
-# Hand landmark skeletal connections (21 landmarks)
-HAND_CONNECTIONS = [
-    # Thumb
-    (0, 1), (1, 2), (2, 3), (3, 4),
-    # Index finger
-    (0, 5), (5, 6), (6, 7), (7, 8),
-    # Middle finger
-    (9, 10), (10, 11), (11, 12),
-    # Ring finger
-    (13, 14), (14, 15), (15, 16),
-    # Pinky
-    (0, 17), (17, 18), (18, 19), (19, 20),
-    # Palm knuckles
-    (5, 9), (9, 13), (13, 17),
-]
+# ──────────────────────────────────────────────────────────────────────
+# Feature vector layout (constant across all frames)
+# ──────────────────────────────────────────────────────────────────────
+#   Block                   Landmarks                               Dims
+#   ─────────────────────   ─────────────────────────────────────    ────
+#   Upper Body / Arms       Pose 11-16 (shoulders, elbows, wrists)  12
+#   Head Spatial Anchors    Pose 0, 2, 5, 9, 10                     10
+#   Left Hand               21 hand landmarks (wrist-relative)       42
+#   Right Hand              21 hand landmarks (wrist-relative)       42
+#                                                          Total:   106
+# ──────────────────────────────────────────────────────────────────────
 
-MODEL_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(MODEL_DIR, "hand_landmarker.task")
-MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+FEATURE_DIM = 106
+
+# Pose landmark indices for upper body and head anchors
+POSE_UPPER_BODY_INDICES = [11, 12, 13, 14, 15, 16]  # shoulders, elbows, wrists
+POSE_HEAD_INDICES = [0, 2, 5, 9, 10]                 # nose, left eye, right eye, mouth left, mouth right
+
+# MediaPipe drawing utilities and specs
+mp_holistic = mp.solutions.holistic
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
 
 
-def ensure_model_file():
+def init_holistic(
+    min_detection_confidence: float = 0.5,
+    min_tracking_confidence: float = 0.5,
+):
     """
-    Ensures that the MediaPipe Tasks hand_landmarker.task model is available locally.
-    Downloads it automatically if missing.
+    Initializes and returns a MediaPipe Holistic model instance.
+
+    Args:
+        min_detection_confidence: Minimum confidence for initial detection.
+        min_tracking_confidence: Minimum confidence for landmark tracking.
+
+    Returns:
+        A mediapipe.solutions.holistic.Holistic instance.
     """
-    if not os.path.exists(MODEL_PATH):
-        print(f"[INFO] Downloading MediaPipe HandLandmarker model to '{MODEL_PATH}'...")
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-        print("[INFO] Model downloaded successfully.")
-    return MODEL_PATH
+    return mp_holistic.Holistic(
+        static_image_mode=False,
+        model_complexity=1,
+        min_detection_confidence=min_detection_confidence,
+        min_tracking_confidence=min_tracking_confidence,
+    )
 
 
-class HandDetector:
+def _extract_pose_features(pose_landmarks):
     """
-    Universal MediaPipe Hand detector supporting both MediaPipe Tasks API (v0.10.x+)
-    and legacy Solutions API (v0.9.x and earlier).
+    Extracts upper-body arm features (12 dims) and head anchor features (10 dims)
+    from MediaPipe Pose landmarks, normalized relative to mid-shoulder.
+
+    Returns:
+        upper_body: np.ndarray of shape (12,) — 6 landmarks × 2 coords
+        head_anchors: np.ndarray of shape (10,) — 5 landmarks × 2 coords
     """
+    if pose_landmarks is None:
+        return np.zeros(12, dtype=np.float32), np.zeros(10, dtype=np.float32)
 
-    def __init__(self, max_num_hands: int = 1, min_detection_confidence: float = 0.7):
-        self.max_num_hands = max_num_hands
-        self.min_detection_confidence = min_detection_confidence
-        self.use_tasks_api = False
-        self.detector = None
+    lm = pose_landmarks.landmark
 
-        if hasattr(mp, "solutions") and hasattr(mp.solutions, "hands"):
-            # Legacy Solutions API
-            self.detector = mp.solutions.hands.Hands(
-                static_image_mode=False,
-                max_num_hands=max_num_hands,
-                min_detection_confidence=min_detection_confidence,
-                min_tracking_confidence=0.5,
-            )
-            self.use_tasks_api = False
-        else:
-            # Modern MediaPipe Tasks API (0.10.x / 1.0.x+)
-            from mediapipe.tasks import python
-            from mediapipe.tasks.python import vision
+    # Mid-shoulder reference point
+    mid_shoulder_x = (lm[11].x + lm[12].x) / 2.0
+    mid_shoulder_y = (lm[11].y + lm[12].y) / 2.0
 
-            model_file = ensure_model_file()
-            base_options = python.BaseOptions(model_asset_path=model_file)
-            options = vision.HandLandmarkerOptions(
-                base_options=base_options,
-                num_hands=max_num_hands,
-                min_hand_detection_confidence=min_detection_confidence,
-            )
-            self.detector = vision.HandLandmarker.create_from_options(options)
-            self.use_tasks_api = True
+    # Upper body: shoulders (11, 12), elbows (13, 14), wrists (15, 16)
+    upper_body = []
+    for idx in POSE_UPPER_BODY_INDICES:
+        upper_body.append(lm[idx].x - mid_shoulder_x)
+        upper_body.append(lm[idx].y - mid_shoulder_y)
 
-    def process(self, frame_bgr: np.ndarray):
-        """
-        Processes a BGR image frame and extracts hand landmarks.
-        Returns:
-            landmarks_list: List of list of landmarks [ [lm0, lm1, ..., lm20], ... ]
-        """
-        rgb_frame = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+    # Head spatial anchors: nose (0), eyes (2, 5), mouth corners (9, 10)
+    head_anchors = []
+    for idx in POSE_HEAD_INDICES:
+        head_anchors.append(lm[idx].x - mid_shoulder_x)
+        head_anchors.append(lm[idx].y - mid_shoulder_y)
 
-        if self.use_tasks_api:
-            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
-            result = self.detector.detect(mp_image)
-            return result.hand_landmarks  # List of lists of NormalizedLandmark
-        else:
-            result = self.detector.process(rgb_frame)
-            return result.multi_hand_landmarks if result.multi_hand_landmarks else []
-
-    def close(self):
-        if self.detector:
-            self.detector.close()
+    return (
+        np.array(upper_body, dtype=np.float32),
+        np.array(head_anchors, dtype=np.float32),
+    )
 
 
-def get_hand_detector(max_num_hands: int = 1, min_detection_confidence: float = 0.7):
+def _extract_hand_features(hand_landmarks):
     """
-    Factory function returning an initialized HandDetector.
+    Extracts 42-dimensional features from 21 hand landmarks,
+    normalized relative to the wrist (hand landmark index 0).
+
+    Returns zero-padded vector (42 zeros) if hand_landmarks is None.
+
+    Returns:
+        np.ndarray of shape (42,), dtype=np.float32.
     """
-    return HandDetector(max_num_hands=max_num_hands, min_detection_confidence=min_detection_confidence)
+    if hand_landmarks is None:
+        return np.zeros(42, dtype=np.float32)
+
+    lm = hand_landmarks.landmark
+    wrist_x = lm[0].x
+    wrist_y = lm[0].y
+
+    features = []
+    for landmark in lm:
+        features.append(landmark.x - wrist_x)
+        features.append(landmark.y - wrist_y)
+
+    return np.array(features, dtype=np.float32)
 
 
-def extract_landmarks(frame: np.ndarray, detector: HandDetector):
+def extract_holistic_features(frame: np.ndarray, holistic):
     """
-    Extracts 21 hand landmarks from an OpenCV frame.
-    
-    Applies translation invariance:
-      - Subtracts wrist coordinates (landmark 0: x0, y0) from all 21 (x, y) coordinates.
-      - Yields a 42-dimensional vector per frame.
-      - Returns zero-padded vector np.zeros(42) if no hand is detected.
+    Extracts a 106-dimensional holistic feature vector from an OpenCV BGR frame.
+
+    Feature layout:
+        [0:12]   Upper body / arms  (pose 11-16, mid-shoulder relative)
+        [12:22]  Head anchors       (pose 0,2,5,9,10, mid-shoulder relative)
+        [22:64]  Left hand          (21 landmarks, wrist-relative, zero-padded if absent)
+        [64:106] Right hand         (21 landmarks, wrist-relative, zero-padded if absent)
 
     Args:
         frame: BGR image from OpenCV.
-        detector: Initialized HandDetector instance.
+        holistic: Initialized mp.solutions.holistic.Holistic instance.
 
     Returns:
-        feature_vector: np.ndarray of shape (42,), dtype=np.float32.
-        raw_landmarks: Raw landmarks list for drawing utilities.
+        feature_vector: np.ndarray of shape (106,), dtype=np.float32.
+        results: Raw MediaPipe holistic results object (for drawing).
     """
-    hand_landmarks_list = detector.process(frame)
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    rgb_frame.flags.writeable = False
+    results = holistic.process(rgb_frame)
+    rgb_frame.flags.writeable = True
 
-    if hand_landmarks_list and len(hand_landmarks_list) > 0:
-        # Take the primary hand detected (first hand)
-        primary_hand = hand_landmarks_list[0]
-        
-        # Landmark 0 is the wrist reference point
-        wrist = primary_hand[0]
-        wrist_x = wrist.x
-        wrist_y = wrist.y
+    # Extract each feature block
+    upper_body, head_anchors = _extract_pose_features(results.pose_landmarks)
+    left_hand = _extract_hand_features(results.left_hand_landmarks)
+    right_hand = _extract_hand_features(results.right_hand_landmarks)
 
-        features = []
-        for lm in primary_hand:
-            # Translation invariant coordinates relative to wrist
-            features.append(lm.x - wrist_x)
-            features.append(lm.y - wrist_y)
+    # Concatenate into a single 106-dim vector
+    feature_vector = np.concatenate([upper_body, head_anchors, left_hand, right_hand])
+    assert feature_vector.shape == (FEATURE_DIM,), (
+        f"Feature vector shape mismatch: expected ({FEATURE_DIM},), got {feature_vector.shape}"
+    )
 
-        return np.array(features, dtype=np.float32), hand_landmarks_list
-    else:
-        # Zero-pad when no hand is detected
-        return np.zeros(42, dtype=np.float32), []
+    return feature_vector, results
 
 
-def draw_landmarks_on_frame(frame: np.ndarray, hand_landmarks_list) -> np.ndarray:
+def draw_holistic_landmarks(frame: np.ndarray, results) -> np.ndarray:
     """
-    Draws custom high-visibility hand skeleton and joints onto the frame.
+    Draws pose (upper body subset), left hand, and right hand landmarks
+    onto the frame using MediaPipe drawing utilities with distinct colors.
+
+    Args:
+        frame: BGR image to annotate.
+        results: Raw results object from holistic.process().
+
+    Returns:
+        Annotated frame (modified in-place and returned).
     """
-    if not hand_landmarks_list:
+    if results is None:
         return frame
 
-    h, w, _ = frame.shape
+    # Draw pose connections (full body drawn for visual context)
+    if results.pose_landmarks:
+        mp_drawing.draw_landmarks(
+            frame,
+            results.pose_landmarks,
+            mp_holistic.POSE_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing.DrawingSpec(
+                color=(80, 180, 255), thickness=2, circle_radius=2
+            ),
+            connection_drawing_spec=mp_drawing.DrawingSpec(
+                color=(80, 110, 200), thickness=2
+            ),
+        )
 
-    for landmarks in hand_landmarks_list:
-        # Convert normalized coordinates to pixel coordinates
-        pts = [(int(lm.x * w), int(lm.y * h)) for lm in landmarks]
+    # Draw left hand connections (cyan / teal)
+    if results.left_hand_landmarks:
+        mp_drawing.draw_landmarks(
+            frame,
+            results.left_hand_landmarks,
+            mp_holistic.HAND_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing.DrawingSpec(
+                color=(0, 255, 200), thickness=2, circle_radius=3
+            ),
+            connection_drawing_spec=mp_drawing.DrawingSpec(
+                color=(0, 200, 160), thickness=2
+            ),
+        )
 
-        # Draw skeletal connections
-        for start_idx, end_idx in HAND_CONNECTIONS:
-            if start_idx < len(pts) and end_idx < len(pts):
-                cv2.line(frame, pts[start_idx], pts[end_idx], (0, 255, 180), 2, cv2.LINE_AA)
-
-        # Draw joint nodes
-        for i, (px, py) in enumerate(pts):
-            # Highlight wrist (0) and fingertips (4, 8, 12, 16, 20) with distinct color
-            if i in [0, 4, 8, 12, 16, 20]:
-                cv2.circle(frame, (px, py), 6, (0, 140, 255), -1, cv2.LINE_AA)
-                cv2.circle(frame, (px, py), 7, (255, 255, 255), 1, cv2.LINE_AA)
-            else:
-                cv2.circle(frame, (px, py), 4, (0, 220, 255), -1, cv2.LINE_AA)
+    # Draw right hand connections (orange / amber)
+    if results.right_hand_landmarks:
+        mp_drawing.draw_landmarks(
+            frame,
+            results.right_hand_landmarks,
+            mp_holistic.HAND_CONNECTIONS,
+            landmark_drawing_spec=mp_drawing.DrawingSpec(
+                color=(0, 140, 255), thickness=2, circle_radius=3
+            ),
+            connection_drawing_spec=mp_drawing.DrawingSpec(
+                color=(0, 100, 200), thickness=2
+            ),
+        )
 
     return frame
