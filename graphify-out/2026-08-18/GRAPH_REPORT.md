@@ -1,16 +1,16 @@
 # Graph Report - SIH_ISL_2026  (2026-08-18)
 
 ## Corpus Check
-- 36 files · ~21,073 words
+- 36 files · ~20,275 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 253 nodes · 391 edges · 16 communities (13 shown, 3 thin omitted)
+- 248 nodes · 384 edges · 16 communities (13 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a8077162`
+- Built from commit: `ee776b7f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -44,8 +44,6 @@
 10. `main()` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `App()` --calls--> `pushGesture()`  [EXTRACTED]
-  src/App.tsx → src/lib/sentenceEngine.ts
 - `EditFieldModalProps` --references--> `KYCField`  [EXTRACTED]
   src/components/EditFieldModal.tsx → src/types.ts
 - `LoginProps` --references--> `Customer`  [EXTRACTED]
@@ -54,6 +52,8 @@
   src/components/PhrasedSentenceStrip.tsx → src/types.ts
 - `RegistrationProps` --references--> `Customer`  [EXTRACTED]
   src/components/Registration.tsx → src/types.ts
+- `VideoPanel()` --calls--> `manualDispatch()`  [EXTRACTED]
+  src/components/VideoPanel.tsx → src/lib/sentenceEngine.ts
 
 ## Import Cycles
 - None detected.
@@ -70,7 +70,7 @@ Nodes (21): DOM, DOM.Iterable, ES2022, node, vite/client, compilerOptions, allow
 
 ### Community 2 - "App.tsx"
 Cohesion: 0.10
-Nodes (30): App(), AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps (+22 more)
+Nodes (30): AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps, EditFieldModal() (+22 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.08
@@ -81,8 +81,8 @@ Cohesion: 0.36
 Nodes (7): Login(), LoginProps, Registration(), RegistrationProps, isSupabaseConfigured, supabase, Customer
 
 ### Community 5 - "sentenceEngine.ts"
-Cohesion: 0.23
-Nodes (15): VideoPanelProps, clearIdleTimer(), DispatchReason, dispatchSentence(), isStopGesture(), manualDispatch(), pushGesture(), resetEngine() (+7 more)
+Cohesion: 0.21
+Nodes (15): App(), clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens(), getEngineState(), initSentenceEngine(), isStopGesture() (+7 more)
 
 ### Community 6 - "SignKYC — Bank Official Console (V-CIP Assist View)"
 Cohesion: 0.33
@@ -105,11 +105,11 @@ Cohesion: 0.20
 Nodes (9): 1. Install Dependencies, 2. Record Reference Templates, 3. Run Real-time Gesture Recognition, Custom Options:, 🧬 Feature Vector Layout (106 dimensions per frame), 📁 Project Structure, 🚀 Quickstart Guide, Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition (Holistic) (+1 more)
 
 ### Community 15 - "VideoPanel.tsx"
-Cohesion: 0.09
-Nodes (36): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwCurrRow, dtwDistance(), dtwPrevRow, euclideanDistanceSq(), euclidScratch (+28 more)
+Cohesion: 0.10
+Nodes (31): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwDistance(), euclideanDistance(), frameBuffer, GestureTemplate, getBufferFill() (+23 more)
 
 ## Knowledge Gaps
-- **89 isolated node(s):** `TEMPLATES_DIR`, `phraseCache`, `name`, `private`, `version` (+84 more)
+- **86 isolated node(s):** `TEMPLATES_DIR`, `phraseCache`, `name`, `private`, `version` (+81 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -117,16 +117,16 @@ Nodes (36): KEY_LANDMARKS, VideoPanel(), clearBuffer(), dtwCurrRow, dtwDistance(
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `devDependencies`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Why does `VideoPanel()` connect `VideoPanel.tsx` to `App.tsx`, `sentenceEngine.ts`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `TEMPLATES_DIR`, `phraseCache`, `name` to the rest of the system?**
-  _89 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _86 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10365853658536585 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._

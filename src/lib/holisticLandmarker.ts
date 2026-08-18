@@ -46,44 +46,80 @@ export interface HolisticResult {
   rightHand: NormalizedLandmark[] | null;
 }
 
+// Pinned WASM version — @latest causes CDN cache misses and potential breaking changes
+const MEDIAPIPE_WASM_VERSION = "0.10.21";
+const MEDIAPIPE_WASM_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`;
+
+/**
+ * Create a landmarker with GPU delegate, falling back to CPU if WebGL is unavailable.
+ */
+async function createWithGpuFallback<T>(
+  factory: (delegate: "GPU" | "CPU") => Promise<T>,
+  label: string
+): Promise<T> {
+  try {
+    const result = await factory("GPU");
+    console.log(`[Holistic] ${label}: GPU delegate active ✓`);
+    return result;
+  } catch (gpuErr) {
+    console.warn(`[Holistic] ${label}: GPU delegate failed, falling back to CPU:`, gpuErr);
+    const result = await factory("CPU");
+    console.log(`[Holistic] ${label}: CPU delegate active (GPU unavailable)`);
+    return result;
+  }
+}
+
 /**
  * Initialize the PoseLandmarker and HandLandmarker models.
+ * Uses GPU delegation with automatic CPU fallback.
  */
 export async function initHolisticLandmarker(): Promise<void> {
   if (poseLandmarker && handLandmarker) return;
 
-  const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-  );
+  const t0 = performance.now();
+  console.log("[Holistic] Initializing MediaPipe models...");
+
+  const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_WASM_URL);
+  const t1 = performance.now();
+  console.log(`[Holistic] WASM fileset resolved in ${(t1 - t0).toFixed(0)}ms`);
 
   const [pose, hand] = await Promise.all([
-    PoseLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task",
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numPoses: 1,
-      minPoseDetectionConfidence: 0.5,
-      minPosePresenceConfidence: 0.5,
-      minTrackingConfidence: 0.7,
-    }),
-    HandLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numHands: 2, // Need both hands for holistic
-      minHandDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    })
+    createWithGpuFallback(
+      (delegate) => PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task",
+          delegate,
+        },
+        runningMode: "VIDEO",
+        numPoses: 1,
+        minPoseDetectionConfidence: 0.45,
+        minPosePresenceConfidence: 0.45,
+        minTrackingConfidence: 0.7,
+      }),
+      "PoseLandmarker"
+    ),
+    createWithGpuFallback(
+      (delegate) => HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath:
+            "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+          delegate,
+        },
+        runningMode: "VIDEO",
+        numHands: 2, // Need both hands for holistic
+        minHandDetectionConfidence: 0.45,
+        minTrackingConfidence: 0.5,
+      }),
+      "HandLandmarker"
+    )
   ]);
 
   poseLandmarker = pose;
   handLandmarker = hand;
+
+  const t2 = performance.now();
+  console.log(`[Holistic] Models initialized in ${(t2 - t0).toFixed(0)}ms total`);
 }
 
 /**

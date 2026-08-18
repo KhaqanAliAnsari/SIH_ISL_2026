@@ -10,7 +10,7 @@ import {
   Eye,
   Zap,
 } from "lucide-react";
-import { DemoState } from "../types";
+import { DemoState, SentenceToken, SentenceEngineState } from "../types";
 import {
   initHolisticLandmarker,
   detectHolistic,
@@ -30,6 +30,11 @@ import {
   getTemplateNames,
   type MatchResult,
 } from "../lib/dtwEngine";
+import {
+  getStopGestureName,
+  setStopGestureName,
+  manualDispatch,
+} from "../lib/sentenceEngine";
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 interface VideoPanelProps {
@@ -43,6 +48,9 @@ interface VideoPanelProps {
   currentStepLabel: string;
   isLivenessMatchConfirmed?: boolean;
   onGestureRecognized?: (gesture: string, distance: number, confidence: number) => void;
+  // Accumulator props
+  currentSentenceTokens?: SentenceToken[];
+  sentenceEngineState?: SentenceEngineState;
 }
 
 // Fingertip + wrist landmark indices for larger dot rendering
@@ -59,6 +67,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   currentStepLabel,
   isLivenessMatchConfirmed = false,
   onGestureRecognized,
+  currentSentenceTokens = [],
+  sentenceEngineState = "IDLE",
 }) => {
   const [useWebcam, setUseWebcam] = useState(false);
   const [showMesh, setShowMesh] = useState(true);
@@ -68,11 +78,19 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const [lastMatch, setLastMatch] = useState<MatchResult | null>(null);
   const [handVisible, setHandVisible] = useState(false);
   const [bufferFill, setBufferFill] = useState(0);
+  const [activeStopGesture, setActiveStopGesture] = useState<string>(getStopGestureName());
+  const [showStopConfig, setShowStopConfig] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null); // cached context
   const animFrameRef = useRef<number>(0);
   const isRunningRef = useRef(false);
+
+  // Performance: track fast-changing values in refs, flush to React state at throttled intervals
+  const handVisibleRef = useRef(false);
+  const bufferFillRef = useRef(0);
+  const lastUiFlushRef = useRef(0);
 
   // ─── Initialize MediaPipe + Load Templates ────────────────────────
   const initModel = useCallback(async () => {
@@ -281,9 +299,14 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
         canvas.width = video.videoWidth || 800;
         canvas.height = video.videoHeight || 500;
+        canvasCtxRef.current = null; // invalidate cached context on resize
       }
 
-      const ctx = canvas.getContext("2d");
+      // Cache canvas context — avoid getContext() call every frame
+      if (!canvasCtxRef.current) {
+        canvasCtxRef.current = canvas.getContext("2d", { willReadFrequently: false }) as CanvasRenderingContext2D;
+      }
+      const ctx = canvasCtxRef.current;
       if (!ctx) {
         animFrameRef.current = requestAnimationFrame(runDetection);
         return;
@@ -295,7 +318,9 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       // 2. Extract feature vector
       const featureVec = extractHolisticFeatureVector(result);
       const detected = isBodyDetected(featureVec);
-      setHandVisible(detected);
+
+      // Track in refs (no re-render)
+      handVisibleRef.current = detected;
 
       // 3. Draw landmarks on canvas
       drawLandmarks(ctx, result, canvas.width, canvas.height);
@@ -303,7 +328,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       // 4. Push to DTW buffer and attempt match
       if (detected) {
         pushFrame(featureVec);
-        setBufferFill(getBufferFill());
+        bufferFillRef.current = getBufferFill();
 
         const result = matchGesture();
         if (result.gesture) {
@@ -311,11 +336,19 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           onGestureRecognized?.(result.gesture, result.distance, result.confidence);
         }
       } else {
-        setBufferFill(getBufferFill());
+        bufferFillRef.current = getBufferFill();
         // Clear canvas when no mesh and no hand
         if (!showMesh) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+      }
+
+      // Throttled UI state flush (~5Hz instead of 30Hz) to reduce React re-renders
+      const now = performance.now();
+      if (now - lastUiFlushRef.current > 200) {
+        lastUiFlushRef.current = now;
+        setHandVisible(handVisibleRef.current);
+        setBufferFill(bufferFillRef.current);
       }
 
       animFrameRef.current = requestAnimationFrame(runDetection);
@@ -512,6 +545,78 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
         {/* Top Controls */}
         <div className="flex items-center gap-2">
+          {/* STOP Gesture Config Badge/Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowStopConfig(!showStopConfig)}
+              className="px-2 py-1 rounded text-xs font-mono border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-900 flex items-center gap-1 transition-colors"
+              title="Configure which sign acts as the sentence STOP delimiter"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+              <span>STOP: <strong className="uppercase">{activeStopGesture}</strong></span>
+            </button>
+
+            {showStopConfig && (
+              <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-gray-300 rounded-lg shadow-xl p-3 z-50 text-xs">
+                <div className="font-bold text-gray-800 mb-1 flex items-center justify-between">
+                  <span>Configure STOP Gesture</span>
+                  <span className="text-[10px] text-gray-500 font-normal">Sign delimiter</span>
+                </div>
+                <p className="text-[11px] text-gray-600 mb-2 leading-tight">
+                  Choose which sign ends a sentence and merges letters into words:
+                </p>
+                <div className="space-y-2">
+                  <div>
+                    <label className="text-[10px] font-mono text-gray-500 block mb-0.5">Gesture Name:</label>
+                    <input
+                      type="text"
+                      value={activeStopGesture}
+                      onChange={(e) => {
+                        setActiveStopGesture(e.target.value);
+                        setStopGestureName(e.target.value);
+                      }}
+                      placeholder="e.g. stop, period, halt"
+                      className="w-full px-2 py-1 border border-gray-300 rounded font-mono text-xs text-gray-900 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {getTemplateNames().length > 0 && (
+                    <div>
+                      <label className="text-[10px] font-mono text-gray-500 block mb-0.5">Or Pick from Loaded Signs:</label>
+                      <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto">
+                        {getTemplateNames().map((name) => (
+                          <button
+                            key={name}
+                            onClick={() => {
+                              setActiveStopGesture(name);
+                              setStopGestureName(name);
+                            }}
+                            className={`px-1.5 py-0.5 rounded text-[10px] font-mono border ${
+                              activeStopGesture === name
+                                ? "bg-indigo-600 text-white border-indigo-600 font-bold"
+                                : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                            }`}
+                          >
+                            {name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="pt-1 flex justify-end">
+                    <button
+                      onClick={() => setShowStopConfig(false)}
+                      className="px-2 py-1 bg-gray-800 hover:bg-black text-white rounded text-[10px] font-bold"
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <button
             onClick={() => setShowMesh(!showMesh)}
             className={`px-2 py-1 rounded text-xs font-medium border flex items-center gap-1 transition-colors ${
@@ -680,6 +785,57 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
               <p className="text-[10px] text-gray-600 font-mono">
                 Level-3 Certified Interpreter
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* ACCUMULATOR STRIP (Bottom Center) */}
+        {(currentSentenceTokens.length > 0 || sentenceEngineState === "DISPATCHING") && (
+          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 w-11/12 max-w-2xl bg-black/85 backdrop-blur-md border border-gray-600 rounded-lg p-2.5 text-white shadow-xl transition-all">
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold text-gray-300 uppercase tracking-widest flex items-center gap-1.5">
+                  <Activity className="w-3 h-3 text-cyan-400" />
+                  Live Sentence Buffer ({currentSentenceTokens.length} tokens)
+                </span>
+                <span className="text-[9px] font-mono text-gray-400 bg-gray-800/80 px-1.5 py-0.5 rounded border border-gray-700">
+                  STOP sign: {activeStopGesture.toUpperCase()} (or 18s idle)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {sentenceEngineState === "ACCUMULATING" && (
+                  <button
+                    onClick={() => manualDispatch()}
+                    className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-cyan-500 hover:bg-cyan-400 text-black transition-colors"
+                    title="Manual trigger to phrase accumulated sentence now"
+                  >
+                    Phrase Now
+                  </button>
+                )}
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                  sentenceEngineState === "DISPATCHING" ? "bg-amber-500/20 text-amber-300 animate-pulse" :
+                  "bg-cyan-500/20 text-cyan-300"
+                }`}>
+                  {sentenceEngineState === "DISPATCHING" ? "SENDING TO CLOUD..." : "ACCUMULATING..."}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-1.5 font-mono text-sm max-h-20 overflow-y-auto">
+              {currentSentenceTokens.map((token, idx) => (
+                <React.Fragment key={idx}>
+                  <span className="px-2 py-0.5 bg-gray-800 border border-gray-600 rounded text-cyan-50 shadow-sm">
+                    {token.word}
+                  </span>
+                  {idx < currentSentenceTokens.length - 1 && (
+                    <span className="text-gray-500">→</span>
+                  )}
+                </React.Fragment>
+              ))}
+              {sentenceEngineState === "ACCUMULATING" && (
+                <span className="text-cyan-400 ml-1 animate-pulse font-bold">_</span>
+              )}
             </div>
           </div>
         )}
