@@ -189,10 +189,39 @@ export const AuditModal: React.FC<AuditModalProps> = ({
                 </div>
               </div>
 
+              {/* ISL Conversation Log */}
+              {sessionData.conversationHistory && sessionData.conversationHistory.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                    ISL Translation Telemetry &amp; Signed Sentences ({sessionData.conversationHistory.length})
+                  </h4>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto">
+                    {sessionData.conversationHistory.map((s, idx) => (
+                      <div
+                        key={s.id || idx}
+                        className="p-2 rounded bg-gray-50 border border-gray-200 text-xs flex flex-col gap-1"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-gray-800">
+                            #{idx + 1}: "{s.phrasedText}"
+                          </span>
+                          <span className="text-[10px] font-mono text-gray-500">
+                            {new Date(s.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                        <div className="text-[10px] font-mono text-gray-500 truncate">
+                          Tokens: {s.rawTokens.map(t => t.word).join(" → ")}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="text-[11px] text-gray-600 bg-gray-50 p-2.5 rounded border border-gray-200 flex items-start gap-2">
                 <Lock className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
                 <p>
-                  <strong>Session Record:</strong> All officer confirmations and ISL translation logs are recorded in the workstation audit log.
+                  <strong>Session Record:</strong> All officer confirmations, ISL translation logs, and liveness telemetry are securely hashed and stored in the workstation audit log.
                 </p>
               </div>
             </>

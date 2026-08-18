@@ -43,6 +43,7 @@ export interface SessionData {
   recordingDuration: string;
   livenessCode: string;
   confidenceAverage: number;
+  conversationHistory?: PhrasedSentence[];
 }
 
 export interface Customer {
@@ -52,3 +53,22 @@ export interface Customer {
   address: string;
   dob: string;
 }
+
+// ─── Sentence Formation Types ────────────────────────────────────────
+
+export interface SentenceToken {
+  word: string;          // The DTW-recognized gesture name (e.g., "hi", "my", "name", "r", "a", "m")
+  confidence: number;    // DTW confidence at time of recognition (0-100)
+  timestamp: number;     // Date.now() when recognized
+}
+
+export interface PhrasedSentence {
+  id: string;                              // Unique ID (timestamp-based)
+  rawTokens: SentenceToken[];              // Original DTW outputs in signing order
+  phrasedText: string;                     // Gemini's reconstructed sentence
+  corrections: string[];                   // List of inferences/corrections Gemini made
+  timestamp: number;                       // When the phrased result was received
+  status: 'pending' | 'done' | 'error';   // Processing status
+}
+
+export type SentenceEngineState = 'IDLE' | 'ACCUMULATING' | 'DISPATCHING' | 'WAITING_RESPONSE';

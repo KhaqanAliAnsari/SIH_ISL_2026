@@ -13,6 +13,13 @@ import { AuditModal } from "./components/AuditModal";
 import { EditFieldModal } from "./components/EditFieldModal";
 import { InterpreterModal } from "./components/InterpreterModal";
 import { CustomerSideModal } from "./components/CustomerSideModal";
+import { PhrasedSentenceStrip } from "./components/PhrasedSentenceStrip";
+import {
+  initSentenceEngine,
+  pushGesture,
+  getEngineState,
+  getCurrentTokens
+} from "./lib/sentenceEngine";
 import {
   SessionStatus,
   DemoState,
@@ -20,6 +27,9 @@ import {
   ProgressStep,
   SessionData,
   Customer,
+  SentenceEngineState,
+  SentenceToken,
+  PhrasedSentence,
 } from "./types";
 import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
@@ -31,6 +41,19 @@ export default function App() {
   const [customerData, setCustomerData] = useState<Customer | null>(null);
   const [pendingFullName, setPendingFullName] = useState('');
   const [pendingAadhaar, setPendingAadhaar] = useState('');
+
+  // Sentence Engine State
+  const [sentenceState, setSentenceState] = useState<SentenceEngineState>('IDLE');
+  const [currentTokens, setCurrentTokens] = useState<SentenceToken[]>([]);
+  const [phrasedQueue, setPhrasedQueue] = useState<PhrasedSentence[]>([]);
+  const [fullConversationLog, setFullConversationLog] = useState<PhrasedSentence[]>(() => {
+    try {
+      const saved = localStorage.getItem("signkyc_session_conversation_log");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
   // Demo State switcher
   const [demoState, setDemoState] = useState<DemoState>("normal_recognition");
@@ -184,6 +207,51 @@ export default function App() {
       );
     }
   }, [customerData]);
+
+  // Init Sentence Engine
+  useEffect(() => {
+    initSentenceEngine({
+      onStateChange: (state) => setSentenceState(state),
+      onTokensChange: (tokens) => setCurrentTokens(tokens),
+      onSentenceComplete: (sentence) => {
+        // 1. Update Full Conversation Log (all sentences preserved)
+        setFullConversationLog((prev) => {
+          const existingIdx = prev.findIndex(s => s.id === sentence.id);
+          let newFull = [...prev];
+          if (existingIdx >= 0) {
+            newFull[existingIdx] = sentence;
+          } else {
+            newFull.push(sentence);
+          }
+          try {
+            localStorage.setItem("signkyc_session_conversation_log", JSON.stringify(newFull));
+          } catch (e) {
+            console.warn("Could not save conversation log to localStorage:", e);
+          }
+          return newFull;
+        });
+
+        // 2. Update Active On-Screen Queue (capped at 5 visible sentences max)
+        setPhrasedQueue((prev) => {
+          const existingIdx = prev.findIndex(s => s.id === sentence.id);
+          let newQueue = [...prev];
+          
+          if (existingIdx >= 0) {
+            newQueue[existingIdx] = sentence;
+          } else {
+            newQueue.push(sentence);
+          }
+
+          // Keep only the last 5 sentences in the active queue
+          if (newQueue.length > 5) {
+            newQueue = newQueue.slice(newQueue.length - 5);
+          }
+          return newQueue;
+        });
+      },
+      onError: (err) => console.error("Sentence engine error:", err)
+    });
+  }, []);
 
   // Recording timer
   useEffect(() => {
@@ -379,10 +447,14 @@ export default function App() {
   // DTW Gesture Recognition Handler
   const handleGestureRecognized = useCallback(
     (gesture: string, distance: number, confidence: number) => {
+      // 1. Keep existing live caption behavior
       setLiveCaptionText(
         `RECOGNIZED ISL GESTURE: "${gesture.toUpperCase()}" (DTW: ${distance.toFixed(1)})`
       );
       setConfidenceScore(confidence);
+      
+      // 2. Feed to sentence engine
+      pushGesture(gesture, confidence);
     },
     []
   );
@@ -400,6 +472,7 @@ export default function App() {
     recordingDuration: formatDuration(recordingSeconds),
     livenessCode,
     confidenceAverage: confidenceScore,
+    conversationHistory: fullConversationLog,
   };
 
   if (currentView === 'login') {
@@ -459,6 +532,8 @@ export default function App() {
             steps[currentStepIndex]?.label || "Identity Verification"
           }
           onGestureRecognized={handleGestureRecognized}
+          currentSentenceTokens={currentTokens}
+          sentenceEngineState={sentenceState}
         />
 
         <AIAssistPanel
@@ -474,6 +549,13 @@ export default function App() {
           livenessCode={livenessCode}
         />
       </main>
+
+      {/* 2.5 Phrased Sentence History Strip (Queue size 5 + Full Log modal) */}
+      <PhrasedSentenceStrip 
+        sentences={phrasedQueue}
+        fullHistory={fullConversationLog}
+        isAccumulating={sentenceState === "ACCUMULATING"} 
+      />
 
       {/* 3. KYC Progress Strip */}
       <KYCProgressStrip

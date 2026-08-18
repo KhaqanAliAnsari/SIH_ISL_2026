@@ -7,6 +7,13 @@ async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
+  // Enable Cross-Origin Isolation for SharedArrayBuffer (WASM multithreading)
+  app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    next();
+  });
+
   // Mount the extracted API routes
   app.use(apiApp);
 
