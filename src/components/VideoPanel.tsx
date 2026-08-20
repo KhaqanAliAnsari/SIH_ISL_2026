@@ -9,6 +9,7 @@ import {
   RefreshCw,
   Eye,
   Zap,
+  Settings,
 } from "lucide-react";
 import { DemoState, SentenceToken, SentenceEngineState } from "../types";
 import {
@@ -35,6 +36,7 @@ import {
   setStopGestureName,
   manualDispatch,
 } from "../lib/sentenceEngine";
+
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
 interface VideoPanelProps {
@@ -80,6 +82,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const [bufferFill, setBufferFill] = useState(0);
   const [activeStopGesture, setActiveStopGesture] = useState<string>(getStopGestureName());
   const [showStopConfig, setShowStopConfig] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -92,6 +95,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const bufferFillRef = useRef(0);
   const lastUiFlushRef = useRef(0);
 
+  const dtwCooldown = useRef(0);
+
   // ─── Initialize MediaPipe + Load Templates ────────────────────────
   const initModel = useCallback(async () => {
     if (modelReady || modelLoading) return;
@@ -99,9 +104,9 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
     try {
       await initHolisticLandmarker();
       setModelReady(true);
-      console.log("[VideoPanel] HolisticLandmarker initialized");
+      console.log("[VideoPanel] Models initialized");
     } catch (err) {
-      console.error("[VideoPanel] Failed to init HolisticLandmarker:", err);
+      console.error("[VideoPanel] Failed to init models:", err);
     }
     setModelLoading(false);
   }, [modelReady, modelLoading]);
@@ -326,15 +331,21 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       drawLandmarks(ctx, result, canvas.width, canvas.height);
 
       // 4. Push to DTW buffer and attempt match
+      if (dtwCooldown.current > 0) dtwCooldown.current--;
+
       if (detected) {
         pushFrame(featureVec);
         bufferFillRef.current = getBufferFill();
 
-        const result = matchGesture();
-        if (result.gesture) {
-          setLastMatch(result);
-          onGestureRecognized?.(result.gesture, result.distance, result.confidence);
+        const match = matchGesture();
+        let dtwMatched = false;
+        if (match.gesture) {
+          setLastMatch(match);
+          dtwCooldown.current = 45; // 1.5 seconds cooldown at ~30fps
+          dtwMatched = true;
+          onGestureRecognized?.(match.gesture, match.distance, match.confidence);
         }
+
       } else {
         bufferFillRef.current = getBufferFill();
         // Clear canvas when no mesh and no hand
@@ -487,15 +498,6 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       const pad = 12;
       ctx.strokeRect(minX - pad, minY - pad, (maxX - minX) + pad * 2, (maxY - minY) + pad * 2);
 
-      ctx.font = "10px monospace";
-      ctx.fillText(
-        demoState === "low_confidence_or_escalated"
-          ? "Holistic [62% Match]"
-          : `Holistic [X:${Math.round(minX - pad)} Y:${Math.round(minY - pad)}]`,
-        minX - pad - 5,
-        minY - pad - 6
-      );
-
       animId = requestAnimationFrame(renderFakeLandmarks);
     };
 
@@ -521,13 +523,9 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 bg-red-50 border border-red-300 px-2 py-0.5 rounded text-red-700 font-mono text-xs font-bold">
             <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
-            <span>REC</span>
-            <span>{recordingDuration}</span>
-          </div>
-
-          <div className="hidden sm:flex items-center gap-1 text-xs text-gray-700 font-mono font-semibold">
-            <Radio className="w-3.5 h-3.5 text-green-600" />
-            <span>1080p • 30 FPS Feed</span>
+            <span>REC {recordingDuration}</span>
+            <span className="text-red-300 mx-1">|</span>
+            <span className="text-[10px]">1080p 30FPS</span>
           </div>
 
           {/* Model Status Indicator */}
@@ -548,7 +546,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           {/* STOP Gesture Config Badge/Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowStopConfig(!showStopConfig)}
+              onClick={() => {
+                setShowStopConfig(!showStopConfig);
+                setShowSettings(false);
+              }}
               className="px-2 py-1 rounded text-xs font-mono border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-900 flex items-center gap-1 transition-colors"
               title="Configure which sign acts as the sentence STOP delimiter"
             >
@@ -617,29 +618,46 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
             )}
           </div>
 
-          <button
-            onClick={() => setShowMesh(!showMesh)}
-            className={`px-2 py-1 rounded text-xs font-medium border flex items-center gap-1 transition-colors ${
-              showMesh
-                ? "bg-gray-100 border-gray-300 text-gray-900 font-bold"
-                : "bg-white border-gray-200 text-gray-500 hover:text-gray-800"
-            }`}
-          >
-            <Activity className="w-3.5 h-3.5" />
-            <span>{showMesh ? "Landmarks On" : "Landmarks Off"}</span>
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => {
+                setShowSettings(!showSettings);
+                setShowStopConfig(false);
+              }}
+              className="p-1.5 rounded text-gray-600 hover:bg-gray-100 border border-transparent transition-colors"
+              title="Camera Settings"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
 
-          <button
-            onClick={toggleWebcam}
-            className={`px-2.5 py-1 rounded text-xs font-medium border flex items-center gap-1 transition-colors ${
-              useWebcam
-                ? "bg-green-50 border-green-400 text-green-800 font-bold"
-                : "border-gray-300 bg-white hover:bg-gray-100 text-gray-800"
-            }`}
-          >
-            <Camera className="w-3.5 h-3.5" />
-            <span>{useWebcam ? "Webcam Active" : "Use Camera"}</span>
-          </button>
+            {showSettings && (
+              <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-300 rounded-lg shadow-xl p-2 z-50 flex flex-col gap-2">
+                <button
+                  onClick={() => setShowMesh(!showMesh)}
+                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${
+                    showMesh
+                      ? "bg-gray-100 border-gray-300 text-gray-900"
+                      : "bg-white border-gray-200 text-gray-500 hover:text-gray-800"
+                  }`}
+                >
+                  <Activity className="w-3.5 h-3.5" />
+                  <span>{showMesh ? "Landmarks On" : "Landmarks Off"}</span>
+                </button>
+
+                <button
+                  onClick={toggleWebcam}
+                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${
+                    useWebcam
+                      ? "bg-green-50 border-green-400 text-green-800"
+                      : "border-gray-300 bg-white hover:bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>{useWebcam ? "Webcam Active" : "Use Camera"}</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -654,15 +672,9 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           style={{ transform: "scaleX(-1)" }}
         />
         {!useWebcam && (
-          <div className="relative w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-800">
-            <div className="w-28 h-28 rounded-full bg-white border border-gray-300 flex items-center justify-center mb-3">
-              <User className="w-14 h-14 text-gray-600" />
-            </div>
-            <p className="font-bold text-base text-gray-900">{customerName}</p>
-            <p className="text-xs font-mono text-gray-600 mt-0.5">
-              Aadhaar: {customerAadhaar}
-            </p>
-            <p className="text-[10px] text-gray-700 uppercase tracking-wider font-mono mt-2 bg-white px-2 py-0.5 rounded border border-gray-300 font-bold">
+          <div className="relative w-full h-full flex items-center justify-center bg-gray-100 text-gray-800">
+            <User className="w-16 h-16 text-gray-300 absolute" />
+            <p className="z-10 text-[10px] text-gray-500 uppercase tracking-wider font-mono bg-white/80 px-2 py-0.5 rounded border border-gray-200 font-bold backdrop-blur-sm">
               Live WebRTC Stream — Customer View
             </p>
           </div>

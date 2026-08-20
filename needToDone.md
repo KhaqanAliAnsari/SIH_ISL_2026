@@ -1,5 +1,15 @@
 # SignKYC — Need To Be Done
 
+> [!WARNING]
+> **CURRENT STATE (August 19, 2026): MLP Model Training Interrupted**
+> We are in the middle of training the MLP classifier for static alphabet/digit poses.
+> - **Frontend:** Wired up! `mlpEngine.ts` is fully integrated into `VideoPanel.tsx`. 
+> - **Backend Scripts:** `preprocess_static.py`, `train_static_mlp.py`, and `train_static_mlp.bat` are written.
+> - **Pending Action:** The offline feature extraction (`python preprocess_static.py` in `isl_dtw/`) was stopped midway because the dataset has ~14,000+ images and takes ~2.5 hours on CPU. To continue, you must:
+>   1. Re-run `train_static_mlp.bat` (or manually run `preprocess_static.py` then `train_static_mlp.py`).
+>   2. Wait for the `tfjs_model` to be exported and copied to `/public/tfjs_model/`.
+>   3. Verify functionality on the frontend.
+
 ## Current Status & Completed Items
 What's genuinely built and working:
 - **Full UI component set:** Every screen matches the design spec (Video panel, AI assist panel, KYC progress strip, footer, audit/edit/interpreter/customer-view modals).

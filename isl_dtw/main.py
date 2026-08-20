@@ -291,9 +291,13 @@ def main():
                 min_distance = float("inf")
                 current_scores = {}
 
+                # Predefine fast distance function for fastdtw
+                def fast_euclidean(u, v):
+                    return np.linalg.norm(u - v)
+
                 for gesture_name, template_sequence in templates.items():
-                    # Calculate FastDTW using Euclidean distance
-                    dist, _ = fastdtw(current_sequence, template_sequence, dist=euclidean)
+                    # Calculate FastDTW using optimized Euclidean distance
+                    dist, _ = fastdtw(current_sequence, template_sequence, dist=fast_euclidean)
                     current_scores[gesture_name] = dist
 
                     if dist < min_distance:

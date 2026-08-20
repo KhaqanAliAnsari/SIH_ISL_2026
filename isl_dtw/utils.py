@@ -42,7 +42,7 @@ def init_holistic(
     """
     return mp_holistic.Holistic(
         static_image_mode=False,
-        model_complexity=1,
+        model_complexity=0,
         min_detection_confidence=min_detection_confidence,
         min_tracking_confidence=min_tracking_confidence,
     )
