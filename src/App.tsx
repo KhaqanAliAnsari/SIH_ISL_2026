@@ -13,6 +13,18 @@ import { AuditModal } from "./components/AuditModal";
 import { EditFieldModal } from "./components/EditFieldModal";
 import { InterpreterModal } from "./components/InterpreterModal";
 import { CustomerSideModal } from "./components/CustomerSideModal";
+<<<<<<< Updated upstream
+=======
+import { PhrasedSentenceStrip } from "./components/PhrasedSentenceStrip";
+import {
+  initSentenceEngine,
+  pushGesture,
+  getEngineState,
+  getCurrentTokens
+} from "./lib/sentenceEngine";
+import { initHolisticLandmarker } from "./lib/holisticLandmarker";
+import { loadTemplates } from "./lib/dtwEngine";
+>>>>>>> Stashed changes
 import {
   SessionStatus,
   DemoState,
@@ -185,6 +197,60 @@ export default function App() {
     }
   }, [customerData]);
 
+<<<<<<< Updated upstream
+=======
+  // Eagerly load MediaPipe and DTW templates globally on app start
+  useEffect(() => {
+    initHolisticLandmarker().catch(err => console.error("Global init model error:", err));
+    loadTemplates().catch(err => console.error("Global init templates error:", err));
+  }, []);
+
+  // Init Sentence Engine
+  useEffect(() => {
+    initSentenceEngine({
+      onStateChange: (state) => setSentenceState(state),
+      onTokensChange: (tokens) => setCurrentTokens(tokens),
+      onSentenceComplete: (sentence) => {
+        // 1. Update Full Conversation Log (all sentences preserved)
+        setFullConversationLog((prev) => {
+          const existingIdx = prev.findIndex(s => s.id === sentence.id);
+          let newFull = [...prev];
+          if (existingIdx >= 0) {
+            newFull[existingIdx] = sentence;
+          } else {
+            newFull.push(sentence);
+          }
+          try {
+            localStorage.setItem("signkyc_session_conversation_log", JSON.stringify(newFull));
+          } catch (e) {
+            console.warn("Could not save conversation log to localStorage:", e);
+          }
+          return newFull;
+        });
+
+        // 2. Update Active On-Screen Queue (capped at 5 visible sentences max)
+        setPhrasedQueue((prev) => {
+          const existingIdx = prev.findIndex(s => s.id === sentence.id);
+          let newQueue = [...prev];
+          
+          if (existingIdx >= 0) {
+            newQueue[existingIdx] = sentence;
+          } else {
+            newQueue.push(sentence);
+          }
+
+          // Keep only the last 5 sentences in the active queue
+          if (newQueue.length > 5) {
+            newQueue = newQueue.slice(newQueue.length - 5);
+          }
+          return newQueue;
+        });
+      },
+      onError: (err) => console.error("Sentence engine error:", err)
+    });
+  }, []);
+
+>>>>>>> Stashed changes
   // Recording timer
   useEffect(() => {
     const timer = setInterval(() => {

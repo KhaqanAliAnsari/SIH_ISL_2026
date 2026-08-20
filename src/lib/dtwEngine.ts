@@ -289,20 +289,25 @@ export function matchGesture(): MatchResult {
 
   // Threshold gate
   if (bestGesture !== null && minDistance < threshold) {
-    result.gesture = bestGesture;
     // Convert distance to confidence: 0 distance = 100%, threshold distance = 50%
-    result.confidence = Math.max(
+    const calculatedConfidence = Math.max(
       0,
       Math.min(100, Math.round(100 - (minDistance / threshold) * 50))
     );
 
-    // Duplicate suppression: clear buffer after recognition
-    clearBuffer();
-    lastRecognitionTime = now;
+    // Enforce strict 90% confidence minimum
+    if (calculatedConfidence >= 90) {
+      result.gesture = bestGesture;
+      result.confidence = calculatedConfidence;
 
-    console.log(
-      `[DTW] RECOGNIZED: '${bestGesture}' | Distance: ${minDistance.toFixed(2)} | Confidence: ${result.confidence}%`
-    );
+      // Duplicate suppression: clear buffer after recognition
+      clearBuffer();
+      lastRecognitionTime = now;
+
+      console.log(
+        `[DTW] RECOGNIZED: '${bestGesture}' | Distance: ${minDistance.toFixed(2)} | Confidence: ${result.confidence}%`
+      );
+    }
   }
 
   return result;

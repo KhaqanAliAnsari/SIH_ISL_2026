@@ -13,13 +13,13 @@ html, body, #root {
     height: 6px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(24, 24, 27, 0.6); /* zinc-900 */
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(51, 65, 85, 0.8);
+    background: rgba(63, 63, 70, 0.8); /* zinc-700 */
     border-radius: 9999px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(71, 85, 105, 1);
+    background: rgba(82, 82, 91, 1); /* zinc-600 */
   }
 }
