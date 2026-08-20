@@ -52,17 +52,13 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
           {steps.map((step, idx) => {
             const isSelected = idx === currentStepIndex;
 
-<<<<<<< Updated upstream
-            let badge = <span className="w-2 h-2 rounded-full bg-gray-400"></span>;
-            let cardStyle = "bg-white border-gray-200 text-gray-600";
-=======
             if (isSelected) {
               // Current Step (Full Treatment)
               let badge = <Loader2 className="w-3.5 h-3.5 text-sky-400 animate-spin" />;
               let cardStyle = "bg-sky-500/10 border-sky-400 text-sky-400";
               
               if (step.status === "confirmed") {
-                badge = <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />;
+                badge = <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />;
                 cardStyle = "bg-zinc-900 border-sky-400 text-white";
               } else if (step.status === "needs_review") {
                 badge = <AlertTriangle className="w-3.5 h-3.5 text-zinc-300" />;
@@ -71,46 +67,34 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
                 badge = <span className="w-2 h-2 rounded-full bg-zinc-500"></span>;
                 cardStyle = "bg-zinc-950 border-zinc-700 text-zinc-400";
               }
->>>>>>> Stashed changes
 
-            if (step.status === "confirmed") {
-              badge = <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />;
-              cardStyle = isSelected
-                ? "bg-green-50 border-green-600 text-gray-900 font-bold"
-                : "bg-white border-gray-300 text-gray-800";
-            } else if (step.status === "in_progress") {
-              badge = <Loader2 className="w-3.5 h-3.5 text-blue-600 animate-spin" />;
-              cardStyle = isSelected
-                ? "bg-blue-50 border-blue-600 text-blue-900 font-bold"
-                : "bg-white border-gray-300 text-gray-700";
-            } else if (step.status === "needs_review") {
-              badge = <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />;
-              cardStyle = isSelected
-                ? "bg-amber-50 border-amber-600 text-amber-900 font-bold"
-                : "bg-white border-gray-300 text-amber-800";
-            } else if (isSelected) {
-              cardStyle = "bg-gray-100 border-gray-400 text-gray-900 font-bold";
+              return (
+                <button
+                  key={step.id}
+                  onClick={() => onSelectStep(idx)}
+                  className={`min-w-[160px] p-2 rounded-lg border-2 text-left transition-colors flex flex-col justify-between cursor-pointer shadow-sm shrink-0 ${cardStyle}`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-mono font-bold uppercase opacity-70">
+                      Step {idx + 1}
+                    </span>
+                    {badge}
+                  </div>
+                  <div className="text-xs font-bold truncate">{step.label}</div>
+                  <div className="text-[10px] opacity-75 truncate mt-0.5">
+                    {step.description}
+                  </div>
+                </button>
+              );
             }
 
+            // Minimal Treatment (Completed or Future)
+            const isCompleted = step.status === "confirmed";
+            
             return (
               <button
                 key={step.id}
                 onClick={() => onSelectStep(idx)}
-<<<<<<< Updated upstream
-                className={`p-2 rounded border text-left transition-colors flex flex-col justify-between cursor-pointer ${cardStyle}`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] font-mono font-bold uppercase text-gray-500">
-                    Step {idx + 1}
-                  </span>
-                  {badge}
-                </div>
-
-                <div className="text-xs font-bold truncate">{step.label}</div>
-
-                <div className="text-[10px] text-gray-500 truncate mt-0.5">
-                  {step.description}
-=======
                 className={`min-w-[120px] px-3 py-2 rounded-lg border text-left transition-colors flex items-center gap-2 cursor-pointer shrink-0 ${
                   isCompleted
                     ? "bg-zinc-950 border-zinc-500 hover:bg-zinc-900"
@@ -118,13 +102,12 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
                 }`}
               >
                 {isCompleted ? (
-                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
                 ) : (
                   <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 shrink-0 ml-1"></span>
                 )}
                 <div className={`text-xs truncate ${isCompleted ? "font-semibold text-white" : "font-medium text-zinc-500"}`}>
                   {step.label}
->>>>>>> Stashed changes
                 </div>
               </button>
             );

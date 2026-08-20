@@ -13,18 +13,8 @@ import { AuditModal } from "./components/AuditModal";
 import { EditFieldModal } from "./components/EditFieldModal";
 import { InterpreterModal } from "./components/InterpreterModal";
 import { CustomerSideModal } from "./components/CustomerSideModal";
-<<<<<<< Updated upstream
-=======
-import { PhrasedSentenceStrip } from "./components/PhrasedSentenceStrip";
-import {
-  initSentenceEngine,
-  pushGesture,
-  getEngineState,
-  getCurrentTokens
-} from "./lib/sentenceEngine";
 import { initHolisticLandmarker } from "./lib/holisticLandmarker";
 import { loadTemplates } from "./lib/dtwEngine";
->>>>>>> Stashed changes
 import {
   SessionStatus,
   DemoState,
@@ -35,6 +25,12 @@ import {
 } from "./types";
 import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
+import { 
+  initSentenceEngine, 
+  pushGesture, 
+  resetEngine, 
+  manualDispatch 
+} from "./lib/sentenceEngine";
 
 type AppView = 'login' | 'register' | 'console';
 
@@ -197,60 +193,45 @@ export default function App() {
     }
   }, [customerData]);
 
-<<<<<<< Updated upstream
-=======
-  // Eagerly load MediaPipe and DTW templates globally on app start
+  // Eagerly load MediaPipe and DTW templates globally on app start, but defer slightly
+  // to prevent the heavy WASM compilation from freezing the initial page render.
   useEffect(() => {
-    initHolisticLandmarker().catch(err => console.error("Global init model error:", err));
-    loadTemplates().catch(err => console.error("Global init templates error:", err));
-  }, []);
+    const initTimer = setTimeout(() => {
+      initHolisticLandmarker().catch(err => console.error("Global init model error:", err));
+      loadTemplates().catch(err => console.error("Global init templates error:", err));
+    }, 500);
 
-  // Init Sentence Engine
-  useEffect(() => {
+    // Initialize sentence engine for compound fields
     initSentenceEngine({
-      onStateChange: (state) => setSentenceState(state),
-      onTokensChange: (tokens) => setCurrentTokens(tokens),
-      onSentenceComplete: (sentence) => {
-        // 1. Update Full Conversation Log (all sentences preserved)
-        setFullConversationLog((prev) => {
-          const existingIdx = prev.findIndex(s => s.id === sentence.id);
-          let newFull = [...prev];
-          if (existingIdx >= 0) {
-            newFull[existingIdx] = sentence;
-          } else {
-            newFull.push(sentence);
-          }
-          try {
-            localStorage.setItem("signkyc_session_conversation_log", JSON.stringify(newFull));
-          } catch (e) {
-            console.warn("Could not save conversation log to localStorage:", e);
-          }
-          return newFull;
-        });
-
-        // 2. Update Active On-Screen Queue (capped at 5 visible sentences max)
-        setPhrasedQueue((prev) => {
-          const existingIdx = prev.findIndex(s => s.id === sentence.id);
-          let newQueue = [...prev];
-          
-          if (existingIdx >= 0) {
-            newQueue[existingIdx] = sentence;
-          } else {
-            newQueue.push(sentence);
-          }
-
-          // Keep only the last 5 sentences in the active queue
-          if (newQueue.length > 5) {
-            newQueue = newQueue.slice(newQueue.length - 5);
-          }
-          return newQueue;
-        });
+      onStateChange: (state) => {
+        if (state === "WAITING_RESPONSE") {
+          setLiveCaptionText("TRANSLATING TO ENGLISH VIA GEMINI...");
+        } else if (state === "IDLE") {
+          // Reset when done
+        }
       },
-      onError: (err) => console.error("Sentence engine error:", err)
+      onTokensChange: (tokens) => {
+        if (tokens.length > 0) {
+          // Step 4: Immediate raw-token display
+          setLiveCaptionText(`[ISL TOKENS] ${tokens.map(t => t.word.toUpperCase()).join(" ")}`);
+        }
+      },
+      onSentenceComplete: (sentence) => {
+        if (sentence.status === "done") {
+          setLiveCaptionText(`[GEMINI NLP] ${sentence.phrasedText}`);
+          // Auto-fill the address field (id: "3") with the phrased text
+          setFields((prev) =>
+            prev.map((f) => (f.id === "3" ? { ...f, aiValue: sentence.phrasedText } : f))
+          );
+        } else if (sentence.status === "error") {
+          setLiveCaptionText(`[NLP ERROR] ${sentence.phrasedText}`);
+        }
+      },
+      onError: (err) => console.error("Sentence Engine:", err),
     });
   }, []);
 
->>>>>>> Stashed changes
+
   // Recording timer
   useEffect(() => {
     const timer = setInterval(() => {
@@ -445,12 +426,39 @@ export default function App() {
   // DTW Gesture Recognition Handler
   const handleGestureRecognized = useCallback(
     (gesture: string, distance: number, confidence: number) => {
-      setLiveCaptionText(
-        `RECOGNIZED ISL GESTURE: "${gesture.toUpperCase()}" (DTW: ${distance.toFixed(1)})`
-      );
       setConfidenceScore(confidence);
+      
+      const activeF = fields.find((f) => !f.isConfirmed && f.stepIndex === currentStepIndex) || fields.find((f) => !f.isConfirmed);
+
+      // Step 4: Gate Gemini calls to compound fields only (e.g. "Address" which is id "3")
+      if (activeF && activeF.id === "3") {
+        // Send to sentence engine (accumulates and eventually hits Gemini)
+        pushGesture(gesture, confidence);
+      } else {
+        // Bypass Gemini: Simple raw-token concatenation for Liveness Code, DOB, etc.
+        setLiveCaptionText((prev) => {
+          if (prev.includes("REPEATING") || prev.includes("RECOGNIZED") || prev.includes("TRANSLATING")) {
+             return `[RAW] ${gesture.toUpperCase()}`;
+          }
+          return `${prev} ${gesture.toUpperCase()}`;
+        });
+
+        if (activeF) {
+          setFields((prev) =>
+            prev.map((f) => {
+              if (f.id === activeF.id) {
+                // For liveness code (id "5"), format with dashes
+                const append = f.id === "5" ? ` - ${gesture.toUpperCase()}` : ` ${gesture.toUpperCase()}`;
+                const baseValue = f.aiValue.includes("8 - 4") ? "" : f.aiValue; // clear placeholder
+                return { ...f, aiValue: baseValue ? `${baseValue}${append}` : gesture.toUpperCase() };
+              }
+              return f;
+            })
+          );
+        }
+      }
     },
-    []
+    [fields, currentStepIndex]
   );
 
   const currentSessionData: SessionData = {
@@ -495,7 +503,7 @@ export default function App() {
   }
 
   return (
-    <div className="w-full h-full min-h-screen font-sans flex flex-col bg-gray-50 text-gray-900 overflow-hidden select-none">
+    <div className="w-full h-full min-h-screen font-sans flex flex-col bg-zinc-950 text-zinc-300 overflow-hidden select-none">
       {/* 1. Header Bar */}
       <HeaderBar
         status={status}

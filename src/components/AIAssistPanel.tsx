@@ -104,27 +104,20 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
           </p>
         </div>
 
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white text-gray-700 border border-gray-300 font-semibold">
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-700 font-semibold">
           NLU Protocol Active
         </span>
       </div>
 
       {/* Main Content Body */}
       <div className="flex-1 overflow-y-auto p-3.5 space-y-3.5 custom-scrollbar">
-<<<<<<< Updated upstream
-        {/* 1. LIVE CAPTION BOX (Trust-critical exception: sits larger/heavier than standard text) */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">
-=======
         {/* 1. LIVE CAPTION BOX */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
-          <div className="mb-1.5">
+          <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs font-bold text-white uppercase tracking-wider">
->>>>>>> Stashed changes
               Live Customer ISL Translation
             </span>
-            <span className="text-[10px] text-gray-500 font-mono">
+            <span className="text-[10px] text-zinc-500 font-mono">
               Latency: 110ms
             </span>
           </div>
@@ -132,14 +125,11 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
           <div className="bg-zinc-950 border border-zinc-800 rounded p-3 text-sm font-bold text-white leading-snug">
             "{liveCaptionText}"
           </div>
-<<<<<<< Updated upstream
 
-          <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 mt-1.5">
+          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mt-1.5">
             <span>ISL Syntax: Subject-Object-Verb Structure</span>
-            <span className="text-green-700 font-bold">Verified</span>
+            <span className="text-sky-400 font-bold">Verified</span>
           </div>
-=======
->>>>>>> Stashed changes
         </div>
 
         {/* 2. CONFIDENCE METER */}

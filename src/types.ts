@@ -52,3 +52,20 @@ export interface Customer {
   address: string;
   dob: string;
 }
+
+export type SentenceEngineState = "IDLE" | "ACCUMULATING" | "DISPATCHING" | "WAITING_RESPONSE";
+
+export interface SentenceToken {
+  word: string;
+  confidence: number;
+  timestamp: number;
+}
+
+export interface PhrasedSentence {
+  id: string;
+  rawTokens: SentenceToken[];
+  phrasedText: string;
+  corrections: string[];
+  timestamp: number;
+  status: "pending" | "done" | "error";
+}

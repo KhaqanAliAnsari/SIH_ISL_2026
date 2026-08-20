@@ -189,42 +189,8 @@ export const AuditModal: React.FC<AuditModalProps> = ({
                 </div>
               </div>
 
-<<<<<<< Updated upstream
-              <div className="text-[11px] text-gray-600 bg-gray-50 p-2.5 rounded border border-gray-200 flex items-start gap-2">
-                <Lock className="w-4 h-4 text-gray-500 shrink-0 mt-0.5" />
-=======
-              {/* ISL Conversation Log */}
-              {sessionData.conversationHistory && sessionData.conversationHistory.length > 0 && (
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">
-                    ISL Translation Telemetry &amp; Signed Sentences ({sessionData.conversationHistory.length})
-                  </h4>
-                  <div className="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
-                    {sessionData.conversationHistory.map((s, idx) => (
-                      <div
-                        key={s.id || idx}
-                        className="p-2 rounded bg-zinc-900 border border-zinc-800 text-xs flex flex-col gap-1"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-white">
-                            #{idx + 1}: "{s.phrasedText}"
-                          </span>
-                          <span className="text-[10px] font-mono text-zinc-500">
-                            {new Date(s.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </div>
-                        <div className="text-[10px] font-mono text-zinc-500 truncate">
-                          Tokens: {s.rawTokens.map(t => t.word).join(" → ")}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="text-[11px] text-zinc-400 bg-zinc-900 p-2.5 rounded border border-zinc-800 flex items-start gap-2">
                 <Lock className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
->>>>>>> Stashed changes
                 <p>
                   <strong>Session Record:</strong> All officer confirmations and ISL translation logs are recorded in the workstation audit log.
                 </p>

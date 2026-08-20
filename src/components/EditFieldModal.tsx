@@ -27,15 +27,15 @@ export const EditFieldModal: React.FC<EditFieldModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-none flex items-center justify-center p-4">
-      <div className="bg-white border border-gray-300 rounded-lg max-w-md w-full text-gray-900 shadow-none overflow-hidden">
-        <div className="p-4 bg-gray-100 text-gray-900 border-b border-gray-200 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-gray-800">
+      <div className="bg-zinc-950 border border-zinc-800 rounded-lg max-w-md w-full text-white shadow-none overflow-hidden">
+        <div className="p-4 bg-zinc-900 text-white border-b border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-zinc-300">
             <Edit3 className="w-4 h-4 text-gray-600" />
             <span>Manual Override — {field.label}</span>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-gray-500 hover:text-gray-900 hover:bg-gray-200 transition-colors"
+            className="p-1 rounded text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -44,32 +44,32 @@ export const EditFieldModal: React.FC<EditFieldModalProps> = ({
         <div className="p-5 space-y-4">
           <div className="text-xs text-gray-600">
             Original AI Suggestion:{" "}
-            <span className="font-mono text-gray-900 font-bold">
+            <span className="font-mono text-white font-bold">
               {field.aiValue}
             </span>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-800 mb-1">
+            <label className="block text-xs font-bold text-zinc-300 mb-1">
               Official Approved Record Value:
             </label>
             <input
               type="text"
               value={val}
               onChange={(e) => setVal(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-300 rounded p-2.5 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-500 font-semibold"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded p-2.5 text-xs font-mono text-white focus:outline-none focus:border-zinc-500 font-semibold"
             />
           </div>
 
-          <p className="text-[11px] text-gray-500 italic">
+          <p className="text-[11px] text-zinc-500 italic">
             Note: Manual edits are logged with your official employee signature in the V-CIP audit trail.
           </p>
         </div>
 
-        <div className="p-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+        <div className="p-4 bg-zinc-900 border-t border-zinc-800 flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3.5 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-100"
+            className="px-3.5 py-1.5 bg-zinc-950 border border-zinc-800 text-zinc-300 text-xs font-medium rounded hover:bg-zinc-900"
           >
             Cancel
           </button>

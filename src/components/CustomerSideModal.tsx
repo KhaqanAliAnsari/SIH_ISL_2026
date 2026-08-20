@@ -34,30 +34,30 @@ export const CustomerSideModal: React.FC<CustomerSideModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-none flex items-center justify-center p-4">
-      <div className="bg-white border border-gray-300 rounded-lg max-w-xl w-full text-gray-900 shadow-none overflow-hidden flex flex-col">
+      <div className="bg-zinc-950 border border-zinc-800 rounded-lg max-w-xl w-full text-white shadow-none overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="p-3 bg-gray-100 border-b border-gray-200 flex items-center justify-between text-xs font-mono">
-          <div className="flex items-center gap-2 text-gray-800">
+        <div className="p-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between text-xs font-mono">
+          <div className="flex items-center gap-2 text-zinc-300">
             <Video className="w-4 h-4 text-green-600" />
             <span className="font-bold">CUSTOMER CALL VIEW (SIMULATION)</span>
-            <span className="text-gray-500">• Plain Video Session</span>
+            <span className="text-zinc-500">• Plain Video Session</span>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-200 rounded text-gray-500 hover:text-gray-900 transition-colors"
+            className="p-1 hover:bg-zinc-800 rounded text-zinc-500 hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Video Canvas Simulation */}
-        <div className="relative bg-gray-50 border-b border-gray-200 h-80 flex flex-col items-center justify-center p-4">
+        <div className="relative bg-zinc-900 border-b border-zinc-800 h-80 flex flex-col items-center justify-center p-4">
           {/* Plain customer feed */}
-          <div className="w-24 h-24 rounded-full bg-white border border-gray-300 flex items-center justify-center mb-3">
-            <User className="w-12 h-12 text-gray-600" />
+          <div className="w-24 h-24 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center mb-3">
+            <User className="w-12 h-12 text-zinc-400" />
           </div>
-          <p className="font-bold text-sm text-gray-900">{customerName}</p>
-          <p className="text-xs text-gray-500 font-mono mt-1">
+          <p className="font-bold text-sm text-white">{customerName}</p>
+          <p className="text-xs text-zinc-500 font-mono mt-1">
             Indus Apex Video Call Stream
           </p>
 
@@ -87,7 +87,7 @@ export const CustomerSideModal: React.FC<CustomerSideModalProps> = ({
 
           {/* LIVENESS CODE DISPLAY */}
           {isLivenessStep && (
-            <div className="absolute bottom-4 inset-x-6 bg-white border border-amber-500 p-3 rounded text-center z-20">
+            <div className="absolute bottom-4 inset-x-6 bg-zinc-950 border border-amber-500 p-3 rounded text-center z-20">
               <span className="text-[10px] font-mono uppercase tracking-widest text-amber-800 font-bold block mb-1">
                 LIVENESS VERIFICATION CODE — SIGN THESE DIGITS IN ORDER
               </span>
@@ -106,7 +106,7 @@ export const CustomerSideModal: React.FC<CustomerSideModalProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="p-3 bg-gray-50 border-t border-gray-200 text-[11px] text-gray-600 font-mono flex justify-between items-center">
+        <div className="p-3 bg-zinc-900 border-t border-zinc-800 text-[11px] text-zinc-400 font-mono flex justify-between items-center">
           <span>Customer Interface: Zero-AI Plain WebRTC Video</span>
           <span className="text-green-700 font-bold flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-green-600" /> End-to-End Encrypted

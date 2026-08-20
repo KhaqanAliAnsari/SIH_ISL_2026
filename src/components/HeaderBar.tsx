@@ -84,20 +84,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           )}
         </div>
 
-<<<<<<< Updated upstream
-        {/* Demo Preset Switcher for testing */}
-        <div className="hidden xl:flex items-center bg-gray-100 p-1 rounded border border-gray-200 text-xs gap-1">
-          <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono px-1.5 font-bold">
-            Demo State:
-          </span>
-          <button
-            onClick={() => onSelectDemoState("normal_recognition")}
-            className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
-              demoState === "normal_recognition"
-                ? "bg-white text-gray-900 font-bold border border-gray-300"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
-=======
         {/* Demo Preset Switcher for testing (De-emphasized) */}
         <div className="hidden xl:flex items-center gap-1.5 opacity-50 hover:opacity-100 transition-opacity">
           <select
@@ -105,40 +91,12 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             onChange={(e) => onSelectDemoState(e.target.value as DemoState)}
             className="text-[10px] bg-zinc-900 border border-zinc-800 text-zinc-400 rounded px-1 py-0.5 outline-none font-mono cursor-pointer"
             title="Demo State (Dev Mode)"
->>>>>>> Stashed changes
           >
-            1. Normal Field
-          </button>
-          <button
-            onClick={() => onSelectDemoState("liveness_code_step")}
-            className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
-              demoState === "liveness_code_step"
-                ? "bg-white text-gray-900 font-bold border border-gray-300"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
-          >
-            2. Liveness Step
-          </button>
-          <button
-            onClick={() => onSelectDemoState("low_confidence_or_escalated")}
-            className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
-              demoState === "low_confidence_or_escalated"
-                ? "bg-white text-gray-900 font-bold border border-gray-300"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
-          >
-            3. Escalated
-          </button>
-          <button
-            onClick={() => onSelectDemoState("session_complete")}
-            className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
-              demoState === "session_complete"
-                ? "bg-white text-gray-900 font-bold border border-gray-300"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
-          >
-            4. Session Complete
-          </button>
+            <option value="normal_recognition">Demo: Normal Field</option>
+            <option value="liveness_code_step">Demo: Liveness Step</option>
+            <option value="low_confidence_or_escalated">Demo: Escalated</option>
+            <option value="session_complete">Demo: Session Complete</option>
+          </select>
         </div>
       </div>
 
