@@ -61,84 +61,60 @@ function getGeminiClient() {
   });
 }
 
-// API Endpoint: Analyze ISL Sign / Frame or Text input
-app.post("/api/analyze-sign", async (req, res) => {
+// API Endpoint: Phrase Raw Tokens into a Grammatical Sentence
+app.post("/api/phrase-sentence", async (req, res) => {
   try {
-    const { imageBase64, currentStep, expectedField } = req.body;
+    const { tokens, mergeLetters } = req.body;
     const ai = getGeminiClient();
 
     if (!ai) {
       // Fallback response if GEMINI_API_KEY is not set
+      const rawText = (tokens || []).map((t: any) => t.word).join(" ");
       return res.json({
-        status: "simulated",
-        translation: "MY NAME IS PRIYA SHARMA, AADHAAR NUMBER 4829 1049 8821",
-        confidence: 94,
-        fieldValue: "Priya Sharma",
-        handAccuracy: 96,
-        facialLandmarkScore: 92,
-        notes: "Clear ISL finger spelling detected for proper noun.",
+        sentence: rawText.toUpperCase(),
+        corrections: ["(Simulated phrasing — API Key missing)"],
       });
     }
 
-    let prompt = `You are SignKYC AI, an Indian Sign Language (ISL) Video-CIP translation assistant for banking officials.
-Current V-CIP KYC Step: ${currentStep || "Identity Verification"}.
-Expected Field: ${expectedField || "Customer Details"}.
+    const words = (tokens || []).map((t: any) => t.word).join(", ");
+    let prompt = `You are an Indian Sign Language (ISL) NLP translator.
+You have received a raw sequence of gloss tokens identified by a local DTW engine: [${words}].
 
-Analyze the provided input and return a JSON object with:
-- "translation": precise English translation of what the customer signed in ISL.
-- "confidence": integer score from 0 to 100 representing AI gesture recognition confidence.
-- "fieldValue": extracted clean text for the KYC field.
-- "handAccuracy": gesture clarity score (0-100).
-- "facialLandmarkScore": facial expression match score (0-100).
-- "notes": brief official note regarding sign syntax or clarity.`;
+Your task is to rephrase these glosses into a natural, grammatically correct English sentence.
+- If it's just an address or names (e.g., 'plot', '4', '2', 'park', 'street'), output "Plot 42 Park Street".
+- Merge sequential letters or digits appropriately.
+- Keep it concise and natural for banking KYC.
 
-    let responseText = "";
+Return ONLY a JSON object with this exact structure (no markdown blocks, no other text):
+{
+  "sentence": "The correctly phrased English text",
+  "corrections": ["Array of brief notes on grammar corrections applied, or empty array if none"]
+}`;
 
-    if (imageBase64) {
-      // Remove data URL prefix if present
-      const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
-      const imagePart = {
-        inlineData: {
-          mimeType: "image/jpeg",
-          data: base64Data,
-        },
-      };
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: { parts: [imagePart, { text: prompt }] },
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
-      responseText = response.text || "{}";
-    } else {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
-      responseText = response.text || "{}";
-    }
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      },
+    });
+
+    const responseText = response.text || "{}";
 
     try {
       const result = JSON.parse(responseText);
-      return res.json({ status: "success", ...result });
+      return res.json(result);
     } catch (parseErr) {
+      // Fallback if AI returns invalid JSON
+      const rawText = (tokens || []).map((t: any) => t.word).join(" ");
       return res.json({
-        status: "parsed_fallback",
-        translation: responseText,
-        confidence: 88,
-        fieldValue: responseText.slice(0, 40),
-        handAccuracy: 90,
-        facialLandmarkScore: 86,
-        notes: "AI analysis completed.",
+        sentence: rawText,
+        corrections: ["Failed to parse AI JSON"],
       });
     }
   } catch (err: any) {
-    console.error("Error in /api/analyze-sign:", err);
-    res.status(500).json({ error: err.message || "Failed to analyze sign" });
+    console.error("Error in /api/phrase-sentence:", err);
+    res.status(500).json({ error: err.message || "Failed to phrase sentence" });
   }
 });
 

@@ -29,7 +29,7 @@ The biggest real gap. Everything currently on screen is hardcoded.
 - [x] **Task 1.4: Real Confidence Thresholds:** DTW is hard-gated at >= 90% confidence threshold.
 
 ### Phase 2: Environment & Backend Polish
-- [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/analyze-sign` return real AI output.
+- [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/phrase-sentence` return real AI output.
 - [ ] **Task 2.2: Deployment Verification:** Confirm the Vercel deployment actually works end-to-end.
 
 ### Phase 3: Liveness Verification (Optional / Scripted)
