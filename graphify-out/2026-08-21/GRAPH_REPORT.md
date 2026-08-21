@@ -1,16 +1,16 @@
 # Graph Report - SIH_ISL_2026  (2026-08-21)
 
 ## Corpus Check
-- 43 files · ~23,964 words
+- 43 files · ~24,154 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 274 nodes · 409 edges · 19 communities (15 shown, 4 thin omitted)
+- 275 nodes · 411 edges · 19 communities (15 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `78e2ca0d`
+- Built from commit: `a97aa4b7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -46,6 +46,8 @@
 10. `scripts` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `App()` --calls--> `pushGesture()`  [EXTRACTED]
+  src/App.tsx → src/lib/sentenceEngine.ts
 - `EditFieldModalProps` --references--> `KYCField`  [EXTRACTED]
   src/components/EditFieldModal.tsx → src/types.ts
 - `LoginProps` --references--> `Customer`  [EXTRACTED]
@@ -54,8 +56,6 @@
   src/components/PhrasedSentenceStrip.tsx → src/types.ts
 - `RegistrationProps` --references--> `Customer`  [EXTRACTED]
   src/components/Registration.tsx → src/types.ts
-- `VideoPanelProps` --references--> `DemoState`  [EXTRACTED]
-  src/components/VideoPanel.tsx → src/types.ts
 
 ## Import Cycles
 - None detected.
@@ -71,16 +71,16 @@ Cohesion: 0.09
 Nodes (21): DOM, DOM.Iterable, ES2022, node, vite/client, compilerOptions, allowImportingTsExtensions, allowJs (+13 more)
 
 ### Community 2 - "App.tsx"
-Cohesion: 0.09
-Nodes (33): AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps, EditFieldModal() (+25 more)
+Cohesion: 0.08
+Nodes (36): App(), AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps (+28 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.08
 Nodes (25): autoprefixer, esbuild, devDependencies, autoprefixer, esbuild, tailwindcss, tsx, @types/express (+17 more)
 
 ### Community 5 - "sentenceEngine.ts"
-Cohesion: 0.17
-Nodes (18): App(), VideoPanelProps, clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens(), getEngineState(), initSentenceEngine() (+10 more)
+Cohesion: 0.21
+Nodes (16): VideoPanelProps, clearIdleTimer(), DispatchReason, dispatchSentence(), getEngineState(), isStopGesture(), manualDispatch(), pushGesture() (+8 more)
 
 ### Community 6 - "SignKYC — Bank Official Console (V-CIP Assist View)"
 Cohesion: 0.33
@@ -123,9 +123,9 @@ Nodes (5): get_existing_classes(), process_dataset(), preprocess_static.py -- Ex
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `devDependencies`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
-- **Why does `VideoPanel()` connect `VideoPanel.tsx` to `App.tsx`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+- **Why does `VideoPanel()` connect `VideoPanel.tsx` to `App.tsx`, `sentenceEngine.ts`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **What connects `TEMPLATES_DIR`, `phraseCache`, `puppeteer` to the rest of the system?**
   _91 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `dependencies` be split into smaller, more focused modules?**
@@ -133,6 +133,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.09343200740055504 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08392156862745098 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._

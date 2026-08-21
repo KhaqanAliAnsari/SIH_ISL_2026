@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SignKYC V-CIP Console</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
         document.body.innerHTML += '<div style="color:red; font-size:20px; padding:20px; z-index:9999; position:absolute; top:0; left:0; background:white;">Error: ' + message + '<br>' + source + ':' + lineno + '</div>';
@@ -15,11 +12,8 @@
         document.body.innerHTML += '<div style="color:red; font-size:20px; padding:20px; z-index:9999; position:absolute; top:0; left:0; background:white;">Unhandled Promise Rejection: ' + event.reason + '</div>';
       });
     </script>
-    <style>
-      body { font-family: 'Inter', sans-serif; }
-    </style>
   </head>
-  <body class="bg-zinc-950 text-white selection:bg-white selection:text-black">
+  <body class="bg-zinc-950 text-zinc-100 dark antialiased selection:bg-sky-500 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -43,32 +43,35 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
 }) => {
   const [isTrayOpen, setIsTrayOpen] = useState(true);
 
-  // Confidence Meter Bands (Monochrome)
+  // Confidence Meter Bands
   const getConfidenceLevel = (score: number) => {
     if (score >= 85) {
       return {
-        bg: "bg-zinc-900",
-        border: "border-zinc-700",
-        text: "text-sky-400",
-        bar: "bg-sky-500",
+        bg: "bg-emerald-950/40",
+        border: "border-emerald-800/80",
+        text: "text-emerald-400",
+        badge: "bg-emerald-900/60 text-emerald-300 border-emerald-700",
+        bar: "bg-emerald-500",
         label: "HIGH CONFIDENCE (>85%)",
         desc: "Ready for official confirmation",
       };
     } else if (score >= 60) {
       return {
-        bg: "bg-zinc-900",
-        border: "border-zinc-800",
-        text: "text-zinc-300",
-        bar: "bg-zinc-400",
+        bg: "bg-amber-950/40",
+        border: "border-amber-800/80",
+        text: "text-amber-400",
+        badge: "bg-amber-900/60 text-amber-300 border-amber-700",
+        bar: "bg-amber-500",
         label: "MODERATE CONFIDENCE (60-85%)",
         desc: "Review or request gesture re-sign",
       };
     } else {
       return {
-        bg: "bg-zinc-950",
-        border: "border-zinc-800",
-        text: "text-zinc-500",
-        bar: "bg-zinc-600",
+        bg: "bg-rose-950/40",
+        border: "border-rose-800/80",
+        text: "text-rose-400",
+        badge: "bg-rose-900/60 text-rose-300 border-rose-700",
+        bar: "bg-rose-500",
         label: "LOW CONFIDENCE (<60%)",
         desc: "Escalate to Certified ISL Interpreter",
       };
@@ -92,69 +95,58 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
   const completedFields = fields.filter((f) => f.isConfirmed);
 
   return (
-    <div className="col-span-12 lg:col-span-5 flex flex-col h-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden select-none">
+    <div className="col-span-12 lg:col-span-5 flex flex-col h-full bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden select-none text-zinc-100">
       {/* Sidebar Header */}
-      <div className="p-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between shrink-0">
+      <div className="p-3 bg-zinc-950/60 border-b border-zinc-800 flex items-center justify-between shrink-0">
         <div>
-          <h2 className="text-xs font-bold text-sky-400 uppercase tracking-wider font-sans">
+          <h2 className="text-xs font-bold text-white uppercase tracking-wider font-sans">
             AI Sign Translation &amp; Active Field Card
           </h2>
           <p className="text-[11px] text-zinc-400 font-mono">
             Human-in-the-Loop Official Workstation
           </p>
         </div>
-
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-700 font-semibold">
-          NLU Protocol Active
-        </span>
       </div>
 
       {/* Main Content Body */}
       <div className="flex-1 overflow-y-auto p-3.5 space-y-3.5 custom-scrollbar">
         {/* 1. LIVE CAPTION BOX */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
+        <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-3">
+          <div className="mb-1.5 flex items-center justify-between">
+            <span className="text-xs font-bold text-zinc-200 uppercase tracking-wider">
               Live Customer ISL Translation
             </span>
-            <span className="text-[10px] text-zinc-500 font-mono">
-              Latency: 110ms
-            </span>
+            <span className="text-[10px] font-mono text-zinc-500">REAL-TIME</span>
           </div>
 
-          <div className="bg-zinc-950 border border-zinc-800 rounded p-3 text-sm font-bold text-white leading-snug">
+          <div className="bg-zinc-900/90 border border-zinc-700/80 rounded p-3 text-sm font-bold text-white leading-snug shadow-inner">
             "{liveCaptionText}"
-          </div>
-
-          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mt-1.5">
-            <span>ISL Syntax: Subject-Object-Verb Structure</span>
-            <span className="text-sky-400 font-bold">Verified</span>
           </div>
         </div>
 
         {/* 2. CONFIDENCE METER */}
         <div className={`border rounded-lg p-3 ${conf.bg} ${conf.border}`}>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
+            <span className="text-xs font-bold text-zinc-200 uppercase tracking-wider">
               Recognition Confidence Score
             </span>
             <span
-              className={`text-sm font-black font-mono px-2 py-0.5 rounded border bg-zinc-950 ${conf.text} ${conf.border}`}
+              className={`text-sm font-black font-mono px-2 py-0.5 rounded border ${conf.badge}`}
             >
               {confidenceScore}%
             </span>
           </div>
 
           {/* Progress bar */}
-          <div className="w-full bg-zinc-800 h-2 rounded overflow-hidden mb-1.5 border border-zinc-700">
+          <div className="w-full bg-zinc-800 h-2 rounded overflow-hidden mb-1.5 border border-zinc-700/60">
             <div
               className={`h-full ${conf.bar} transition-all duration-300`}
               style={{ width: `${confidenceScore}%` }}
             ></div>
           </div>
 
-          <div className="flex items-center justify-between text-xs text-white font-medium">
-            <span>{conf.label}</span>
+          <div className="flex items-center justify-between text-xs text-zinc-300 font-medium">
+            <span className={conf.text}>{conf.label}</span>
             <span className="text-[11px] text-zinc-400">{conf.desc}</span>
           </div>
         </div>
@@ -162,13 +154,13 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
         {/* 3. ACTIVE FIELD CARD */}
         {demoState === "liveness_code_step" ? (
           /* LIVENESS RESPONSE PANEL VARIANT */
-          <div className="bg-zinc-950 border border-zinc-500 rounded-lg p-4 space-y-3">
+          <div className="bg-zinc-950 border-2 border-amber-500/80 rounded-lg p-4 space-y-3 shadow-lg">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-              <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-white" />
+              <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-amber-400" />
                 Liveness Gesture Response Panel
               </span>
-              <span className="text-[10px] font-mono bg-zinc-800 text-white px-2 py-0.5 rounded font-bold border border-zinc-700">
+              <span className="text-[10px] font-mono bg-amber-950/80 text-amber-300 border border-amber-800/80 px-2 py-0.5 rounded font-bold">
                 Active Step 5/7
               </span>
             </div>
@@ -177,11 +169,11 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
               Recognized sequence signed by customer in real-time:
             </p>
 
-            <div className="p-3 bg-zinc-900 border border-zinc-700 rounded text-center">
+            <div className="p-3 bg-zinc-900 border border-zinc-800 rounded text-center">
               <span className="text-xs text-zinc-500 font-mono block mb-1">
                 Customer Signed Response
               </span>
-              <span className="font-mono font-bold text-xl text-white tracking-widest">
+              <span className="font-mono font-bold text-xl text-amber-300 tracking-widest">
                 Customer signed: {livenessCode.split("").join(" → ")}
               </span>
             </div>
@@ -189,7 +181,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
             <div className="flex items-center justify-end gap-2 pt-1">
               <button
                 onClick={() => onConfirmField("5")}
-                className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs py-2.5 px-4 rounded flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-md flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-950"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Confirm Liveness Check</span>
@@ -198,7 +190,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
           </div>
         ) : activeField ? (
           /* STANDARD ACTIVE FIELD CARD */
-          <div className="bg-zinc-950 border border-zinc-700 rounded-lg p-4 space-y-3">
+          <div className="bg-zinc-950 border-2 border-zinc-700 rounded-lg p-4 space-y-3 shadow-lg">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <div className="flex items-center gap-2">
                 {getFieldIcon(activeField.label)}
@@ -206,33 +198,33 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
                   Active Field: {activeField.label}
                 </span>
               </div>
-              <span className="text-[10px] font-mono bg-zinc-900 text-white px-2 py-0.5 rounded border border-zinc-700 font-semibold">
+              <span className="text-[10px] font-mono bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700 font-semibold">
                 AI Suggestion ({activeField.confidence}%)
               </span>
             </div>
 
             {/* AI Suggested Value */}
             <div>
-              <span className="text-[11px] text-zinc-500 font-mono block mb-1">
+              <span className="text-[11px] text-zinc-400 font-mono block mb-1">
                 Recognized Text from Sign Gesture:
               </span>
-              <div className="p-3 bg-zinc-900 border border-zinc-800 rounded font-mono text-sm font-bold text-white break-all">
+              <div className="p-3 bg-zinc-900 border border-zinc-700/80 rounded font-mono text-sm font-bold text-white break-all shadow-inner">
                 {activeField.aiValue}
               </div>
             </div>
 
             {/* Request Re-sign Status Banner if retry clicked */}
             {activeField.reSignActive && (
-              <div className="bg-zinc-800 border border-zinc-700 rounded p-2 text-xs text-zinc-300 flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 text-zinc-400 animate-spin" />
+              <div className="bg-amber-950/40 border border-amber-800/80 rounded p-2 text-xs text-amber-300 flex items-center gap-2">
+                <RefreshCw className="w-4 h-4 text-amber-400 animate-spin" />
                 <span>Waiting for customer to re-sign...</span>
               </div>
             )}
 
             {/* Retry Cap Suggestion Banner */}
             {(activeField.retryCount || 0) >= 2 && (
-              <div className="bg-zinc-900 border border-zinc-700 p-2.5 rounded text-xs text-white space-y-1">
-                <p className="font-bold">
+              <div className="bg-zinc-900 border border-zinc-800 p-2.5 rounded text-xs text-zinc-300 space-y-1">
+                <p className="font-bold text-amber-400">
                   Multiple Re-sign Attempts ({activeField.retryCount} retries)
                 </p>
                 <p className="text-[11px] text-zinc-400">
@@ -246,16 +238,16 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
               {/* Primary Confirm Button */}
               <button
                 onClick={() => onConfirmField(activeField.id)}
-                className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs py-2.5 px-4 rounded shadow-none flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-md shadow-sm shadow-emerald-950 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Confirm & Record Field</span>
+                <span>Confirm &amp; Record Field</span>
               </button>
 
               <div className="flex items-center justify-between text-xs pt-1">
                 <button
                   onClick={() => onEditField(activeField)}
-                  className="text-zinc-400 hover:text-white font-bold underline flex items-center gap-1"
+                  className="text-zinc-400 hover:text-white font-semibold underline flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit manually</span>
@@ -263,7 +255,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
 
                 <button
                   onClick={() => onRequestReSign(activeField)}
-                  className="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded text-zinc-300 text-xs font-semibold flex items-center gap-1 transition-colors"
+                  className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded text-zinc-200 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5 text-zinc-400" />
                   <span>
@@ -276,12 +268,12 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
           </div>
         ) : (
           /* ALL FIELDS CONFIRMED STATE */
-          <div className="bg-zinc-900 border border-zinc-700 rounded-lg p-4 text-center space-y-2">
-            <CheckCircle2 className="w-8 h-8 text-white mx-auto" />
-            <p className="font-bold text-xs text-white">
+          <div className="bg-emerald-950/30 border border-emerald-800/80 rounded-lg p-4 text-center space-y-2">
+            <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
+            <p className="font-bold text-xs text-emerald-300">
               All Required KYC Fields Confirmed by Official
             </p>
-            <p className="text-[11px] text-zinc-400 font-mono">
+            <p className="text-[11px] text-emerald-400/80 font-mono">
               Ready for final submission to Concurrent Audit Queue.
             </p>
           </div>
@@ -291,10 +283,10 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
         <div className="border border-zinc-800 rounded-lg overflow-hidden bg-zinc-950">
           <button
             onClick={() => setIsTrayOpen(!isTrayOpen)}
-            className="w-full p-2.5 bg-zinc-900 hover:bg-zinc-800 border-b border-zinc-800 flex items-center justify-between text-xs font-bold text-white cursor-pointer"
+            className="w-full p-2.5 bg-zinc-900/90 hover:bg-zinc-800/80 border-b border-zinc-800 flex items-center justify-between text-xs font-bold text-zinc-200 transition-colors cursor-pointer"
           >
-            <span className="flex items-center gap-1.5 uppercase tracking-wider font-mono text-[11px]">
-              <Shield className="w-3.5 h-3.5 text-white" />
+            <span className="flex items-center gap-1.5 uppercase tracking-wider font-mono text-[11px] text-zinc-300">
+              <Shield className="w-3.5 h-3.5 text-emerald-400" />
               Confirmed KYC Records Tray ({completedFields.length}/{fields.length})
             </span>
             {isTrayOpen ? (
@@ -314,15 +306,15 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
                 completedFields.map((f) => (
                   <div
                     key={f.id}
-                    className="p-2 rounded bg-zinc-900 border border-zinc-800 text-xs flex items-center justify-between"
+                    className="p-2 rounded bg-zinc-900/80 border border-zinc-800 text-xs flex items-center justify-between"
                   >
                     <div className="truncate pr-2">
-                      <span className="font-bold text-white">{f.label}: </span>
-                      <span className="font-mono text-zinc-300">
+                      <span className="font-bold text-zinc-200">{f.label}: </span>
+                      <span className="font-mono text-zinc-400">
                         {f.confirmedValue || f.aiValue}
                       </span>
                     </div>
-                    <span className="text-white flex items-center gap-1 shrink-0 font-bold text-[10px]">
+                    <span className="text-emerald-400 flex items-center gap-1 shrink-0 font-bold text-[10px]">
                       <CheckCircle2 className="w-3.5 h-3.5" /> OK
                     </span>
                   </div>
@@ -336,18 +328,18 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
         <div className="pt-1">
           <button
             onClick={onEscalateToInterpreter}
-            className="w-full p-3 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-between text-white text-xs font-bold transition-colors cursor-pointer"
+            className="w-full p-3 bg-zinc-950 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 rounded-lg flex items-center justify-between text-zinc-200 text-xs font-bold transition-all cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              <UserCheck className="w-4 h-4 text-zinc-400" />
+              <UserCheck className="w-4 h-4 text-sky-400" />
               <div className="text-left">
-                <span className="block">Connect certified interpreter</span>
+                <span className="block text-zinc-200">Connect certified interpreter</span>
                 <span className="text-[10px] text-zinc-500 font-normal">
                   Standard RBI accessibility fallback option
                 </span>
               </div>
             </div>
-            <span className="text-xs text-zinc-400 font-mono underline">
+            <span className="text-xs text-sky-400 font-mono underline">
               Bridge Feed
             </span>
           </button>

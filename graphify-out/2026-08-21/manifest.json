@@ -10,13 +10,13 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1787294414.5584974,
-    "ast_hash": "0e64615261da0db0d8925620dd83af1c",
+    "mtime": 1787291972.5139623,
+    "ast_hash": "3ab78ac5fe15d029200b2935b00a5034",
     "semantic_hash": ""
   },
   "src/components/AIAssistPanel.tsx": {
-    "mtime": 1787294484.5394242,
-    "ast_hash": "8d5a8b50dcd83bf37664e8725d25f6fc",
+    "mtime": 1787291972.5156624,
+    "ast_hash": "43f1eb476343ea96f5dd05719eac95d4",
     "semantic_hash": ""
   },
   "src/components/AuditModal.tsx": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/components/FooterControls.tsx": {
-    "mtime": 1787294633.1280358,
-    "ast_hash": "2cba61d793b7fcb284c4456401f1f7ec",
+    "mtime": 1787291972.5226011,
+    "ast_hash": "a60df4e7a0b35163236b3bd5fd76dac2",
     "semantic_hash": ""
   },
   "src/components/HeaderBar.tsx": {
-    "mtime": 1787294436.041514,
-    "ast_hash": "25f2fcc4bcce2707e73dd44ab53c72a1",
+    "mtime": 1787291972.524855,
+    "ast_hash": "aaaa39ef2a8a9de88ed4b972b8e9e41b",
     "semantic_hash": ""
   },
   "src/components/InterpreterModal.tsx": {
@@ -50,13 +50,13 @@
     "semantic_hash": ""
   },
   "src/components/KYCProgressStrip.tsx": {
-    "mtime": 1787294584.8983486,
-    "ast_hash": "ce20e74219c7f1a97b7eb2cfdb3fd47b",
+    "mtime": 1787291972.5289776,
+    "ast_hash": "4fc888f3ae1718d3b783df3821662e0d",
     "semantic_hash": ""
   },
   "src/components/VideoPanel.tsx": {
-    "mtime": 1787294615.9166133,
-    "ast_hash": "df9c0576c278586122c12bd03928a897",
+    "mtime": 1787292119.4115384,
+    "ast_hash": "8d908ac7f00bc470287524cd83f099f9",
     "semantic_hash": ""
   },
   "src/main.tsx": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1787294370.1276522,
-    "ast_hash": "d44a10cc644fddb523dee086743f2c60",
+    "mtime": 1787291971.6731317,
+    "ast_hash": "6270ac0e1d75269af46ecc78f41a36e7",
     "semantic_hash": ""
   },
   "api/index.ts": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "src/lib/holisticLandmarker.ts": {
-    "mtime": 1787294575.3634708,
-    "ast_hash": "5390c6ad05886d6e7971daea03ef0ba5",
+    "mtime": 1787292296.0739794,
+    "ast_hash": "7ebc99a41ae32279b398135a4a5abffc",
     "semantic_hash": ""
   },
   "src/components/PhrasedSentenceStrip.tsx": {

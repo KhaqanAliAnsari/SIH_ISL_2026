@@ -17,30 +17,30 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
   const progressPercent = Math.round((confirmedCount / steps.length) * 100);
 
   return (
-    <div className="w-full bg-zinc-950 border-t border-zinc-800 p-2.5 select-none shrink-0 z-10">
+    <div className="w-full bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-2.5 select-none shrink-0 z-10 text-zinc-100">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-2 px-1">
           <div className="flex items-center gap-2">
-            <FileCheck className="w-4 h-4 text-sky-400" />
-            <span className="text-xs font-bold uppercase tracking-wider text-sky-400 font-sans">
+            <FileCheck className="w-4 h-4 text-emerald-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-white font-sans">
               RBI V-CIP Progress Stepper
             </span>
-            <span className="text-[10px] bg-zinc-900 text-zinc-400 px-2 py-0.5 rounded font-mono border border-zinc-800 font-semibold">
+            <span className="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono border border-zinc-700 font-semibold">
               Structured KYC Audit
             </span>
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-3 text-xs font-mono text-zinc-300">
             <div>
-              <span className="text-white font-bold">
+              <span className="text-emerald-400 font-bold">
                 {confirmedCount}
               </span>{" "}
               / {steps.length} Steps Confirmed ({progressPercent}%)
             </div>
             <div className="w-24 bg-zinc-800 h-2 rounded overflow-hidden border border-zinc-700">
               <div
-                className="bg-sky-500 h-full transition-all duration-300"
+                className="bg-emerald-500 h-full transition-all duration-300 shadow-sm shadow-emerald-950"
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
@@ -48,34 +48,34 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
         </div>
 
         {/* 7 Checkpoint Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+        <div className="flex items-stretch gap-2 overflow-x-auto pb-1 custom-scrollbar">
           {steps.map((step, idx) => {
             const isSelected = idx === currentStepIndex;
 
             if (isSelected) {
               // Current Step (Full Treatment)
               let badge = <Loader2 className="w-3.5 h-3.5 text-sky-400 animate-spin" />;
-              let cardStyle = "bg-sky-500/10 border-sky-400 text-sky-400";
+              let cardStyle = "bg-sky-950/40 border-sky-500 text-sky-200 ring-1 ring-sky-500/30";
               
               if (step.status === "confirmed") {
-                badge = <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />;
-                cardStyle = "bg-zinc-900 border-sky-400 text-white";
+                badge = <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />;
+                cardStyle = "bg-emerald-950/40 border-emerald-500 text-emerald-200 ring-1 ring-emerald-500/30";
               } else if (step.status === "needs_review") {
-                badge = <AlertTriangle className="w-3.5 h-3.5 text-zinc-300" />;
-                cardStyle = "bg-zinc-900 border-zinc-500 text-zinc-300";
+                badge = <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />;
+                cardStyle = "bg-amber-950/40 border-amber-500 text-amber-200 ring-1 ring-amber-500/30";
               } else if (step.status === "pending") {
-                badge = <span className="w-2 h-2 rounded-full bg-zinc-500"></span>;
-                cardStyle = "bg-zinc-950 border-zinc-700 text-zinc-400";
+                badge = <span className="w-2 h-2 rounded-full bg-sky-400"></span>;
+                cardStyle = "bg-zinc-800 border-zinc-600 text-zinc-100";
               }
 
               return (
                 <button
                   key={step.id}
                   onClick={() => onSelectStep(idx)}
-                  className={`min-w-[160px] p-2 rounded-lg border-2 text-left transition-colors flex flex-col justify-between cursor-pointer shadow-sm shrink-0 ${cardStyle}`}
+                  className={`min-w-[160px] p-2 rounded-lg border-2 text-left transition-all flex flex-col justify-between cursor-pointer shadow-md shrink-0 ${cardStyle}`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-mono font-bold uppercase opacity-70">
+                    <span className="text-[10px] font-mono font-bold uppercase opacity-80">
                       Step {idx + 1}
                     </span>
                     {badge}
@@ -95,18 +95,18 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
               <button
                 key={step.id}
                 onClick={() => onSelectStep(idx)}
-                className={`min-w-[120px] px-3 py-2 rounded-lg border text-left transition-colors flex items-center gap-2 cursor-pointer shrink-0 ${
+                className={`min-w-[120px] px-3 py-2 rounded-lg border text-left transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
                   isCompleted
-                    ? "bg-zinc-950 border-zinc-500 hover:bg-zinc-900"
-                    : "bg-zinc-950 border-zinc-800 hover:bg-zinc-900 opacity-70"
+                    ? "bg-zinc-950 border-emerald-800/60 hover:bg-emerald-950/30 text-zinc-200 hover:border-emerald-700"
+                    : "bg-zinc-950/70 border-zinc-800/80 hover:bg-zinc-800/60 text-zinc-400 hover:border-zinc-700 opacity-80"
                 }`}
               >
                 {isCompleted ? (
-                  <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 ) : (
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-700 shrink-0 ml-1"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 shrink-0 ml-1"></span>
                 )}
-                <div className={`text-xs truncate ${isCompleted ? "font-semibold text-white" : "font-medium text-zinc-500"}`}>
+                <div className={`text-xs truncate ${isCompleted ? "font-semibold text-zinc-200" : "font-medium text-zinc-400"}`}>
                   {step.label}
                 </div>
               </button>

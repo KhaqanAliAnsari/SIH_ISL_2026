@@ -85,12 +85,12 @@ export const AuditModal: React.FC<AuditModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-zinc-950 border border-zinc-800 rounded-lg max-w-xl w-full text-white shadow-xl overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl max-w-xl w-full text-white shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="p-4 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
+        <div className="p-4 bg-zinc-950/80 text-white border-b border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-6 h-6 text-white" />
+            <ShieldCheck className="w-6 h-6 text-emerald-400" />
             <div>
               <h3 className="text-sm font-bold tracking-tight text-white">
                 RBI Concurrent Audit Submission Record
@@ -102,7 +102,7 @@ export const AuditModal: React.FC<AuditModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -112,7 +112,7 @@ export const AuditModal: React.FC<AuditModalProps> = ({
         <div className="p-5 space-y-4 max-h-[75vh] overflow-y-auto custom-scrollbar">
           {submitted ? (
             <div className="py-6 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-700 text-white mx-auto flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-400 mx-auto flex items-center justify-center shadow-lg">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h4 className="text-base font-bold text-white">
@@ -124,7 +124,7 @@ export const AuditModal: React.FC<AuditModalProps> = ({
               <div className="pt-2">
                 <button
                   onClick={onClose}
-                  className="px-5 py-2 bg-white hover:bg-zinc-200 text-black font-bold rounded text-xs transition-colors"
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-md text-xs transition-colors cursor-pointer shadow-sm shadow-emerald-950"
                 >
                   Close Record
                 </button>
@@ -133,30 +133,30 @@ export const AuditModal: React.FC<AuditModalProps> = ({
           ) : (
             <>
               {/* Compliance Badge */}
-              <div className="p-3 rounded bg-zinc-900 border border-zinc-700 text-white text-xs flex items-center justify-between font-medium">
+              <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-800/80 text-emerald-300 text-xs flex items-center justify-between font-medium">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-white" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span className="font-bold">
                     {report?.rbiComplianceStatus || "PASSED — V-CIP Standard Workflow"}
                   </span>
                 </div>
-                <span className="text-[10px] font-mono bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-600">
+                <span className="text-[10px] font-mono bg-emerald-900/60 px-2 py-0.5 rounded border border-emerald-700 text-emerald-200">
                   VERIFIED
                 </span>
               </div>
 
               {/* Summary */}
-              <div className="p-3.5 rounded bg-zinc-900 border border-zinc-800 space-y-1">
+              <div className="p-3.5 rounded-lg bg-zinc-950 border border-zinc-800 space-y-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 block">
                   Official Session Summary
                 </span>
                 {loading ? (
-                  <div className="flex items-center gap-2 py-2 text-xs text-zinc-500">
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                  <div className="flex items-center gap-2 py-2 text-xs text-zinc-400">
+                    <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
                     <span>Generating report...</span>
                   </div>
                 ) : (
-                  <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                  <p className="text-xs text-zinc-200 leading-relaxed font-sans">
                     {report?.summary}
                   </p>
                 )}
@@ -164,18 +164,18 @@ export const AuditModal: React.FC<AuditModalProps> = ({
 
               {/* Verified Fields */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
                   Verified KYC Fields &amp; Officer Approvals
                 </h4>
                 <div className="space-y-1.5">
                   {fields.map((f) => (
                     <div
                       key={f.id}
-                      className="p-2 rounded bg-zinc-900 border border-zinc-800 text-xs flex items-center justify-between"
+                      className="p-2 rounded bg-zinc-950 border border-zinc-800 text-xs flex items-center justify-between"
                     >
                       <div>
-                        <span className="font-bold text-white">{f.label}: </span>
-                        <span className="font-mono text-zinc-300 font-semibold">
+                        <span className="font-bold text-zinc-200">{f.label}: </span>
+                        <span className="font-mono text-emerald-400 font-semibold">
                           {f.isConfirmed ? f.confirmedValue || f.aiValue : f.aiValue}
                         </span>
                       </div>
@@ -189,10 +189,39 @@ export const AuditModal: React.FC<AuditModalProps> = ({
                 </div>
               </div>
 
-              <div className="text-[11px] text-zinc-400 bg-zinc-900 p-2.5 rounded border border-zinc-800 flex items-start gap-2">
+              {/* ISL Conversation Log */}
+              {sessionData.conversationHistory && sessionData.conversationHistory.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
+                    ISL Translation Telemetry &amp; Signed Sentences ({sessionData.conversationHistory.length})
+                  </h4>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
+                    {sessionData.conversationHistory.map((s, idx) => (
+                      <div
+                        key={s.id || idx}
+                        className="p-2 rounded bg-zinc-950 border border-zinc-800 text-xs flex flex-col gap-1"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-zinc-200">
+                            #{idx + 1}: "{s.phrasedText}"
+                          </span>
+                          <span className="text-[10px] font-mono text-zinc-500">
+                            {new Date(s.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                        <div className="text-[10px] font-mono text-zinc-400 truncate">
+                          Tokens: {s.rawTokens.map(t => t.word).join(" → ")}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="text-[11px] text-zinc-400 bg-zinc-950 p-2.5 rounded border border-zinc-800 flex items-start gap-2">
                 <Lock className="w-4 h-4 text-zinc-500 shrink-0 mt-0.5" />
                 <p>
-                  <strong>Session Record:</strong> All officer confirmations and ISL translation logs are recorded in the workstation audit log.
+                  <strong className="text-zinc-300">Session Record:</strong> All officer confirmations, ISL translation logs, and liveness telemetry are securely hashed and stored in the workstation audit log.
                 </p>
               </div>
             </>
@@ -201,21 +230,21 @@ export const AuditModal: React.FC<AuditModalProps> = ({
 
         {/* Footer */}
         {!submitted && (
-          <div className="p-4 bg-zinc-900 border-t border-zinc-800 flex items-center justify-between">
+          <div className="p-4 bg-zinc-950/80 border-t border-zinc-800 flex items-center justify-between">
             <button
               onClick={() => window.print()}
-              className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium rounded flex items-center gap-1.5 text-white transition-colors"
+              className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium rounded-md flex items-center gap-1.5 text-zinc-300 transition-colors cursor-pointer"
             >
-              <Printer className="w-3.5 h-3.5" /> Print Audit Sheet
+              <Printer className="w-3.5 h-3.5 text-zinc-400" /> Print Audit Sheet
             </button>
 
             <button
               onClick={handleSubmitSession}
               disabled={loading}
-              className="px-4 py-1.5 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded flex items-center gap-1.5 disabled:opacity-50 transition-colors shadow-sm"
+              className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-md flex items-center gap-1.5 disabled:opacity-50 transition-colors shadow-sm shadow-emerald-950 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Confirm & Submit to Concurrent Auditor</span>
+              <span>Confirm &amp; Submit to Concurrent Auditor</span>
             </button>
           </div>
         )}
