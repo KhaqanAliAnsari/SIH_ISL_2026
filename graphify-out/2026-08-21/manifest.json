@@ -1,0 +1,207 @@
+{
+  "package.json": {
+    "mtime": 1787291972.5087154,
+    "ast_hash": "c86c89a5f1f39d4ec48765a081fa9a0a",
+    "semantic_hash": ""
+  },
+  "server.ts": {
+    "mtime": 1787291972.5108912,
+    "ast_hash": "f1b1b184bcff3950a7e706f8f937ec71",
+    "semantic_hash": ""
+  },
+  "src/App.tsx": {
+    "mtime": 1787291972.5139623,
+    "ast_hash": "3ab78ac5fe15d029200b2935b00a5034",
+    "semantic_hash": ""
+  },
+  "src/components/AIAssistPanel.tsx": {
+    "mtime": 1787291972.5156624,
+    "ast_hash": "43f1eb476343ea96f5dd05719eac95d4",
+    "semantic_hash": ""
+  },
+  "src/components/AuditModal.tsx": {
+    "mtime": 1787291972.5173461,
+    "ast_hash": "9b6e4bc5ac58d1e4bfbc1e7c586236fe",
+    "semantic_hash": ""
+  },
+  "src/components/CustomerSideModal.tsx": {
+    "mtime": 1787291972.519061,
+    "ast_hash": "519d6f08263c03da979c0a1354fecd22",
+    "semantic_hash": ""
+  },
+  "src/components/EditFieldModal.tsx": {
+    "mtime": 1787291972.520749,
+    "ast_hash": "8b94b269d83f680edc624e21ee8d4ae4",
+    "semantic_hash": ""
+  },
+  "src/components/FooterControls.tsx": {
+    "mtime": 1787291972.5226011,
+    "ast_hash": "a60df4e7a0b35163236b3bd5fd76dac2",
+    "semantic_hash": ""
+  },
+  "src/components/HeaderBar.tsx": {
+    "mtime": 1787291972.524855,
+    "ast_hash": "aaaa39ef2a8a9de88ed4b972b8e9e41b",
+    "semantic_hash": ""
+  },
+  "src/components/InterpreterModal.tsx": {
+    "mtime": 1787291972.5254118,
+    "ast_hash": "ad1ef07fc65d0e440bbd65a50db62878",
+    "semantic_hash": ""
+  },
+  "src/components/KYCProgressStrip.tsx": {
+    "mtime": 1787291972.5289776,
+    "ast_hash": "4fc888f3ae1718d3b783df3821662e0d",
+    "semantic_hash": ""
+  },
+  "src/components/VideoPanel.tsx": {
+    "mtime": 1787292119.4115384,
+    "ast_hash": "8d908ac7f00bc470287524cd83f099f9",
+    "semantic_hash": ""
+  },
+  "src/main.tsx": {
+    "mtime": 1786438118.5476308,
+    "ast_hash": "2b36426d5ad7e08ef79746aa524f4fb7",
+    "semantic_hash": "2b36426d5ad7e08ef79746aa524f4fb7"
+  },
+  "src/types.ts": {
+    "mtime": 1787291972.5488698,
+    "ast_hash": "f68939aa1d3d7311aa8ea30e3e7cb955",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1786513370.4577076,
+    "ast_hash": "b05f66bfee51bebcfb0c5d21b0d48daa",
+    "semantic_hash": ""
+  },
+  "vite.config.ts": {
+    "mtime": 1786513790.324594,
+    "ast_hash": "93ab3121c29630f6be5a4ba5b0b95683",
+    "semantic_hash": ""
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1786439388.0030975,
+    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/graphify.md": {
+    "mtime": 1786439388.004233,
+    "ast_hash": "a831cf3669f1e6ab85d8a80ebe655f99",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1786438118.618255,
+    "ast_hash": "51e0ce4c7d8b6d409c43108adc3987d5",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1787291971.6731317,
+    "ast_hash": "6270ac0e1d75269af46ecc78f41a36e7",
+    "semantic_hash": ""
+  },
+  "api/index.ts": {
+    "mtime": 1787291971.1831524,
+    "ast_hash": "60a2dfc198ec32be44776aeb366c6405",
+    "semantic_hash": ""
+  },
+  "src/lib/supabase.ts": {
+    "mtime": 1786704962.3959136,
+    "ast_hash": "144bc7f96ed9893cf6d6c6950c75b5f7",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1786447251.0755253,
+    "ast_hash": "e0874c534592f9320593d191251f3cb7",
+    "semantic_hash": ""
+  },
+  "needToDone.md": {
+    "mtime": 1787291975.4091039,
+    "ast_hash": "bf1684e5b8abd1401777b25cf2369cd9",
+    "semantic_hash": ""
+  },
+  "src/components/Login.tsx": {
+    "mtime": 1787291972.5317829,
+    "ast_hash": "7f99795301c7cdba40a46c6b665869be",
+    "semantic_hash": ""
+  },
+  "src/components/Registration.tsx": {
+    "mtime": 1787291972.5351274,
+    "ast_hash": "82c24e8dad4c5ed0f98d6bd2602ac0f0",
+    "semantic_hash": ""
+  },
+  "isl_dtw/main.py": {
+    "mtime": 1787291975.3403165,
+    "ast_hash": "f87f804e8e6c70e96011d150beba34ea",
+    "semantic_hash": ""
+  },
+  "isl_dtw/record_template.py": {
+    "mtime": 1787291975.3430903,
+    "ast_hash": "1cbef0e2c5e141d1860bbf0a9c25fbb7",
+    "semantic_hash": ""
+  },
+  "isl_dtw/test_pipeline.py": {
+    "mtime": 1787291972.4882753,
+    "ast_hash": "d1e2b6ea084f1bfb6acfcd224be480ba",
+    "semantic_hash": ""
+  },
+  "isl_dtw/utils.py": {
+    "mtime": 1787292232.1119592,
+    "ast_hash": "69570316b82bda0e36b46c6e21b0e537",
+    "semantic_hash": ""
+  },
+  "isl_dtw/README.md": {
+    "mtime": 1787291975.3275707,
+    "ast_hash": "bc7880e8b2f3d33ed43387c59ad8f76d",
+    "semantic_hash": ""
+  },
+  "isl_dtw/requirements.txt": {
+    "mtime": 1786858890.0689135,
+    "ast_hash": "6f8545259a89fbd301408464c911d331",
+    "semantic_hash": ""
+  },
+  "src/lib/dtwEngine.ts": {
+    "mtime": 1787292018.762755,
+    "ast_hash": "0f6838435dade84e83f67105419222b9",
+    "semantic_hash": ""
+  },
+  "src/lib/holisticLandmarker.ts": {
+    "mtime": 1787292296.0739794,
+    "ast_hash": "7ebc99a41ae32279b398135a4a5abffc",
+    "semantic_hash": ""
+  },
+  "src/components/PhrasedSentenceStrip.tsx": {
+    "mtime": 1787291972.5334384,
+    "ast_hash": "bad2a5b5db0fd5842abcfc2fcd4279ba",
+    "semantic_hash": ""
+  },
+  "src/lib/sentenceEngine.ts": {
+    "mtime": 1787291972.5463512,
+    "ast_hash": "c7d122a6557d6e4e991764560d789233",
+    "semantic_hash": ""
+  },
+  "isl_dtw/preprocess_static.py": {
+    "mtime": 1787291971.684601,
+    "ast_hash": "e88af894e608102077ebcffccef1c18f",
+    "semantic_hash": ""
+  },
+  "isl_dtw/train_static_mlp.py": {
+    "mtime": 1787291972.4975271,
+    "ast_hash": "258904c15987d427c1235db564d50e40",
+    "semantic_hash": ""
+  },
+  ".agents/rules/sih.md": {
+    "mtime": 1787291971.1799083,
+    "ast_hash": "77afd0379c7713eff614af2872107e7b",
+    "semantic_hash": ""
+  },
+  "isl_dtw/record_template_0-9.py": {
+    "mtime": 1787291975.3453233,
+    "ast_hash": "ae3a009a433679c2be37e5de4f81e40b",
+    "semantic_hash": ""
+  },
+  "measure.cjs": {
+    "mtime": 1787291975.3913698,
+    "ast_hash": "56372272e6c6f7770fd3771d8fe28854",
+    "semantic_hash": ""
+  }
+}

@@ -23,13 +23,13 @@ What's genuinely built and working:
 
 ### Phase 1: Core AI Recognition Pipeline
 The biggest real gap. Everything currently on screen is hardcoded.
-- [ ] **Task 1.1: Frame Capture Logic:** Implement logic in `VideoPanel.tsx` to capture frames from the live video feed (canvas snapshot on an interval, or on-demand).
-- [ ] **Task 1.2: API Wiring:** POST captured frames to the existing `/api/analyze-sign` endpoint.
-- [ ] **Task 1.3: Dynamic State Update:** Replace the hardcoded `confidenceScore` and `liveCaptionText` state in `App.tsx` with values returned from the real API response.
-- [ ] **Task 1.4: Real Confidence Thresholds:** Implement an actual threshold check driven by the API's confidence score to trigger appropriate branching (e.g., auto-confirm vs. request re-sign).
+- [x] **Task 1.1: Frame Capture Logic:** Implemented directly in `VideoPanel.tsx` using WebGPU MediaPipe Holistic and decoupled throttling.
+- [x] **Task 1.2: API Wiring:** Wired via `sentenceEngine.ts` to accumulate tokens and call the Gemini API (`/api/phrase-sentence`) directly for compound fields.
+- [x] **Task 1.3: Dynamic State Update:** UI dynamically updates with real DTW confidence scores and immediate raw tokens.
+- [x] **Task 1.4: Real Confidence Thresholds:** DTW is hard-gated at >= 90% confidence threshold.
 
 ### Phase 2: Environment & Backend Polish
-- [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/analyze-sign` return real AI output.
+- [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/phrase-sentence` return real AI output.
 - [ ] **Task 2.2: Deployment Verification:** Confirm the Vercel deployment actually works end-to-end.
 
 ### Phase 3: Liveness Verification (Optional / Scripted)

@@ -15,48 +15,48 @@ export const InterpreterModal: React.FC<InterpreterModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-none flex items-center justify-center p-4">
-      <div className="bg-white border border-gray-300 rounded-lg max-w-md w-full text-gray-900 shadow-none overflow-hidden">
-        <div className="p-4 bg-gray-100 text-gray-900 border-b border-gray-200 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-gray-800">
-            <UserCheck className="w-4 h-4 text-green-600" />
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl max-w-md w-full text-white shadow-2xl overflow-hidden">
+        <div className="p-4 bg-zinc-950/80 text-white border-b border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-white">
+            <UserCheck className="w-4 h-4 text-emerald-400" />
             <span>Connect Certified ISL Interpreter</span>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-gray-500 hover:text-gray-900 hover:bg-gray-200 transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="p-5 space-y-4">
-          <p className="text-xs text-gray-700 leading-relaxed">
+          <p className="text-xs text-zinc-300 leading-relaxed">
             Per RBI V-CIP accessibility rules, a Level-3 certified ISL interpreter can be bridged into the live video call at any time.
           </p>
 
-          <div className="bg-gray-50 p-3.5 rounded border border-gray-200 flex items-center gap-3">
-            <div className="w-12 h-12 rounded bg-gray-200 border border-gray-300 text-gray-800 flex items-center justify-center font-bold text-lg">
-              <UserCheck className="w-6 h-6 text-gray-700" />
+          <div className="bg-zinc-950 p-3.5 rounded-lg border border-zinc-800 flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-200 flex items-center justify-center font-bold text-lg">
+              <UserCheck className="w-6 h-6 text-sky-400" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-gray-900">
+              <h4 className="text-xs font-bold text-white">
                 Ananya M.
               </h4>
-              <p className="text-[11px] text-gray-700 font-medium">
+              <p className="text-[11px] text-zinc-400 font-medium">
                 Level-3 Certified ISL Interpreter (#INT-104)
               </p>
-              <p className="text-[10px] text-green-700 font-mono mt-0.5 font-bold">
+              <p className="text-[10px] text-emerald-400 font-mono mt-0.5 font-bold">
                 ● Available (BKC Hub)
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+        <div className="p-4 bg-zinc-950/80 border-t border-zinc-800 flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3.5 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-100"
+            className="px-3.5 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 text-xs font-medium rounded-md transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -65,7 +65,7 @@ export const InterpreterModal: React.FC<InterpreterModalProps> = ({
               onConnect();
               onClose();
             }}
-            className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded flex items-center gap-1.5"
+            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-md flex items-center gap-1.5 shadow-sm shadow-emerald-950 transition-colors cursor-pointer"
           >
             <Video className="w-4 h-4" />
             <span>Bridge Interpreter Feed</span>

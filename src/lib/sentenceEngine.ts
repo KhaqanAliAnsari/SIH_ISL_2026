@@ -128,6 +128,14 @@ export function pushGesture(
     return;
   }
 
+  // ─── Prevent Consecutive Duplicate Gestures ───
+  if (tokenBuffer.length > 0) {
+    const lastToken = tokenBuffer[tokenBuffer.length - 1];
+    if (lastToken.word === gesture) {
+      console.log(`[SentenceEngine] Ignoring consecutive duplicate gesture "${gesture}"`);
+      return;
+    }
+  }
   // ─── Accumulate token ───
   const token: SentenceToken = {
     word: gesture,

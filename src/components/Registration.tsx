@@ -73,69 +73,71 @@ export function Registration({ initialFullName, initialAadhaarNo, onSuccess, onC
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-sm border border-gray-100">
-        <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">New Customer</h2>
-        <p className="text-center text-gray-500 mb-6 text-sm">Please fill in your details to continue</p>
+    <div className="flex items-center justify-center min-h-screen bg-zinc-950 p-4 text-zinc-100 select-none">
+      <div className="w-full max-w-md p-8 bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-800">
+        <h2 className="text-2xl font-bold text-center text-white mb-2 tracking-tight">New Customer</h2>
+        <p className="text-center text-zinc-400 mb-6 text-sm">Please fill in your details to continue</p>
         
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Full Name</label>
             <input
               type="text"
               required
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              className="w-full p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 outline-none text-sm text-white placeholder-zinc-500 transition-colors"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
+              placeholder="e.g. Priya Sharma"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Aadhaar Number</label>
             <input
               type="text"
               required
               maxLength={14}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              className="w-full p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 outline-none text-sm font-mono text-white placeholder-zinc-500 transition-colors"
               value={aadhaarNo}
               onChange={handleAadhaarChange}
               placeholder="e.g. 4829 1049 8821"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Permanent Address</label>
             <textarea
               required
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              className="w-full p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 outline-none text-sm text-white placeholder-zinc-500 transition-colors"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               rows={3}
+              placeholder="Full residential address"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">Date of Birth</label>
             <input
               type="date"
               required
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              className="w-full p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500 outline-none text-sm text-white placeholder-zinc-500 transition-colors"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
             />
           </div>
           
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-rose-400 text-sm font-medium">{error}</p>}
           
           <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors"
+              className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium py-2.5 px-4 rounded-lg transition-colors border border-zinc-700 text-sm cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center transition-colors disabled:opacity-50"
+              className="flex-1 bg-sky-600 hover:bg-sky-500 text-white font-medium py-2.5 px-4 rounded-lg flex items-center justify-center transition-colors disabled:opacity-50 text-sm shadow-sm shadow-sky-950 cursor-pointer"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Register'}
             </button>

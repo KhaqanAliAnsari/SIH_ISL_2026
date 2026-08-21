@@ -1,6 +1,13 @@
+import os
+import logging
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TF logging
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0' # Suppress oneDNN warning
+os.environ['GLOG_minloglevel'] = '2'      # Suppress MediaPipe absl warnings
+
 import cv2
 import numpy as np
 import mediapipe as mp
+logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 # ──────────────────────────────────────────────────────────────────────
 # Feature vector layout (constant across all frames)
