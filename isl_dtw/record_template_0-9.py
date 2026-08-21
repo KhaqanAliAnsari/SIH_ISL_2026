@@ -11,6 +11,8 @@ TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templa
 WINDOW_NAME = "SignKYC - Record Digits 0-9 (Holistic)"
 
 TEMPLATES_PER_CLASS = 10
+MAX_FRAMES_PER_TEMPLATE = 40
+COUNTDOWN_SECONDS = 2.0
 DIGITS = [str(i) for i in range(10)]
 
 def draw_overlay(
@@ -19,8 +21,8 @@ def draw_overlay(
     state: str,
     recorded_count: int,
     current_frames: int = 0,
-    save_path: str = "",
-    is_last: bool = False
+    countdown_remaining: float = 0.0,
+    save_path: str = ""
 ):
     h, w, _ = frame.shape
 
@@ -30,38 +32,42 @@ def draw_overlay(
     cv2.addWeighted(overlay, 0.75, frame, 0.25, 0, frame)
 
     # Title & Gesture info
-    cv2.putText(frame, "SignKYC Digits 0-9 Recorder (Holistic)", (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 220, 255), 2, cv2.LINE_AA)
-    cv2.putText(frame, f"Target Gesture: '{gesture_name.upper()}' ({recorded_count}/{TEMPLATES_PER_CLASS} completed)", (15, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "SignKYC Digits 0-9 Automated Batch Recorder", (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.70, (0, 220, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, f"Target Digit: '{gesture_name}' ({recorded_count}/{TEMPLATES_PER_CLASS} completed)", (15, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
 
     # State Badge / Instructions
     if state == "IDLE":
         cv2.rectangle(frame, (15, 100), (450, 140), (200, 0, 0), -1)
-        cv2.putText(frame, "HOLD [SPACEBAR] to Record", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, "Press 's' to start batch, 'n' to skip", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
     
+    elif state == "COUNTDOWN":
+        cv2.rectangle(frame, (15, 100), (350, 140), (0, 140, 255), -1)
+        cv2.putText(frame, f"GET READY... {countdown_remaining:.1f}s", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+
     elif state == "RECORDING":
         cv2.rectangle(frame, (15, 100), (350, 140), (0, 0, 255), -1)
-        cv2.putText(frame, f"RECORDING... ({current_frames} frames)", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, f"RECORDING... ({current_frames}/{MAX_FRAMES_PER_TEMPLATE})", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+        
+        # Progress bar
+        cv2.rectangle(frame, (15, 150), (15 + int((current_frames / MAX_FRAMES_PER_TEMPLATE) * 335), 160), (0, 0, 255), -1)
     
     elif state == "SAVED":
         cv2.rectangle(frame, (15, 100), (500, 140), (0, 200, 0), -1)
-        if not is_last:
-            cv2.putText(frame, "SAVED! Release Spacebar.", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
-        else:
-            cv2.putText(frame, "DONE! Press 'n' for next digit.", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, f"Path: {save_path}", (15, 170), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        cv2.putText(frame, f"SAVED! ({save_path})", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
         
     elif state == "DONE":
         cv2.rectangle(frame, (15, 100), (500, 140), (0, 255, 0), -1)
-        if gesture_name == "9":
-            cv2.putText(frame, "ALL DIGITS COMPLETE! PRESS 'q'", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
-        else:
-            cv2.putText(frame, f"DIGIT {gesture_name} COMPLETE! PRESS 'n' FOR NEXT", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame, "DIGIT COMPLETE! PRESS 'n' FOR NEXT", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
 
 
 def main():
     os.makedirs(TEMPLATES_DIR, exist_ok=True)
 
-    cap = cv2.VideoCapture(0)
+    if os.name == 'nt':
+        cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    else:
+        cap = cv2.VideoCapture(0)
+
     if not cap.isOpened():
         print("Error: Could not open camera.")
         sys.exit(1)
@@ -72,27 +78,34 @@ def main():
     gesture_name = DIGITS[digit_idx]
     
     recorded_count = 0
-    state = "IDLE"  # IDLE, RECORDING, SAVED, DONE
+    state = "IDLE"  # IDLE, COUNTDOWN, RECORDING, SAVED, DONE
     feature_sequence = []
     save_path = ""
-    last_saved_time = 0
+    
+    countdown_start_time = 0
+    saved_display_start = 0
+    countdown_remaining = 0.0
 
     print("\n" + "="*50)
-    print(" 🔢 Batch Recording for Digits 0-9")
+    print(" 🔢 Automated Batch Recording for Digits 0-9")
     print(f" -> Current Digit: '{gesture_name}'")
-    print(f" -> Hold SPACEBAR to record variation.")
-    print(f" -> Press 'n' to advance to the next digit early.")
-    print(" -> Press 'q' to quit.")
+    print(f" -> Press 's' to start {TEMPLATES_PER_CLASS}-variation batch.")
+    print(" -> Press 'n' to skip to the next digit early.")
+    print(" -> Press 'q' to quit at any time.")
     print("="*50 + "\n")
 
     try:
+        cv2.namedWindow(WINDOW_NAME)
         while True:
+            # Check window close natively
+            if cv2.getWindowProperty(WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1:
+                break
+
             ret, frame = cap.read()
             if not ret:
                 print("Error: Could not read frame from camera.")
                 break
 
-            # Mirror the frame
             frame = cv2.flip(frame, 1)
 
             feature_vec, results = extract_holistic_features(frame, holistic)
@@ -100,57 +113,61 @@ def main():
 
             key = cv2.waitKey(1) & 0xFF
 
-            if recorded_count >= TEMPLATES_PER_CLASS:
-                state = "DONE"
-                
-            if key == ord(' '):
-                # Spacebar is held down
-                if state == "IDLE" or state == "SAVED":
+
+            
+            if state == "IDLE":
+                if key == ord('s'):
+                    state = "COUNTDOWN"
+                    countdown_start_time = time.time()
+                elif key == ord('n'):
+                    digit_idx += 1
+                    if digit_idx >= len(DIGITS):
+                        print("🎉 All digits recorded!")
+                        break
+                    gesture_name = DIGITS[digit_idx]
+                    recorded_count = 0
+                    print(f"\n---> Current Digit: '{gesture_name}' (Press 's' to start)")
+            
+            elif state == "COUNTDOWN":
+                elapsed = time.time() - countdown_start_time
+                if elapsed >= COUNTDOWN_SECONDS:
                     state = "RECORDING"
                     feature_sequence = []
-                
-                if state == "RECORDING":
-                    feature_sequence.append(feature_vec)
+                else:
+                    countdown_remaining = max(0.0, COUNTDOWN_SECONDS - elapsed)
+
+            elif state == "RECORDING":
+                feature_sequence.append(feature_vec)
+                if len(feature_sequence) >= MAX_FRAMES_PER_TEMPLATE:
+                    recorded_count += 1
+                    padded_count = str(recorded_count).zfill(2)
+                    filename = f"reference_{gesture_name}_{padded_count}.npy"
+                    save_path = os.path.join(TEMPLATES_DIR, filename)
                     
-            elif key == ord('n') and state in ["IDLE", "SAVED", "DONE"]:
-                digit_idx += 1
-                if digit_idx >= len(DIGITS):
-                    print("🎉 All digits 0-9 have been recorded! Exiting.")
-                    break
-                
-                gesture_name = DIGITS[digit_idx]
-                recorded_count = 0
-                state = "IDLE"
-                feature_sequence = []
-                save_path = ""
-                
-                print("\n" + "="*50)
-                print(f" 🔢 Current Digit: '{gesture_name}'")
-                print("="*50 + "\n")
-                
-            else:
-                # Spacebar is released
-                if state == "RECORDING":
-                    if len(feature_sequence) > 10:
-                        # Save the sequence
-                        recorded_count += 1
-                        padded_count = str(recorded_count).zfill(2)
-                        filename = f"reference_{gesture_name}_{padded_count}.npy"
-                        save_path = os.path.join(TEMPLATES_DIR, filename)
-                        
-                        np.save(save_path, np.array(feature_sequence, dtype=np.float32))
-                        print(f"[{recorded_count}/{TEMPLATES_PER_CLASS}] Saved digit {gesture_name}: {filename} ({len(feature_sequence)} frames)")
-                        
-                        state = "SAVED"
-                        last_saved_time = time.time()
+                    np.save(save_path, np.array(feature_sequence, dtype=np.float32))
+                    print(f"[{recorded_count}/{TEMPLATES_PER_CLASS}] Saved digit {gesture_name}: {filename}")
+                    
+                    state = "SAVED"
+                    saved_display_start = time.time()
+
+            elif state == "SAVED":
+                if time.time() - saved_display_start > 1.0:
+                    if recorded_count < TEMPLATES_PER_CLASS:
+                        state = "COUNTDOWN"
+                        countdown_start_time = time.time()
                     else:
-                        print("Recording too short (<10 frames). Discarded.")
-                        state = "IDLE"
-                elif state == "SAVED":
-                    if recorded_count >= TEMPLATES_PER_CLASS:
                         state = "DONE"
-                    elif time.time() - last_saved_time > 1.0:
-                        state = "IDLE"
+                        
+            elif state == "DONE":
+                if key == ord('n'):
+                    digit_idx += 1
+                    if digit_idx >= len(DIGITS):
+                        print("🎉 All digits recorded! Exiting.")
+                        break
+                    gesture_name = DIGITS[digit_idx]
+                    recorded_count = 0
+                    state = "IDLE"
+                    print(f"\n---> Current Digit: '{gesture_name}' (Press 's' to start)")
 
             # Draw overlay
             draw_overlay(
@@ -158,9 +175,9 @@ def main():
                 gesture_name, 
                 state, 
                 recorded_count, 
-                len(feature_sequence) if state == "RECORDING" else 0,
-                save_path,
-                is_last=(recorded_count >= TEMPLATES_PER_CLASS)
+                current_frames=len(feature_sequence) if state == "RECORDING" else 0,
+                countdown_remaining=countdown_remaining if state == "COUNTDOWN" else 0.0,
+                save_path=os.path.basename(save_path)
             )
 
             cv2.imshow(WINDOW_NAME, frame)

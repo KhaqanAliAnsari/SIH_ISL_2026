@@ -35,6 +35,7 @@ import {
   setStopGestureName,
   manualDispatch,
 } from "../lib/sentenceEngine";
+import { TemplateRecorderModal } from "./TemplateRecorderModal";
 
 import type { NormalizedLandmark } from "@mediapipe/tasks-vision";
 
@@ -81,6 +82,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const [activeStopGesture, setActiveStopGesture] = useState<string>(getStopGestureName());
   const [showStopConfig, setShowStopConfig] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isRecorderOpen, setIsRecorderOpen] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -98,6 +100,11 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const lastUiFlushRef = useRef(0);
   const dtwCooldown = useRef(0);
   const dtwEvalCounter = useRef(0);
+  const recorderFrameHandlerRef = useRef<((frame: Float32Array) => void) | null>(null);
+
+  const handleRegisterFrameHandler = useCallback((handler: ((frame: Float32Array) => void) | null) => {
+    recorderFrameHandlerRef.current = handler;
+  }, []);
 
   // Profiler metrics
   const skippedDrawsRef = useRef(0);
@@ -309,6 +316,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   );
 
   // ─── Detection + DTW Loop ──────────────────────────────────────────
+  const isMatchingRef = useRef(false);
+
   useEffect(() => {
     if (!useWebcam || !modelReady) return;
 
@@ -351,6 +360,11 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       lastResultRef.current = result;
       lastFeatureVecRef.current = featureVec;
       handVisibleRef.current = detected;
+      
+      // Dispatch frame to template recorder if active
+      if (recorderFrameHandlerRef.current) {
+        recorderFrameHandlerRef.current(featureVec);
+      }
 
       // 3. Render landmarks immediately onto canvas (zero-latency visual feedback)
       if (detected && showMesh) {
@@ -359,21 +373,30 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
 
-      // 4. Push to DTW buffer and match gestures
+      // 4. Push to DTW buffer and match gestures via Web Worker
       if (dtwCooldown.current > 0) dtwCooldown.current--;
 
       if (detected) {
-        pushFrame(featureVec);
-        bufferFillRef.current = getBufferFill();
+        // Fire-and-forget: pushes to worker and syncs the UI fill counter
+        pushFrame(featureVec).then(fill => {
+          bufferFillRef.current = fill;
+        });
 
         dtwEvalCounter.current++;
-        if (dtwEvalCounter.current % 2 === 0) {
-          const match = matchGesture();
-          if (match.gesture) {
-            setLastMatch(match);
-            dtwCooldown.current = 45;
-            onGestureRecognized?.(match.gesture, match.distance, match.confidence);
-          }
+        // Run match checks async, ensuring we don't pile up messages if the worker is busy
+        if (dtwEvalCounter.current % 2 === 0 && !isMatchingRef.current && dtwCooldown.current === 0) {
+          isMatchingRef.current = true;
+          matchGesture().then(match => {
+            isMatchingRef.current = false;
+            if (match.gesture) {
+              setLastMatch(match);
+              dtwCooldown.current = 45;
+              onGestureRecognized?.(match.gesture, match.distance, match.confidence);
+            }
+          }).catch(err => {
+            console.error("Worker match failed:", err);
+            isMatchingRef.current = false;
+          });
         }
       } else {
         bufferFillRef.current = getBufferFill();
@@ -573,6 +596,17 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
                 >
                   <Camera className="w-3.5 h-3.5" />
                   <span>{useWebcam ? "Webcam Active" : "Use Camera"}</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setIsRecorderOpen(true);
+                    setShowSettings(false);
+                  }}
+                  className="w-full px-2 py-1.5 rounded text-xs font-medium border bg-zinc-900 border-zinc-700 text-zinc-400 hover:text-white flex items-center gap-2 transition-colors"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Record Sign</span>
                 </button>
               </div>
             )}
@@ -788,6 +822,12 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           <span>Capture Frame</span>
         </button>
       </div>
+
+      <TemplateRecorderModal 
+        isOpen={isRecorderOpen}
+        onClose={() => setIsRecorderOpen(false)}
+        registerFrameHandler={handleRegisterFrameHandler}
+      />
     </div>
   );
 };

@@ -47,6 +47,27 @@ app.get("/api/templates/:filename", (req, res) => {
   }
 });
 
+// POST /api/templates/:filename — Save raw .npy binary file
+app.post("/api/templates/:filename", express.raw({ type: "application/octet-stream", limit: "50mb" }), (req, res) => {
+  try {
+    const filename = req.params.filename;
+    if (!filename.endsWith(".npy") || filename.includes("..") || filename.includes("/") || filename.includes("\\")) {
+      return res.status(400).json({ error: "Invalid filename" });
+    }
+    // Create dir if it doesn't exist
+    if (!fs.existsSync(TEMPLATES_DIR)) {
+      fs.mkdirSync(TEMPLATES_DIR, { recursive: true });
+    }
+    const filePath = path.join(TEMPLATES_DIR, filename);
+    fs.writeFileSync(filePath, req.body);
+    console.log(`[API] Saved template: ${filename}`);
+    return res.json({ success: true });
+  } catch (err: any) {
+    console.error("Error saving template:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // Helper for Gemini AI client
 function getGeminiClient() {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -61,62 +82,6 @@ function getGeminiClient() {
   });
 }
 
-// API Endpoint: Phrase Raw Tokens into a Grammatical Sentence
-app.post("/api/phrase-sentence", async (req, res) => {
-  try {
-    const { tokens, mergeLetters } = req.body;
-    const ai = getGeminiClient();
-
-    if (!ai) {
-      // Fallback response if GEMINI_API_KEY is not set
-      const rawText = (tokens || []).map((t: any) => t.word).join(" ");
-      return res.json({
-        sentence: rawText.toUpperCase(),
-        corrections: ["(Simulated phrasing — API Key missing)"],
-      });
-    }
-
-    const words = (tokens || []).map((t: any) => t.word).join(", ");
-    let prompt = `You are an Indian Sign Language (ISL) NLP translator.
-You have received a raw sequence of gloss tokens identified by a local DTW engine: [${words}].
-
-Your task is to rephrase these glosses into a natural, grammatically correct English sentence.
-- If it's just an address or names (e.g., 'plot', '4', '2', 'park', 'street'), output "Plot 42 Park Street".
-- Merge sequential letters or digits appropriately.
-- Keep it concise and natural for banking KYC.
-
-Return ONLY a JSON object with this exact structure (no markdown blocks, no other text):
-{
-  "sentence": "The correctly phrased English text",
-  "corrections": ["Array of brief notes on grammar corrections applied, or empty array if none"]
-}`;
-
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-      },
-    });
-
-    const responseText = response.text || "{}";
-
-    try {
-      const result = JSON.parse(responseText);
-      return res.json(result);
-    } catch (parseErr) {
-      // Fallback if AI returns invalid JSON
-      const rawText = (tokens || []).map((t: any) => t.word).join(" ");
-      return res.json({
-        sentence: rawText,
-        corrections: ["Failed to parse AI JSON"],
-      });
-    }
-  } catch (err: any) {
-    console.error("Error in /api/phrase-sentence:", err);
-    res.status(500).json({ error: err.message || "Failed to phrase sentence" });
-  }
-});
 
 // In-memory cache for phrase-sentence to minimize Gemini API cost
 const phraseCache = new Map<string, { sentence: string; corrections: string[] }>();

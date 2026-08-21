@@ -50,10 +50,10 @@ python record_template.py --name namaste
 ```
 * **Instructions**:
   - Stand in front of the camera so your upper body and hands are visible.
-  - **Hold SPACEBAR** to begin recording a variation.
-  - Perform the dynamic gesture smoothly.
-  - **Release SPACEBAR** when finished.
-  - Repeat 10 times to capture natural variations (`reference_namaste_01.npy` to `10.npy`).
+  - **Press `S`** to begin the automated 10-variation batch recording sequence.
+  - A 2-second timer will count down before each capture.
+  - Perform the dynamic gesture smoothly. The recorder will automatically capture up to 40 frames per variation and save it.
+  - It will loop automatically until 10 natural variations are captured (`reference_namaste_01.npy` to `10.npy`).
   - Output is saved automatically in `templates/`.
 
 ---
