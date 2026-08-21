@@ -73,22 +73,22 @@ def _extract_pose_features(pose_landmarks):
     mid_shoulder_x = (lm[11].x + lm[12].x) / 2.0
     mid_shoulder_y = (lm[11].y + lm[12].y) / 2.0
 
-    # Upper body: shoulders (11, 12), elbows (13, 14), wrists (15, 16)
-    upper_body = []
-    for idx in POSE_UPPER_BODY_INDICES:
-        upper_body.append(lm[idx].x - mid_shoulder_x)
-        upper_body.append(lm[idx].y - mid_shoulder_y)
+    pose_features = np.zeros(22, dtype=np.float32)
+    
+    # Upper body arm features (indices 11-16) - 12 dims
+    for i, idx in enumerate(POSE_UPPER_BODY_INDICES):
+        landmark = pose_landmarks.landmark[idx]
+        pose_features[i * 2] = landmark.x - mid_shoulder_x
+        pose_features[i * 2 + 1] = landmark.y - mid_shoulder_y
 
-    # Head spatial anchors: nose (0), eyes (2, 5), mouth corners (9, 10)
-    head_anchors = []
-    for idx in POSE_HEAD_INDICES:
-        head_anchors.append(lm[idx].x - mid_shoulder_x)
-        head_anchors.append(lm[idx].y - mid_shoulder_y)
+    # Head anchor features (indices 0,2,5,9,10) - 10 dims
+    offset = len(POSE_UPPER_BODY_INDICES) * 2
+    for i, idx in enumerate(POSE_HEAD_INDICES):
+        landmark = pose_landmarks.landmark[idx]
+        pose_features[offset + i * 2] = landmark.x - mid_shoulder_x
+        pose_features[offset + i * 2 + 1] = landmark.y - mid_shoulder_y
 
-    return (
-        np.array(upper_body, dtype=np.float32),
-        np.array(head_anchors, dtype=np.float32),
-    )
+    return pose_features[:12], pose_features[12:]
 
 
 def _extract_hand_features(hand_landmarks):
@@ -108,12 +108,12 @@ def _extract_hand_features(hand_landmarks):
     wrist_x = lm[0].x
     wrist_y = lm[0].y
 
-    features = []
-    for landmark in lm:
-        features.append(landmark.x - wrist_x)
-        features.append(landmark.y - wrist_y)
+    features = np.zeros(42, dtype=np.float32)
+    for i, landmark in enumerate(lm):
+        features[i * 2] = landmark.x - wrist_x
+        features[i * 2 + 1] = landmark.y - wrist_y
 
-    return np.array(features, dtype=np.float32)
+    return features
 
 
 def extract_holistic_features(frame: np.ndarray, holistic):

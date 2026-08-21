@@ -10,8 +10,9 @@ Dynamic Indian Sign Language (ISL) gesture recognition pipeline using **MediaPip
 isl_dtw/
 ├── templates/               # Stores recorded reference templates (.npy)
 ├── utils.py                 # MediaPipe Holistic extraction & normalization (106-dim vector)
-├── record_template.py       # Records 30 frames of dynamic gesture to reference_<name>.npy
-├── main.py                  # Real-time FastDTW recognizer with rolling 30-frame buffer
+├── record_template.py       # Records variable-length multi-variation gesture templates using Spacebar
+├── record_template_0-9.py   # Batch recorder for digits 0-9 with 10 variations each
+├── main.py                  # Real-time FastDTW recognizer with dynamic 90-frame rolling window
 ├── test_pipeline.py         # Automated pipeline verification tests
 ├── requirements.txt         # Dependencies
 └── README.md
@@ -29,7 +30,7 @@ isl_dtw/
 | **Right Hand** | 21 hand landmarks | Right wrist (hand lm 0) | 42 |
 | | | **Total** | **106** |
 
-> **Note:** Hands are zero-padded (42 zeros) when not detected in frame, ensuring a constant feature dimension.
+> **Note:** Hands are zero-padded (42 zeros) when not detected in frame, ensuring a constant feature dimension. Arrays are pre-allocated for high-performance zero-garbage execution.
 
 ---
 
@@ -41,20 +42,19 @@ pip install -r requirements.txt
 ```
 
 ### 2. Record Reference Templates
-Record a dynamic 30-frame sign gesture (e.g. `namaste`, `hello`, `thank_you`):
+Record 10 natural variations of a variable-length sign gesture (e.g. `namaste`, `hello`, `thank_you`):
 
 ```bash
 # Record 'namaste' gesture
 python record_template.py --name namaste
-
-# Record 'hello' gesture
-python record_template.py --name hello
 ```
 * **Instructions**:
   - Stand in front of the camera so your upper body and hands are visible.
-  - Press **`S`** to begin recording.
-  - Perform the dynamic gesture smoothly within the 30-frame progress bar.
-  - Output is saved automatically as `templates/reference_<gesture_name>.npy`.
+  - **Hold SPACEBAR** to begin recording a variation.
+  - Perform the dynamic gesture smoothly.
+  - **Release SPACEBAR** when finished.
+  - Repeat 10 times to capture natural variations (`reference_namaste_01.npy` to `10.npy`).
+  - Output is saved automatically in `templates/`.
 
 ---
 
@@ -67,9 +67,6 @@ python main.py
 
 #### Custom Options:
 ```bash
-# Set a custom DTW distance threshold (default is 30.0)
-python main.py --threshold 25.0
-
 # Use a specific camera index (default: 0)
 python main.py --camera 1
 ```
@@ -78,8 +75,10 @@ python main.py --camera 1
 
 ## 🧠 Technical Highlights
 
+- **Dynamic Sliding Window Engine**: The recognizer maintains a 90-frame `deque` rolling buffer. It matches gestures by extracting a variable-length slice off the end of the buffer corresponding precisely to the length of the template variation being checked.
+- **Multi-Template Variation Classes**: By recording 10 variations per gesture, the recognizer accounts for different durations and slight deviations in execution, massively boosting real-world robustness.
+- **CPU Optimization (`DTW_EVAL_RATE = 3`)**: Evaluates DTW every 3 frames instead of every frame. Given the overlapping 90-frame buffer, this preserves accuracy while saving 66% of CPU cycles, ensuring 30 FPS inference.
 - **MediaPipe Holistic**: Unified detection of pose, left hand, and right hand in a single pass — enabling ISL signs that involve two-hand interaction, torso-relative arm positioning, and face-anchored gestures.
 - **Translation Invariance**: Upper body and head landmarks are normalized relative to mid-shoulder `((lm11 + lm12) / 2)`. Hand landmarks are normalized relative to their respective wrist (landmark 0).
-- **Constant Feature Dimension**: Zero-padding ensures a fixed 106-dimensional vector per frame regardless of hand visibility.
 - **FastDTW Matching**: Computes temporal sequence alignment against all loaded reference templates using Euclidean spatial distance (`scipy.spatial.distance.euclidean`).
 - **Duplicate Suppression**: Once a gesture is recognized below the distance threshold, the rolling buffer is automatically cleared to prevent repeated false triggers.
