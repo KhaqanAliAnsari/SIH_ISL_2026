@@ -4,23 +4,30 @@
  * High-performance browser-side DTW (Dynamic Time Warping) gesture recognition engine.
  * Mirrors the logic from isl_dtw/main.py:
  *   - Loads .npy template files via fetch
- *   - Rolling 30-frame ring buffer (O(1) push, zero-copy snapshot)
+ *   - Rolling 90-frame ring buffer (O(1) push, zero-copy snapshot)
+ *   - Multi-template class matching for natural variations
+ *   - Dynamic-length slicing (variable window lengths)
  *   - DTW with Sakoe-Chiba band constraint for O(n*r) complexity
  *   - Pre-allocated cost matrix to eliminate GC pressure
  *   - Threshold-gated recognition with duplicate suppression
  */
 
 // ─── Constants ───────────────────────────────────────────────────────
-const BUFFER_SIZE = 30;
+const BUFFER_SIZE = 90; // 3 seconds at 30 fps
 const DEFAULT_THRESHOLD = 30.0;
 const FEATURE_DIM = 106;
 const SAKOE_CHIBA_RADIUS = 5; // Band constraint: only check ±5 from diagonal
 export const STOP_GESTURE_NAME = "stop";
 
 // ─── Types ───────────────────────────────────────────────────────────
-export interface GestureTemplate {
+export interface GestureVariation {
+  filename: string;
+  sequence: Float32Array[];
+}
+
+export interface GestureTemplateClass {
   name: string;
-  sequence: Float32Array[]; // Array of 30 frames, each 106-dim
+  variations: GestureVariation[];
 }
 
 export interface MatchResult {
@@ -32,7 +39,7 @@ export interface MatchResult {
 }
 
 // ─── State ───────────────────────────────────────────────────────────
-let templates: GestureTemplate[] = [];
+let templateClasses: Record<string, GestureTemplateClass> = {};
 let threshold = DEFAULT_THRESHOLD;
 let lastRecognitionTime = 0;
 const COOLDOWN_MS = 1200; // reduced from 2s for faster fingerspelling sequences
@@ -151,7 +158,6 @@ function euclideanDistanceSq(a: Float32Array, b: Float32Array): number {
  * Instead of filling the full n×m matrix (O(n*m)), only fills
  * a band of width 2*radius+1 around the diagonal (O(n*r)).
  * 
- * For BUFFER_SIZE=30 and radius=5, this means ~330 cells instead of 900.
  * Uses pre-allocated Float64Arrays to avoid GC pressure.
  */
 function dtwDistance(seq1: Float32Array[], seq2: Float32Array[]): number {
@@ -207,10 +213,11 @@ export function isStopGesture(name: string): boolean {
 /**
  * Load gesture templates from the server API.
  * Fetches the template list, then downloads and parses each .npy file.
+ * Automatically groups variations (e.g. `reference_namaste_01.npy`) into their base class (`namaste`).
  */
 export async function loadTemplates(
   apiBase: string = ""
-): Promise<GestureTemplate[]> {
+): Promise<string[]> {
   try {
     const listRes = await fetch(`${apiBase}/api/templates`);
     if (!listRes.ok) {
@@ -219,7 +226,7 @@ export async function loadTemplates(
     }
 
     const fileList: string[] = await listRes.json();
-    const loaded: GestureTemplate[] = [];
+    const loadedClasses: Record<string, GestureTemplateClass> = {};
 
     // Parallel fetch for faster loading
     const fetchPromises = fileList.map(async (filename) => {
@@ -230,13 +237,16 @@ export async function loadTemplates(
         const arrayBuffer = await res.arrayBuffer();
         const frames = parseNpy(arrayBuffer);
 
-        // Extract gesture name: "reference_hello.npy" → "hello"
-        const name = filename
-          .replace(/^reference_/, "")
-          .replace(/\.npy$/, "");
+        // Extract gesture name: "reference_hello_01.npy" → "hello"
+        let name = filename.replace(/^reference_/, "").replace(/\.npy$/, "");
+        const match = name.match(/^(.+?)_\d+$/);
+        if (match) {
+          name = match[1];
+        }
 
-        console.log(`[DTW] Loaded template '${name}' (${frames.length} frames)`);
-        return { name, sequence: frames } as GestureTemplate;
+        console.log(`[DTW] Loaded template variation '${filename}' for class '${name}' (${frames.length} frames)`);
+        
+        return { className: name, variation: { filename, sequence: frames } };
       } catch (err) {
         console.warn(`[DTW] Failed to load template '${filename}':`, err);
         return null;
@@ -244,12 +254,17 @@ export async function loadTemplates(
     });
 
     const results = await Promise.all(fetchPromises);
-    for (const t of results) {
-      if (t) loaded.push(t);
+    for (const res of results) {
+      if (res) {
+        if (!loadedClasses[res.className]) {
+          loadedClasses[res.className] = { name: res.className, variations: [] };
+        }
+        loadedClasses[res.className].variations.push(res.variation);
+      }
     }
 
-    templates = loaded;
-    return loaded;
+    templateClasses = loadedClasses;
+    return Object.keys(templateClasses);
   } catch (err) {
     console.warn("[DTW] Template loading failed:", err);
     return [];
@@ -298,17 +313,17 @@ export function getThreshold(): number {
 }
 
 /**
- * Get the number of loaded templates.
+ * Get the number of loaded template classes.
  */
 export function getTemplateCount(): number {
-  return templates.length;
+  return Object.keys(templateClasses).length;
 }
 
 /**
- * Get loaded template names.
+ * Get loaded template class names.
  */
 export function getTemplateNames(): string[] {
-  return templates.map(t => t.name);
+  return Object.keys(templateClasses);
 }
 
 /**
@@ -334,14 +349,8 @@ function getRingBufferSnapshot(): Float32Array[] {
 }
 
 /**
- * Attempt to match the current buffer against all loaded templates.
+ * Attempt to match the current buffer against all loaded templates using sliding dynamic windows.
  * Returns the best match result.
- *
- * Mirrors isl_dtw/main.py recognition loop:
- *   - Only matches when buffer is full (30 frames)
- *   - Computes DTW distance against all templates
- *   - Returns best match if below threshold
- *   - Clears buffer after recognition (duplicate suppression)
  */
 export function matchGesture(): MatchResult {
   const result: MatchResult = {
@@ -352,8 +361,8 @@ export function matchGesture(): MatchResult {
     bufferFill: ringCount,
   };
 
-  // Need full buffer and at least one template
-  if (ringCount < BUFFER_SIZE || templates.length === 0) {
+  // Need at least 15 frames to even try matching
+  if (ringCount < 15 || Object.keys(templateClasses).length === 0) {
     return result;
   }
 
@@ -369,13 +378,35 @@ export function matchGesture(): MatchResult {
   let bestGesture: string | null = null;
   let minDistance = Infinity;
 
-  for (const template of templates) {
-    const dist = dtwDistance(currentSequence, template.sequence);
-    result.scores[template.name] = Math.round(dist * 100) / 100;
+  for (const [className, templateClass] of Object.entries(templateClasses)) {
+    let bestVariationDist = Infinity;
 
-    if (dist < minDistance) {
-      minDistance = dist;
-      bestGesture = template.name;
+    for (const variation of templateClass.variations) {
+      const tempLen = variation.sequence.length;
+      
+      // Buffer must be at least as long as the template variation to match it
+      if (currentSequence.length < tempLen) {
+        continue;
+      }
+
+      // Slice the exact length from the tail of the buffer (the most recent frames)
+      const sliceToCompare = currentSequence.slice(currentSequence.length - tempLen);
+
+      const rawDist = dtwDistance(sliceToCompare, variation.sequence);
+      
+      // Normalize distance so that variations of different lengths are comparable
+      const normDist = (rawDist / tempLen) * 30.0;
+      
+      if (normDist < bestVariationDist) {
+        bestVariationDist = normDist;
+      }
+    }
+
+    result.scores[className] = Math.round(bestVariationDist * 100) / 100;
+
+    if (bestVariationDist < minDistance) {
+      minDistance = bestVariationDist;
+      bestGesture = className;
     }
   }
 

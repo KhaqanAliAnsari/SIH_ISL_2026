@@ -7,14 +7,14 @@ import numpy as np
 
 from utils import init_holistic, extract_holistic_features, draw_holistic_landmarks, FEATURE_DIM
 
-RECORD_FRAMES = 30
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 WINDOW_NAME = "SignKYC - Record ISL Template (Holistic)"
 
+TEMPLATES_PER_CLASS = 10
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Record a 30-frame ISL gesture reference template using MediaPipe Holistic."
+        description="Record variable-length ISL gesture reference templates using Spacebar."
     )
     parser.add_argument(
         "--name",
@@ -36,13 +36,9 @@ def draw_overlay(
     gesture_name: str,
     state: str,
     recorded_count: int,
-    total_frames: int,
-    save_path: str = "",
-    countdown_remaining: float = 0.0,
+    current_frames: int = 0,
+    save_path: str = ""
 ):
-    """
-    Draws informative HUD UI and recording progress bar on the video frame.
-    """
     h, w, _ = frame.shape
 
     # Top semi-transparent header bar
@@ -51,157 +47,44 @@ def draw_overlay(
     cv2.addWeighted(overlay, 0.75, frame, 0.25, 0, frame)
 
     # Title & Gesture info
-    cv2.putText(
-        frame,
-        "SignKYC ISL Template Recorder (Holistic)",
-        (15, 28),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.75,
-        (0, 220, 255),
-        2,
-        cv2.LINE_AA,
-    )
-    cv2.putText(
-        frame,
-        f"Target Gesture: {gesture_name.upper()}",
-        (15, 60),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.65,
-        (255, 255, 255),
-        2,
-        cv2.LINE_AA,
-    )
+    cv2.putText(frame, "SignKYC ISL Template Recorder (Holistic)", (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 220, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, f"Target Gesture: '{gesture_name.upper()}' ({recorded_count}/{TEMPLATES_PER_CLASS} completed)", (15, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (255, 255, 255), 2, cv2.LINE_AA)
 
     # State Badge / Instructions
     if state == "IDLE":
-        # Amber / Cyan status
-        cv2.putText(
-            frame,
-            "READY - Press 'S' to Start Recording (30 Frames)",
-            (15, h - 25),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (0, 255, 255),
-            2,
-            cv2.LINE_AA,
-        )
-    elif state == "COUNTDOWN":
-        sec_left = int(np.ceil(max(0.1, countdown_remaining)))
-        # Big center countdown text
-        center_text = f"GET READY... {sec_left}"
-        text_size = cv2.getTextSize(center_text, cv2.FONT_HERSHEY_SIMPLEX, 1.4, 3)[0]
-        cx = (w - text_size[0]) // 2
-        cy = (h + text_size[1]) // 2
-
-        # Dim background box for center countdown
-        box_pad = 20
-        box_overlay = frame.copy()
-        cv2.rectangle(
-            box_overlay,
-            (cx - box_pad, cy - text_size[1] - box_pad),
-            (cx + text_size[0] + box_pad, cy + box_pad),
-            (10, 10, 10),
-            -1,
-        )
-        cv2.addWeighted(box_overlay, 0.6, frame, 0.4, 0, frame)
-
-        cv2.putText(
-            frame,
-            center_text,
-            (cx, cy),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            1.4,
-            (0, 165, 255),
-            3,
-            cv2.LINE_AA,
-        )
-
-        cv2.putText(
-            frame,
-            f"Starting in {countdown_remaining:.1f}s — Position yourself...",
-            (15, h - 25),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.65,
-            (0, 165, 255),
-            2,
-            cv2.LINE_AA,
-        )
+        cv2.rectangle(frame, (15, 100), (450, 140), (200, 0, 0), -1)
+        cv2.putText(frame, "HOLD [SPACEBAR] to Record", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+    
     elif state == "RECORDING":
-        # Red pulsing recording indicator
-        cv2.circle(frame, (w - 30, 40), 12, (0, 0, 255), -1)
-        cv2.putText(
-            frame,
-            "REC",
-            (w - 75, 46),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            (0, 0, 255),
-            2,
-            cv2.LINE_AA,
-        )
-
-        # Progress bar
-        bar_x1, bar_y1 = 20, h - 50
-        bar_w = w - 40
-        bar_h = 24
-        cv2.rectangle(frame, (bar_x1, bar_y1), (bar_x1 + bar_w, bar_y1 + bar_h), (50, 50, 50), -1)
-        
-        progress = recorded_count / total_frames
-        filled_w = int(bar_w * progress)
-        cv2.rectangle(
-            frame,
-            (bar_x1, bar_y1),
-            (bar_x1 + filled_w, bar_y1 + bar_h),
-            (0, 215, 255),
-            -1,
-        )
-        cv2.rectangle(
-            frame,
-            (bar_x1, bar_y1),
-            (bar_x1 + bar_w, bar_y1 + bar_h),
-            (255, 255, 255),
-            1,
-        )
-
-        progress_text = f"Recording: {recorded_count}/{total_frames} Frames ({int(progress * 100)}%)"
-        cv2.putText(
-            frame,
-            progress_text,
-            (bar_x1 + 10, bar_y1 + 17),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.5,
-            (0, 0, 0),
-            2,
-            cv2.LINE_AA,
-        )
+        cv2.rectangle(frame, (15, 100), (350, 140), (0, 0, 255), -1)
+        cv2.putText(frame, f"RECORDING... ({current_frames} frames)", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+    
     elif state == "SAVED":
-        cv2.putText(
-            frame,
-            f"SAVED: {os.path.basename(save_path)} | 'S': Re-record | 'Q': Quit",
-            (15, h - 25),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.55,
-            (0, 255, 0),
-            2,
-            cv2.LINE_AA,
-        )
+        cv2.rectangle(frame, (15, 100), (500, 140), (0, 200, 0), -1)
+        cv2.putText(frame, "SAVED! Release Spacebar.", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, f"Path: {save_path}", (15, 170), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        
+    elif state == "DONE":
+        cv2.rectangle(frame, (15, 100), (500, 140), (0, 255, 0), -1)
+        cv2.putText(frame, f"ALL {TEMPLATES_PER_CLASS} TEMPLATES SAVED! PRESS 'q'", (25, 128), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
 
 
 def main():
     args = parse_args()
-    gesture_name = args.name
+    
+    if not args.name:
+        gesture_name = input("Enter the gesture name to record (e.g., 'hello'): ").strip().lower()
+    else:
+        gesture_name = args.name.strip().lower()
 
     if not gesture_name:
-        gesture_name = input("Enter the gesture name to record (e.g. namaste, hello, thank_you): ").strip()
-        if not gesture_name:
-            print("Error: Gesture name cannot be empty.")
-            sys.exit(1)
+        print("Error: Gesture name cannot be empty.")
+        sys.exit(1)
 
-    # Sanitize gesture name for filename
-    gesture_name = gesture_name.lower().replace(" ", "_")
+    # Replace spaces with underscores
+    gesture_name = gesture_name.replace(" ", "_")
+
     os.makedirs(TEMPLATES_DIR, exist_ok=True)
-    output_filename = f"reference_{gesture_name}.npy"
-    save_path = os.path.join(TEMPLATES_DIR, output_filename)
 
     cap = cv2.VideoCapture(args.camera)
     if not cap.isOpened():
@@ -210,95 +93,88 @@ def main():
 
     holistic = init_holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
-    state = "IDLE"  # IDLE, COUNTDOWN, RECORDING, SAVED
-    recorded_frames = []
-    countdown_start_time = 0.0
-    countdown_duration = 2.0
-    countdown_remaining = 0.0
-    
-    print("=" * 60)
-    print(f"SignKYC ISL Template Recorder (Holistic) - Gesture: [{gesture_name}]")
-    print(f"Feature vector: {FEATURE_DIM}-dim (upper body + head + both hands)")
-    print(f"Destination: {save_path}")
-    print("Instructions:")
-    print("  - Press 'S' to begin a 2-second countdown, then record 30 holistic frames.")
-    print("  - Press 'Q' or ESC to quit.")
-    print("=" * 60)
+    recorded_count = 0
+    state = "IDLE"  # IDLE, RECORDING, SAVED, DONE
+    feature_sequence = []
+    save_path = ""
+    last_saved_time = 0
 
-    # Create named window upfront so it registers for keyboard focus
-    cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_AUTOSIZE)
+    print("\n" + "="*50)
+    print(f" Recording variations for '{gesture_name}'")
+    print(f" -> Hold SPACEBAR to record.")
+    print(f" -> Release SPACEBAR to stop and save.")
+    print(f" -> We need {TEMPLATES_PER_CLASS} variations.")
+    print(" -> Press 'q' to quit.")
+    print("="*50 + "\n")
 
     try:
         while True:
-            # Detect if user closed window via the X button
-            try:
-                if cv2.getWindowProperty(WINDOW_NAME, cv2.WND_PROP_VISIBLE) < 1:
-                    break
-            except cv2.error:
-                break
-
             ret, frame = cap.read()
             if not ret:
-                print("Failed to grab frame from camera.")
+                print("Error: Could not read frame from camera.")
                 break
 
-            # Flip frame horizontally for natural selfie view
+            # Mirror the frame
             frame = cv2.flip(frame, 1)
 
-            # Extract holistic features
-            feature_vector, results = extract_holistic_features(frame, holistic)
+            feature_vec, results = extract_holistic_features(frame, holistic)
+            draw_holistic_landmarks(frame, results)
 
-            # Draw MediaPipe holistic skeleton overlay (pose + both hands)
-            frame = draw_holistic_landmarks(frame, results)
+            key = cv2.waitKey(1) & 0xFF
 
-            # Handle state logic
-            if state == "COUNTDOWN":
-                elapsed = time.time() - countdown_start_time
-                countdown_remaining = max(0.0, countdown_duration - elapsed)
-                if countdown_remaining <= 0:
-                    print(f"[INFO] Countdown complete! Recording 30 frames for '{gesture_name}'...")
-                    recorded_frames = []
+            if recorded_count >= TEMPLATES_PER_CLASS:
+                state = "DONE"
+            elif key == ord(' '):
+                # Spacebar is held down
+                if state == "IDLE" or state == "SAVED":
+                    # Start a new recording
                     state = "RECORDING"
+                    feature_sequence = []
+                
+                if state == "RECORDING":
+                    feature_sequence.append(feature_vec)
+            else:
+                # Spacebar is released
+                if state == "RECORDING":
+                    if len(feature_sequence) > 10:
+                        # Save the sequence
+                        recorded_count += 1
+                        padded_count = str(recorded_count).zfill(2)
+                        filename = f"reference_{gesture_name}_{padded_count}.npy"
+                        save_path = os.path.join(TEMPLATES_DIR, filename)
+                        
+                        np.save(save_path, np.array(feature_sequence, dtype=np.float32))
+                        print(f"[{recorded_count}/{TEMPLATES_PER_CLASS}] Saved: {filename} ({len(feature_sequence)} frames)")
+                        
+                        state = "SAVED"
+                        last_saved_time = time.time()
+                    else:
+                        print("Recording too short (<10 frames). Discarded.")
+                        state = "IDLE"
+                elif state == "SAVED":
+                    if time.time() - last_saved_time > 1.0:
+                        state = "IDLE"
 
-            elif state == "RECORDING":
-                recorded_frames.append(feature_vector)
-                if len(recorded_frames) >= RECORD_FRAMES:
-                    # Save exactly 30 frames to .npy file — Shape: (30, FEATURE_DIM)
-                    template_array = np.array(recorded_frames, dtype=np.float32)
-                    np.save(save_path, template_array)
-                    print(f"\n[SUCCESS] Saved {RECORD_FRAMES} frames of shape {template_array.shape} to '{save_path}'")
-                    state = "SAVED"
-
-            # Render HUD overlay
+            # Draw overlay
             draw_overlay(
-                frame=frame,
-                gesture_name=gesture_name,
-                state=state,
-                recorded_count=len(recorded_frames),
-                total_frames=RECORD_FRAMES,
-                save_path=save_path,
-                countdown_remaining=countdown_remaining,
+                frame, 
+                gesture_name, 
+                state, 
+                recorded_count, 
+                len(feature_sequence) if state == "RECORDING" else 0,
+                save_path
             )
 
             cv2.imshow(WINDOW_NAME, frame)
 
-            key = cv2.waitKey(1) & 0xFF
-            if key in [ord("q"), ord("Q"), 27]:  # 27 = ESC
+            if key == ord('q'):
+                print("Recording cancelled by user.")
                 break
-            elif key in [ord("s"), ord("S")]:
-                if state in ["IDLE", "SAVED"]:
-                    print(f"[INFO] Get ready! 2-second countdown started for '{gesture_name}'...")
-                    countdown_start_time = time.time()
-                    countdown_remaining = countdown_duration
-                    state = "COUNTDOWN"
 
     finally:
-        holistic.close()
         cap.release()
         cv2.destroyAllWindows()
-        # Pump event loop so Windows actually tears down the window
-        for _ in range(5):
-            cv2.waitKey(1)
+        holistic.close()
 
 
 if __name__ == "__main__":
