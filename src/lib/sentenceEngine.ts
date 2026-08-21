@@ -136,7 +136,6 @@ export function pushGesture(
       return;
     }
   }
-
   // ─── Accumulate token ───
   const token: SentenceToken = {
     word: gesture,
