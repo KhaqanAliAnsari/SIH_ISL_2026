@@ -19,6 +19,8 @@ import {
 let poseLandmarker: PoseLandmarker | null = null;
 let handLandmarker: HandLandmarker | null = null;
 let lastVideoTime = -1;
+let lastPose: NormalizedLandmark[] | null = null;
+let extractionCounter = 0;
 
 export const FEATURE_DIM = 106;
 
@@ -46,7 +48,7 @@ export interface HolisticResult {
   rightHand: NormalizedLandmark[] | null;
 }
 
-// Pinned WASM version — @latest causes CDN cache misses and potential breaking changes
+// Pinned WASM version for reliability
 const MEDIAPIPE_WASM_VERSION = "0.10.21";
 const MEDIAPIPE_WASM_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`;
 
@@ -64,7 +66,7 @@ async function createWithGpuFallback<T>(
   } catch (gpuErr) {
     console.warn(`[Holistic] ${label}: GPU delegate failed, falling back to CPU:`, gpuErr);
     const result = await factory("CPU");
-    console.log(`[Holistic] ${label}: CPU delegate active (GPU unavailable)`);
+    console.log(`[Holistic] ${label}: CPU delegate active (GPU fallback)`);
     return result;
   }
 }
@@ -85,34 +87,36 @@ export async function initHolisticLandmarker(): Promise<void> {
 
   const [pose, hand] = await Promise.all([
     createWithGpuFallback(
-      (delegate) => PoseLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath:
-            "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task",
-          delegate,
-        },
-        runningMode: "VIDEO",
-        numPoses: 1,
-        minPoseDetectionConfidence: 0.45,
-        minPosePresenceConfidence: 0.45,
-        minTrackingConfidence: 0.7,
-      }),
+      (delegate) =>
+        PoseLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
+            delegate,
+          },
+          runningMode: "VIDEO",
+          numPoses: 1,
+          minPoseDetectionConfidence: 0.5,
+          minPosePresenceConfidence: 0.5,
+          minTrackingConfidence: 0.7,
+        }),
       "PoseLandmarker"
     ),
     createWithGpuFallback(
-      (delegate) => HandLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath:
-            "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-          delegate,
-        },
-        runningMode: "VIDEO",
-        numHands: 2, // Need both hands for holistic
-        minHandDetectionConfidence: 0.45,
-        minTrackingConfidence: 0.5,
-      }),
+      (delegate) =>
+        HandLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath:
+              "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+            delegate,
+          },
+          runningMode: "VIDEO",
+          numHands: 2, // Need both hands for holistic
+          minHandDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5,
+        }),
       "HandLandmarker"
-    )
+    ),
   ]);
 
   poseLandmarker = pose;
@@ -124,6 +128,8 @@ export async function initHolisticLandmarker(): Promise<void> {
 
 /**
  * Detect pose and hands from a video element.
+ * Throttles pose detection to 1 in every 4 cycles to save GPU time,
+ * caching lastPose for intermediate frames.
  */
 export function detectHolistic(videoElement: HTMLVideoElement): HolisticResult {
   const result: HolisticResult = {
@@ -140,28 +146,26 @@ export function detectHolistic(videoElement: HTMLVideoElement): HolisticResult {
 
   try {
     const timestamp = performance.now();
-    const poseResult = poseLandmarker.detectForVideo(videoElement, timestamp);
-    const handResult = handLandmarker.detectForVideo(videoElement, timestamp);
 
-    if (poseResult.landmarks && poseResult.landmarks.length > 0) {
-      result.pose = poseResult.landmarks[0];
+    extractionCounter++;
+    const shouldUpdatePose = (extractionCounter % 4) === 1; // 1st frame out of every 4
+
+    if (shouldUpdatePose) {
+      const poseResult = poseLandmarker.detectForVideo(videoElement, timestamp);
+      if (poseResult.landmarks && poseResult.landmarks.length > 0) {
+        lastPose = poseResult.landmarks[0];
+      }
     }
 
+    result.pose = lastPose;
+
+    const handResult = handLandmarker.detectForVideo(videoElement, timestamp);
+
     if (handResult.landmarks && handResult.handednesses) {
-      // HandLandmarker returns handedness based on the image perspective.
-      // Since we flip X later to match Python's cv2.flip(frame, 1),
-      // we need to be careful with left/right assignment.
-      // Python MediaPipe Holistic assigns left/right based on subject's perspective in the *flipped* frame.
-      // In JS, "Left" from tasks-vision on an unflipped selfie feed actually corresponds to the subject's right hand.
-      // However, after we flip X (1.0 - x), it maps correctly to the Python extracted features if we just
-      // use the handedness labels directly (Left handedness -> Left Hand feature block).
       for (let i = 0; i < handResult.landmarks.length; i++) {
         const hand = handResult.landmarks[i];
         const category = handResult.handednesses[i][0].categoryName; // "Left" or "Right"
-        
-        // Note: In selfie mode, what looks like the left hand on screen is the subject's right hand.
-        // But because we flip the X coordinate (1.0 - X) during extraction, we effectively mirror it back.
-        // We will assign based on the Tasks API label.
+
         if (category === "Left" && !result.leftHand) {
           result.leftHand = hand;
         } else if (category === "Right" && !result.rightHand) {
@@ -187,9 +191,8 @@ export function extractHolisticFeatureVector(result: HolisticResult): Float32Arr
 
   // 1. Pose features (12 + 10 = 22 dims)
   if (result.pose && result.pose.length >= 17) {
-    // IMPORTANT: Mirror X coordinates to match Python's cv2.flip(frame, 1)
-    const midShoulderX = ( (1.0 - result.pose[11].x) + (1.0 - result.pose[12].x) ) / 2.0;
-    const midShoulderY = ( result.pose[11].y + result.pose[12].y ) / 2.0;
+    const midShoulderX = ((1.0 - result.pose[11].x) + (1.0 - result.pose[12].x)) / 2.0;
+    const midShoulderY = (result.pose[11].y + result.pose[12].y) / 2.0;
 
     // Upper body (indices 11-16)
     for (const idx of POSE_UPPER_BODY_INDICES) {
@@ -256,4 +259,6 @@ export function closeHolisticLandmarker(): void {
     handLandmarker = null;
   }
   lastVideoTime = -1;
+  lastPose = null;
+  extractionCounter = 0;
 }

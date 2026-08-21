@@ -6,13 +6,24 @@ import argparse
 from collections import deque
 import cv2
 import numpy as np
+<<<<<<< Updated upstream
+=======
+import re
+import itertools
+>>>>>>> Stashed changes
 from fastdtw import fastdtw
 from scipy.spatial.distance import euclidean
 
 from utils import init_holistic, extract_holistic_features, draw_holistic_landmarks, FEATURE_DIM
 
+<<<<<<< Updated upstream
 BUFFER_SIZE = 30
 DEFAULT_THRESHOLD = 30.0
+=======
+BUFFER_SIZE = 90
+DEFAULT_THRESHOLD = 30.0
+DTW_EVAL_RATE = 3  # Evaluate DTW every N frames to save CPU
+>>>>>>> Stashed changes
 TEMPLATES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
 WINDOW_NAME = "SignKYC - Real-time ISL Gesture Recognition (Holistic DTW)"
 
@@ -60,6 +71,7 @@ def load_templates(templates_dir: str):
         base_name = os.path.splitext(os.path.basename(file_path))[0]
         # Remove 'reference_' prefix if present
         gesture_name = base_name.replace("reference_", "")
+<<<<<<< Updated upstream
         try:
             data = np.load(file_path)
             if data.ndim == 2 and data.shape[1] == FEATURE_DIM:
@@ -70,6 +82,24 @@ def load_templates(templates_dir: str):
                     f"[WARNING] Skipping '{os.path.basename(file_path)}' — "
                     f"shape {data.shape} does not match expected (N, {FEATURE_DIM}). "
                     f"Re-record with the holistic pipeline."
+=======
+        
+        # Strip trailing variation number if present (e.g., '_01', '_02')
+        gesture_class = re.sub(r'_\d{1,2}$', '', gesture_name)
+
+        try:
+            data = np.load(file_path)
+            if data.ndim == 2 and data.shape[1] == FEATURE_DIM:
+                if gesture_class not in templates:
+                    templates[gesture_class] = []
+                # Precompute and store the length alongside the data array for faster inner-loop access
+                templates[gesture_class].append((data, data.shape[0]))
+                print(f"[LOADED] Template '{gesture_name}' -> Class '{gesture_class}' (Length: {data.shape[0]})")
+            else:
+                print(
+                    f"[WARNING] Skipping '{os.path.basename(file_path)}' — "
+                    f"shape {data.shape} does not match expected (N, {FEATURE_DIM})."
+>>>>>>> Stashed changes
                 )
         except Exception as e:
             print(f"[ERROR] Failed to load template '{file_path}': {e}")
@@ -240,12 +270,20 @@ def main():
 
     prev_time = time.time()
     fps = 0.0
+<<<<<<< Updated upstream
+=======
+    frame_counter = 0
+>>>>>>> Stashed changes
 
     print("=" * 70)
     print("SignKYC Real-Time ISL Gesture Recognition (Holistic DTW)")
     print(f"Feature dimension: {FEATURE_DIM} (upper body + head + both hands)")
     print(f"Loaded {len(templates)} templates: {list(templates.keys())}")
     print(f"Rolling Buffer: {BUFFER_SIZE} frames | Distance Threshold: {threshold}")
+<<<<<<< Updated upstream
+=======
+    print(f"DTW Evaluation Rate: Every {DTW_EVAL_RATE} frames")
+>>>>>>> Stashed changes
     print("Press 'Q' or ESC to exit.")
     print("=" * 70)
 
@@ -282,6 +320,7 @@ def main():
 
             # Push vector into rolling buffer
             landmark_buffer.append(feature_vector)
+<<<<<<< Updated upstream
 
             # When the buffer is full (30 frames), perform DTW against templates
             if len(landmark_buffer) == BUFFER_SIZE and len(templates) > 0:
@@ -305,6 +344,45 @@ def main():
                         best_gesture = gesture_name
 
                 last_scores = current_scores
+=======
+            frame_counter += 1
+
+            # The loop runs continuously, but we only evaluate DTW every N frames to save massive CPU
+            if len(templates) > 0 and frame_counter % DTW_EVAL_RATE == 0:
+                best_gesture = None
+                min_distance = float("inf")
+                current_scores = {}
+                
+                buffer_len = len(landmark_buffer)
+
+                for gesture_class, template_variations in templates.items():
+                    class_min_dist = float("inf")
+                    for template_sequence, t_len in template_variations:
+                        
+                        # Only evaluate if buffer has enough frames for this specific template
+                        if buffer_len >= t_len:
+                            # Dynamic window: slice the last `t_len` frames from the buffer
+                            window_frames = list(itertools.islice(landmark_buffer, buffer_len - t_len, buffer_len))
+                            current_sequence = np.array(window_frames, dtype=np.float32)
+                            
+                            # Calculate FastDTW using Euclidean distance
+                            dist, _ = fastdtw(current_sequence, template_sequence, dist=euclidean)
+                            
+                            # Normalize distance back to a 30-frame equivalent scale to preserve tuning
+                            normalized_dist = (dist / t_len) * 30.0
+                            
+                            if normalized_dist < class_min_dist:
+                                class_min_dist = normalized_dist
+                                
+                    if class_min_dist != float("inf"):
+                        current_scores[gesture_class] = class_min_dist
+                        if class_min_dist < min_distance:
+                            min_distance = class_min_dist
+                            best_gesture = gesture_class
+
+                if current_scores:
+                    last_scores = current_scores
+>>>>>>> Stashed changes
 
                 # Trigger recognition if distance is below threshold
                 if best_gesture is not None and min_distance < threshold:
@@ -315,6 +393,10 @@ def main():
 
                     # Clear rolling buffer to prevent duplicate immediate triggers
                     landmark_buffer.clear()
+<<<<<<< Updated upstream
+=======
+                    frame_counter = 0
+>>>>>>> Stashed changes
 
             # Clear UI recognition banner if expired
             active_gesture = last_recognized_gesture if time.time() < recognized_display_until else ""
