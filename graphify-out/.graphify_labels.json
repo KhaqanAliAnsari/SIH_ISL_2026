@@ -3,7 +3,7 @@
   "1": "compilerOptions",
   "2": "App.tsx",
   "3": "devDependencies",
-  "4": "Login.tsx",
+  "4": "measure.cjs",
   "5": "sentenceEngine.ts",
   "6": "SignKYC — Bank Official Console (V-CIP Assist View)",
   "7": "index.ts",
@@ -12,7 +12,10 @@
   "10": "workflows/graphify.md",
   "11": "vercel.json",
   "12": "Action Plan: Tasks to be Completed (In Sequence)",
-  "13": "extract_holistic_features",
+  "13": "main.py",
   "14": "Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition (Holistic)",
-  "15": "VideoPanel.tsx"
+  "15": "VideoPanel.tsx",
+  "20": "train_static_mlp.py",
+  "21": "preprocess_static.py",
+  "22": "sih.md"
 }

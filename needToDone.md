@@ -1,5 +1,15 @@
 # SignKYC — Need To Be Done
 
+> [!WARNING]
+> **CURRENT STATE (August 19, 2026): MLP Model Training Interrupted**
+> We are in the middle of training the MLP classifier for static alphabet/digit poses.
+> - **Frontend:** Wired up! `mlpEngine.ts` is fully integrated into `VideoPanel.tsx`. 
+> - **Backend Scripts:** `preprocess_static.py`, `train_static_mlp.py`, and `train_static_mlp.bat` are written.
+> - **Pending Action:** The offline feature extraction (`python preprocess_static.py` in `isl_dtw/`) was stopped midway because the dataset has ~14,000+ images and takes ~2.5 hours on CPU. To continue, you must:
+>   1. Re-run `train_static_mlp.bat` (or manually run `preprocess_static.py` then `train_static_mlp.py`).
+>   2. Wait for the `tfjs_model` to be exported and copied to `/public/tfjs_model/`.
+>   3. Verify functionality on the frontend.
+
 ## Current Status & Completed Items
 What's genuinely built and working:
 - **Full UI component set:** Every screen matches the design spec (Video panel, AI assist panel, KYC progress strip, footer, audit/edit/interpreter/customer-view modals).
@@ -23,10 +33,18 @@ What's genuinely built and working:
 
 ### Phase 1: Core AI Recognition Pipeline
 The biggest real gap. Everything currently on screen is hardcoded.
+<<<<<<< Updated upstream
 - [ ] **Task 1.1: Frame Capture Logic:** Implement logic in `VideoPanel.tsx` to capture frames from the live video feed (canvas snapshot on an interval, or on-demand).
 - [ ] **Task 1.2: API Wiring:** POST captured frames to the existing `/api/analyze-sign` endpoint.
 - [ ] **Task 1.3: Dynamic State Update:** Replace the hardcoded `confidenceScore` and `liveCaptionText` state in `App.tsx` with values returned from the real API response.
 - [ ] **Task 1.4: Real Confidence Thresholds:** Implement an actual threshold check driven by the API's confidence score to trigger appropriate branching (e.g., auto-confirm vs. request re-sign).
+=======
+- [x] **Task 1.1: Frame Capture Logic:** Implemented directly in `VideoPanel.tsx` using WebGPU MediaPipe Holistic and decoupled throttling.
+- [x] **Task 1.2: API Wiring:** Wired via `sentenceEngine.ts` to accumulate tokens and call the Gemini API (`/api/phrase-sentence`) directly for compound fields.
+- [x] **Task 1.3: Dynamic State Update:** UI dynamically updates with real DTW confidence scores and immediate raw tokens.
+- [x] **Task 1.4: Real Confidence Thresholds:** DTW is hard-gated at >= 90% confidence threshold.
+- [x] **Task 1.5: DTW Robustness & Optimization:** Dynamic sliding window, 10-template grouping (for natural variations), and `pose_landmarker_full` model integration implemented to drastically reduce false positives.
+>>>>>>> Stashed changes
 
 ### Phase 2: Environment & Backend Polish
 - [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/analyze-sign` return real AI output.

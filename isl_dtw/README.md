@@ -10,8 +10,9 @@ Dynamic Indian Sign Language (ISL) gesture recognition pipeline using **MediaPip
 isl_dtw/
 ├── templates/               # Stores recorded reference templates (.npy)
 ├── utils.py                 # MediaPipe Holistic extraction & normalization (106-dim vector)
-├── record_template.py       # Records 30 frames of dynamic gesture to reference_<name>.npy
-├── main.py                  # Real-time FastDTW recognizer with rolling 30-frame buffer
+├── record_template.py       # Records multiple dynamic variations to reference_<name>_XX.npy
+├── record_template_0-9.py   # Sequentially records 10 variations for digits 0-9
+├── main.py                  # Real-time FastDTW recognizer with dynamic sliding window and evaluation skipping
 ├── test_pipeline.py         # Automated pipeline verification tests
 ├── requirements.txt         # Dependencies
 └── README.md
@@ -41,20 +42,20 @@ pip install -r requirements.txt
 ```
 
 ### 2. Record Reference Templates
-Record a dynamic 30-frame sign gesture (e.g. `namaste`, `hello`, `thank_you`):
+Record dynamic gesture variations (e.g. `namaste`, `hello`, `thank_you`):
 
 ```bash
-# Record 'namaste' gesture
+# Record 'namaste' gesture (prompts for 10 variations)
 python record_template.py --name namaste
 
-# Record 'hello' gesture
-python record_template.py --name hello
+# Record digits 0-9 sequentially
+python record_template_0-9.py
 ```
 * **Instructions**:
   - Stand in front of the camera so your upper body and hands are visible.
-  - Press **`S`** to begin recording.
-  - Perform the dynamic gesture smoothly within the 30-frame progress bar.
-  - Output is saved automatically as `templates/reference_<gesture_name>.npy`.
+  - Press and hold **`SPACEBAR`** to begin recording a variation. Release or press space again to stop.
+  - The script will capture 10 natural variations per class to ensure high accuracy.
+  - Outputs are saved automatically as `templates/reference_<gesture_name>_01.npy`, etc.
 
 ---
 
@@ -81,5 +82,7 @@ python main.py --camera 1
 - **MediaPipe Holistic**: Unified detection of pose, left hand, and right hand in a single pass — enabling ISL signs that involve two-hand interaction, torso-relative arm positioning, and face-anchored gestures.
 - **Translation Invariance**: Upper body and head landmarks are normalized relative to mid-shoulder `((lm11 + lm12) / 2)`. Hand landmarks are normalized relative to their respective wrist (landmark 0).
 - **Constant Feature Dimension**: Zero-padding ensures a fixed 106-dimensional vector per frame regardless of hand visibility.
-- **FastDTW Matching**: Computes temporal sequence alignment against all loaded reference templates using Euclidean spatial distance (`scipy.spatial.distance.euclidean`).
+- **Dynamic Sliding Window**: Automatically adapts to match the length of the recorded templates (instead of forcing a strict 30 frames).
+- **Multi-Template Grouping**: Groups multiple recorded variations (e.g., `_01`, `_02`) under a single class and finds the minimum DTW distance to ensure robust recognition against natural human variation.
+- **FastDTW Matching**: Computes temporal sequence alignment against all loaded reference templates using Euclidean spatial distance (`scipy.spatial.distance.euclidean`). Optimized to evaluate every 3 frames to maintain high CPU performance.
 - **Duplicate Suppression**: Once a gesture is recognized below the distance threshold, the rolling buffer is automatically cleared to prevent repeated false triggers.

@@ -42,7 +42,7 @@ def init_holistic(
     """
     return mp_holistic.Holistic(
         static_image_mode=False,
-        model_complexity=1,
+        model_complexity=0,
         min_detection_confidence=min_detection_confidence,
         min_tracking_confidence=min_tracking_confidence,
     )
@@ -67,21 +67,18 @@ def _extract_pose_features(pose_landmarks):
     mid_shoulder_y = (lm[11].y + lm[12].y) / 2.0
 
     # Upper body: shoulders (11, 12), elbows (13, 14), wrists (15, 16)
-    upper_body = []
-    for idx in POSE_UPPER_BODY_INDICES:
-        upper_body.append(lm[idx].x - mid_shoulder_x)
-        upper_body.append(lm[idx].y - mid_shoulder_y)
+    upper_body = np.zeros(12, dtype=np.float32)
+    for i, idx in enumerate(POSE_UPPER_BODY_INDICES):
+        upper_body[i*2] = lm[idx].x - mid_shoulder_x
+        upper_body[i*2 + 1] = lm[idx].y - mid_shoulder_y
 
     # Head spatial anchors: nose (0), eyes (2, 5), mouth corners (9, 10)
-    head_anchors = []
-    for idx in POSE_HEAD_INDICES:
-        head_anchors.append(lm[idx].x - mid_shoulder_x)
-        head_anchors.append(lm[idx].y - mid_shoulder_y)
+    head_anchors = np.zeros(10, dtype=np.float32)
+    for i, idx in enumerate(POSE_HEAD_INDICES):
+        head_anchors[i*2] = lm[idx].x - mid_shoulder_x
+        head_anchors[i*2 + 1] = lm[idx].y - mid_shoulder_y
 
-    return (
-        np.array(upper_body, dtype=np.float32),
-        np.array(head_anchors, dtype=np.float32),
-    )
+    return upper_body, head_anchors
 
 
 def _extract_hand_features(hand_landmarks):
@@ -101,12 +98,12 @@ def _extract_hand_features(hand_landmarks):
     wrist_x = lm[0].x
     wrist_y = lm[0].y
 
-    features = []
-    for landmark in lm:
-        features.append(landmark.x - wrist_x)
-        features.append(landmark.y - wrist_y)
+    features = np.zeros(42, dtype=np.float32)
+    for i, landmark in enumerate(lm):
+        features[i*2] = landmark.x - wrist_x
+        features[i*2 + 1] = landmark.y - wrist_y
 
-    return np.array(features, dtype=np.float32)
+    return features
 
 
 def extract_holistic_features(frame: np.ndarray, holistic):
@@ -132,16 +129,40 @@ def extract_holistic_features(frame: np.ndarray, holistic):
     results = holistic.process(rgb_frame)
     rgb_frame.flags.writeable = True
 
-    # Extract each feature block
-    upper_body, head_anchors = _extract_pose_features(results.pose_landmarks)
-    left_hand = _extract_hand_features(results.left_hand_landmarks)
-    right_hand = _extract_hand_features(results.right_hand_landmarks)
+    # Extract directly into a contiguous 106-dim vector (zero-padded by default)
+    feature_vector = np.zeros(FEATURE_DIM, dtype=np.float32)
 
-    # Concatenate into a single 106-dim vector
-    feature_vector = np.concatenate([upper_body, head_anchors, left_hand, right_hand])
-    assert feature_vector.shape == (FEATURE_DIM,), (
-        f"Feature vector shape mismatch: expected ({FEATURE_DIM},), got {feature_vector.shape}"
-    )
+    # 1. Pose features
+    if results.pose_landmarks:
+        lm = results.pose_landmarks.landmark
+        mid_shoulder_x = (lm[11].x + lm[12].x) / 2.0
+        mid_shoulder_y = (lm[11].y + lm[12].y) / 2.0
+
+        # Upper body (12 dims: [0:12])
+        for i, idx in enumerate(POSE_UPPER_BODY_INDICES):
+            feature_vector[i * 2] = lm[idx].x - mid_shoulder_x
+            feature_vector[i * 2 + 1] = lm[idx].y - mid_shoulder_y
+
+        # Head anchors (10 dims: [12:22])
+        for i, idx in enumerate(POSE_HEAD_INDICES):
+            feature_vector[12 + i * 2] = lm[idx].x - mid_shoulder_x
+            feature_vector[12 + i * 2 + 1] = lm[idx].y - mid_shoulder_y
+
+    # 2. Left hand (42 dims: [22:64])
+    if results.left_hand_landmarks:
+        lm = results.left_hand_landmarks.landmark
+        wrist_x, wrist_y = lm[0].x, lm[0].y
+        for i, landmark in enumerate(lm):
+            feature_vector[22 + i * 2] = landmark.x - wrist_x
+            feature_vector[22 + i * 2 + 1] = landmark.y - wrist_y
+
+    # 3. Right hand (42 dims: [64:106])
+    if results.right_hand_landmarks:
+        lm = results.right_hand_landmarks.landmark
+        wrist_x, wrist_y = lm[0].x, lm[0].y
+        for i, landmark in enumerate(lm):
+            feature_vector[64 + i * 2] = landmark.x - wrist_x
+            feature_vector[64 + i * 2 + 1] = landmark.y - wrist_y
 
     return feature_vector, results
 

@@ -103,22 +103,15 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
             Human-in-the-Loop Official Workstation
           </p>
         </div>
-
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white text-gray-700 border border-gray-300 font-semibold">
-          NLU Protocol Active
-        </span>
       </div>
 
       {/* Main Content Body */}
       <div className="flex-1 overflow-y-auto p-3.5 space-y-3.5 custom-scrollbar">
         {/* 1. LIVE CAPTION BOX (Trust-critical exception: sits larger/heavier than standard text) */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-          <div className="flex items-center justify-between mb-1.5">
+          <div className="mb-1.5">
             <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">
               Live Customer ISL Translation
-            </span>
-            <span className="text-[10px] text-gray-500 font-mono">
-              Latency: 110ms
             </span>
           </div>
 
@@ -126,10 +119,6 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
             "{liveCaptionText}"
           </div>
 
-          <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 mt-1.5">
-            <span>ISL Syntax: Subject-Object-Verb Structure</span>
-            <span className="text-green-700 font-bold">Verified</span>
-          </div>
         </div>
 
         {/* 2. CONFIDENCE METER (Trust-critical exception: persistent high visibility element) */}
