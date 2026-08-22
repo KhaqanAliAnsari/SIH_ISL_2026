@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1787387308625",
+    "fact": "Core Operating Directives: 1. Graphify Maintenance: Always run `graphify update .` after making code changes. 2. Conversation & Pattern Analysis: Continuously analyze the user's conversational patterns and save relevant insights into Mem0. 3. Proactive Advisory Role: Do not just blindly assist; proactively advise the user on better approaches and optimizations. 4. Alternative Solutions: Always evaluate alternative, proven methods for any scenario and present them. 5. Transparent Reasoning: Briefly explain the thought process and how a conclusion was reached.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T08:28:28.625Z"
+  },
+  {
+    "id": "1787402192592",
+    "fact": "User communication style: Prefers direct, no-fluff responses. When they say 'do it for me' or 'handle it', they want full autonomous execution without asking for permission or deferring manual steps back to them. They want the AI to take charge and act, not explain what the user should do. They appreciate being told WHY something is being done, but not being asked to do simple things themselves.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T12:36:32.592Z"
+  },
+  {
+    "id": "1787402199128",
+    "fact": "User expects the AI to not just code but also be a strategic advisor — proactively suggesting better architectures, alternative proven methods, flagging risks, and explaining reasoning. The user values learning from the process, not just getting output. Save insights, conventions, and debugging patterns to Mem0 continuously.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T12:36:39.129Z"
+  },
+  {
+    "id": "1787402208561",
+    "fact": "Global agent configuration locations: AGENTS.md at C:\\Users\\11111\\.gemini\\config\\AGENTS.md. Skills at C:\\Users\\11111\\.gemini\\config\\skills\\. Rules at C:\\Users\\11111\\.gemini\\config\\rules\\. Custom skills installed: deep-testing, code-review, pre-task-checklist. Custom rules: proactive-advisory.md, post-change-hygiene.md. MCP servers: graphify, code-review-graph, obsidian, mem0-memory, trigger.dev, github, notebooks, visualization, data-agent-kit.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T12:36:48.561Z"
+  },
+  {
+    "id": "1787402216208",
+    "fact": "User's npx cache on Windows is corrupted (Cannot find package jiti error). Always use globally installed CLI commands directly (e.g. trigger.cmd, mcp-server-github.cmd) instead of npx when possible. This is a recurring issue on this machine.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T12:36:56.208Z"
+  },
+  {
+    "id": "1787422155349",
+    "fact": "For real-time camera gesture recognition using fastdtw and MediaPipe: 1) Never run fastdtw in the main camera thread as it drops FPS drastically; use a background thread. 2) Using fastdtw's built-in dist=2 is ~10x faster than using a python distance callback like scipy.spatial.distance.euclidean. 3) Implement a 'missed_frames' grace period (e.g., 15 frames, or 0.5s) before clearing the gesture frame buffer when MediaPipe momentarily loses tracking, to prevent a brittle user experience.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T18:09:15.349Z"
+  },
+  {
+    "id": "1787426220514",
+    "fact": "SIH_ISL_2026 performance deep-test findings (August 2026): The primary bottleneck in the buffer/frame rendering system is NOT GPU acceleration (correctly configured with delegate:'GPU', COOP/COEP headers present). The real culprits are: (1) Math.sqrt() called inside the innermost DTW loop in dtwWorker.ts L140 — mathematically unnecessary for ranking and costs ~15-30% of DTW time; (2) getRingBufferSnapshot() creates a full copy on every match attempt despite dtwDistance() already supporting start/length params; (3) The rAF detection loop useEffect depends on drawLandmarks which changes identity when showMesh/demoState changes, causing loop restarts and visible stutter. Feature vector parity between Python and TS is confirmed correct (106-dim, same normalization). The 1.0-x mirroring in TS is intentional for CSS scaleX(-1) compensation.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-22T19:17:00.514Z"
+  }
+]

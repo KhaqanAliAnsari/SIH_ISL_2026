@@ -75,8 +75,11 @@ export function getBufferFill(): number {
 }
 
 export async function pushFrame(featureVector: Float32Array): Promise<number> {
+  // Eagerly update to prevent UI lag while worker is busy
+  if (cachedBufferFill < 90) cachedBufferFill++;
+  
   const fill = await postToWorker<number>('PUSH_FRAME', featureVector);
-  cachedBufferFill = fill;
+  cachedBufferFill = fill; // Resync with true worker state
   return fill;
 }
 

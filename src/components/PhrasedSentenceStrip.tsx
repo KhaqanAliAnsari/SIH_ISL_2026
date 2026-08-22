@@ -61,13 +61,15 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
         >
           {sentences.map((sentence) => {
             const isTimeout = sentence.corrections?.some(c => c.toLowerCase().includes("timeout") || c.toLowerCase().includes("separate"));
+            const isApiOffline = sentence.corrections?.some(c => c.toLowerCase().includes("api unavailable"));
+            
             return (
               <div 
                 key={sentence.id}
                 className={`flex-shrink-0 min-w-[280px] max-w-sm rounded-lg border p-3 flex flex-col gap-2 transition-all duration-300 transform hover:scale-[1.01] ${
                   sentence.status === "pending" 
                     ? "bg-indigo-950/40 border-indigo-500/50 animate-pulse text-indigo-200" 
-                    : sentence.status === "error"
+                    : (sentence.status === "error" || isApiOffline)
                       ? "bg-rose-950/40 border-rose-500/50 text-rose-200"
                       : "bg-zinc-950 border-zinc-800 hover:border-zinc-700 text-white shadow-sm"
                 }`}
@@ -76,18 +78,18 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
                 <div className="flex items-center justify-between text-[10px] font-mono">
                   <span className={`px-1.5 py-0.5 rounded font-bold flex items-center gap-1 border ${
                     sentence.status === "pending" ? "text-indigo-300 bg-indigo-900/60 border-indigo-700" :
-                    sentence.status === "error" ? "text-rose-300 bg-rose-900/60 border-rose-700" :
+                    (sentence.status === "error" || isApiOffline) ? "text-rose-300 bg-rose-900/60 border-rose-700" :
                     isTimeout ? "text-amber-300 bg-amber-900/60 border-amber-700" :
                     "text-emerald-300 bg-emerald-950/80 border-emerald-800"
                   }`}>
                     {sentence.status === "pending" && <Loader2 className="w-3 h-3 animate-spin" />}
-                    {sentence.status === "error" && <AlertCircle className="w-3 h-3" />}
-                    {sentence.status === "done" && (
+                    {(sentence.status === "error" || isApiOffline) && <AlertCircle className="w-3 h-3" />}
+                    {sentence.status === "done" && !isApiOffline && (
                       isTimeout ? <Clock className="w-3 h-3 text-amber-400" /> : <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                     )}
                     
                     {sentence.status === "pending" ? "Processing..." :
-                     sentence.status === "error" ? "Raw Output" :
+                     (sentence.status === "error" || isApiOffline) ? "AI Offline (Raw Tokens)" :
                      isTimeout ? "Auto 18s (Unmerged)" : "AI Phrased (Merged)"}
                   </span>
                   <span className="text-zinc-500 font-mono">

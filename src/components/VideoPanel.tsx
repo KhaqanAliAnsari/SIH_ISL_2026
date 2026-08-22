@@ -102,6 +102,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const dtwEvalCounter = useRef(0);
   const recorderFrameHandlerRef = useRef<((frame: Float32Array) => void) | null>(null);
 
+  // Stable refs for rAF loop — prevents useEffect restart on callback identity changes
+  const drawLandmarksRef = useRef<(ctx: CanvasRenderingContext2D, result: HolisticResult, w: number, h: number) => void>(() => {});
+  const onGestureRecognizedRef = useRef(onGestureRecognized);
+
   const handleRegisterFrameHandler = useCallback((handler: ((frame: Float32Array) => void) | null) => {
     recorderFrameHandlerRef.current = handler;
   }, []);
@@ -315,8 +319,13 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
     [showMesh, demoState]
   );
 
+  // Keep refs in sync with latest values (safe during render — refs don't trigger re-renders)
+  drawLandmarksRef.current = drawLandmarks;
+  onGestureRecognizedRef.current = onGestureRecognized;
+
   // ─── Detection + DTW Loop ──────────────────────────────────────────
   const isMatchingRef = useRef(false);
+  const lastVideoTimeRef = useRef(-1);
 
   useEffect(() => {
     if (!useWebcam || !modelReady) return;
@@ -349,67 +358,74 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         return;
       }
 
-      // 1. Detect pose + hands synchronously on GPU (0ms latency)
-      const t0 = performance.now();
-      const result = detectHolistic(video);
+      // ONLY process if the webcam actually produced a new frame!
+      // This prevents high-refresh-rate monitors (e.g. 144Hz) from pushing duplicate frames
+      // to the 30Hz video stream, which causes "2x speed" recording glitches.
+      if (video.currentTime !== lastVideoTimeRef.current) {
+        lastVideoTimeRef.current = video.currentTime;
 
-      // 2. Extract 106-dim feature vector
-      const featureVec = extractHolisticFeatureVector(result);
-      const detected = isBodyDetected(featureVec);
-      
-      lastResultRef.current = result;
-      lastFeatureVecRef.current = featureVec;
-      handVisibleRef.current = detected;
-      
-      // Dispatch frame to template recorder if active
-      if (recorderFrameHandlerRef.current) {
-        recorderFrameHandlerRef.current(featureVec);
-      }
+        // 1. Detect pose + hands synchronously on GPU (0ms latency)
+        const t0 = performance.now();
+        const result = detectHolistic(video, performance.now());
 
-      // 3. Render landmarks immediately onto canvas (zero-latency visual feedback)
-      if (detected && showMesh) {
-        drawLandmarks(ctx, result, canvas.width, canvas.height);
-      } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      // 4. Push to DTW buffer and match gestures via Web Worker
-      if (dtwCooldown.current > 0) dtwCooldown.current--;
-
-      if (detected) {
-        // Fire-and-forget: pushes to worker and syncs the UI fill counter
-        pushFrame(featureVec).then(fill => {
-          bufferFillRef.current = fill;
-        });
-
-        dtwEvalCounter.current++;
-        // Run match checks async, ensuring we don't pile up messages if the worker is busy
-        if (dtwEvalCounter.current % 2 === 0 && !isMatchingRef.current && dtwCooldown.current === 0) {
-          isMatchingRef.current = true;
-          matchGesture().then(match => {
-            isMatchingRef.current = false;
-            if (match.gesture) {
-              setLastMatch(match);
-              dtwCooldown.current = 45;
-              onGestureRecognized?.(match.gesture, match.distance, match.confidence);
-            }
-          }).catch(err => {
-            console.error("Worker match failed:", err);
-            isMatchingRef.current = false;
-          });
+        // 2. Extract 106-dim feature vector
+        const featureVec = extractHolisticFeatureVector(result);
+        const detected = isBodyDetected(featureVec);
+        
+        lastResultRef.current = result;
+        lastFeatureVecRef.current = featureVec;
+        handVisibleRef.current = detected;
+        
+        // Dispatch frame to template recorder if active
+        if (recorderFrameHandlerRef.current) {
+          recorderFrameHandlerRef.current(featureVec);
         }
-      } else {
-        bufferFillRef.current = getBufferFill();
+
+        // 3. Render landmarks immediately onto canvas (zero-latency visual feedback)
+        if (detected) {
+          drawLandmarksRef.current(ctx, result, canvas.width, canvas.height);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // 4. Push to DTW buffer and match gestures via Web Worker
+        if (dtwCooldown.current > 0) dtwCooldown.current--;
+
+        if (detected) {
+          // Fire-and-forget: pushes to worker and syncs the UI fill counter
+          pushFrame(featureVec).then(fill => {
+            bufferFillRef.current = fill;
+          });
+
+          dtwEvalCounter.current++;
+          // Run match checks async, ensuring we don't pile up messages if the worker is busy
+          if (dtwEvalCounter.current % 2 === 0 && !isMatchingRef.current && dtwCooldown.current === 0) {
+            isMatchingRef.current = true;
+            matchGesture().then(match => {
+              isMatchingRef.current = false;
+              if (match.gesture) {
+                setLastMatch(match);
+                dtwCooldown.current = 45;
+                onGestureRecognizedRef.current?.(match.gesture, match.distance, match.confidence);
+              }
+            }).catch(err => {
+              console.error("Worker match failed:", err);
+              isMatchingRef.current = false;
+            });
+          }
+        } else {
+          bufferFillRef.current = getBufferFill();
+        }
+
+        const t1 = performance.now();
+        if (Math.random() < 0.02) {
+          console.log(`[Profiler] Frame processing time: ${(t1 - t0).toFixed(1)}ms`);
+        }
       }
 
-      const t1 = performance.now();
-      if (Math.random() < 0.02) {
-        console.log(`[Profiler] Frame processing time: ${(t1 - t0).toFixed(1)}ms`);
-      }
-
-      // Throttled UI state flush (~5Hz)
+      // Throttled UI state flush (~30Hz) for buttery smooth buffer filling
       const now = performance.now();
-      if (now - lastUiFlushRef.current > 200) {
+      if (now - lastUiFlushRef.current > 32) {
         lastUiFlushRef.current = now;
         setHandVisible(handVisibleRef.current);
         setBufferFill(bufferFillRef.current);
@@ -434,7 +450,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         cancelAnimationFrame(animFrameRef.current);
       }
     };
-  }, [useWebcam, modelReady, drawLandmarks, onGestureRecognized, showMesh]);
+  }, [useWebcam, modelReady]);
 
   // ─── Cleanup on unmount ────────────────────────────────────────────
   useEffect(() => {

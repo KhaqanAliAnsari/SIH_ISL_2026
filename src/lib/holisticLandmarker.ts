@@ -64,8 +64,7 @@ export async function initHolisticLandmarker(): Promise<void> {
   const [pose, hand] = await Promise.all([
     PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
         delegate: "GPU",
       },
       runningMode: "VIDEO",
@@ -76,12 +75,11 @@ export async function initHolisticLandmarker(): Promise<void> {
     }),
     HandLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
         delegate: "GPU",
       },
       runningMode: "VIDEO",
-      numHands: 2, // Both hands
+      numHands: 2,
       minHandDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5,
     }),
@@ -98,7 +96,7 @@ export async function initHolisticLandmarker(): Promise<void> {
  * Detect pose and hands from a video element at full real-time speed.
  * Processes every single frame with 0ms latency.
  */
-export function detectHolistic(videoElement: HTMLVideoElement): HolisticResult {
+export function detectHolistic(videoElement: HTMLVideoElement, timestamp: number): HolisticResult {
   const result: HolisticResult = {
     pose: null,
     leftHand: null,
@@ -108,8 +106,7 @@ export function detectHolistic(videoElement: HTMLVideoElement): HolisticResult {
   if (!poseLandmarker || !handLandmarker) return result;
 
   try {
-    let now = performance.now();
-    // Guarantee strictly increasing timestamp for MediaPipe Video mode
+    let now = timestamp;
     if (now <= lastTimestamp) {
       now = lastTimestamp + 1;
     }
@@ -126,8 +123,7 @@ export function detectHolistic(videoElement: HTMLVideoElement): HolisticResult {
     if (handResult.landmarks && handResult.handednesses) {
       for (let i = 0; i < handResult.landmarks.length; i++) {
         const hand = handResult.landmarks[i];
-        const category = handResult.handednesses[i][0].categoryName; // "Left" or "Right"
-
+        const category = handResult.handednesses[i][0].categoryName;
         if (category === "Left" && !result.leftHand) {
           result.leftHand = hand;
         } else if (category === "Right" && !result.rightHand) {
