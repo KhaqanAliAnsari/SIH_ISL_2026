@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CheckCircle2, MessageSquare, Loader2, AlertCircle, Clock, History, X } from "lucide-react";
-import type { PhrasedSentence } from "../types";
+import { CheckCircle2, MessageSquare, Loader2, AlertCircle, Clock, History, X, Activity } from "lucide-react";
+import type { PhrasedSentence, SentenceToken, SentenceEngineState } from "../types";
+import { manualDispatch, getStopGestureName } from "../lib/sentenceEngine";
 
 interface PhrasedSentenceStripProps {
   sentences: PhrasedSentence[];       // Active on-screen queue (up to 5 items)
   fullHistory?: PhrasedSentence[];     // Full conversation transcript (all sentences)
-  isAccumulating: boolean;
+  sentenceState: SentenceEngineState;
+  currentTokens: SentenceToken[];
 }
 
 export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
   sentences,
   fullHistory = [],
-  isAccumulating,
+  sentenceState,
+  currentTokens,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLogModal, setShowLogModal] = useState(false);
@@ -24,9 +27,9 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
         behavior: "smooth",
       });
     }
-  }, [sentences, isAccumulating]);
+  }, [sentences, currentTokens.length, sentenceState]);
 
-  if (sentences.length === 0 && !isAccumulating && fullHistory.length === 0) {
+  if (sentences.length === 0 && currentTokens.length === 0 && sentenceState === "IDLE" && fullHistory.length === 0) {
     return null;
   }
 
@@ -110,11 +113,59 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
             );
           })}
 
-          {isAccumulating && (
-            <div className="flex-shrink-0 min-w-[200px] h-full flex flex-col items-center justify-center p-3 border-2 border-dashed border-zinc-800 rounded-lg bg-zinc-950/60 text-zinc-400">
-              <Loader2 className="w-5 h-5 animate-spin mb-1 opacity-70 text-indigo-400" />
-              <span className="text-xs font-medium text-zinc-300">Signing in progress...</span>
-              <span className="text-[10px] font-mono text-zinc-500">18s idle auto-dispatch</span>
+          {(currentTokens.length > 0 || sentenceState === "DISPATCHING") && (
+            <div className="flex-shrink-0 min-w-[280px] max-w-sm rounded-lg border border-sky-500/30 bg-sky-950/20 p-3 flex flex-col gap-2 shadow-sm transition-all">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono font-bold text-sky-400 uppercase tracking-widest flex items-center gap-1.5">
+                  <Activity className="w-3 h-3 text-sky-400" />
+                  Live Buffer ({currentTokens.length})
+                </span>
+                <span className="text-[9px] font-mono text-zinc-400 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-700">
+                  STOP: {getStopGestureName().toUpperCase()}
+                </span>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-1.5 font-mono text-sm max-h-20 overflow-y-auto pt-1">
+                {currentTokens.length === 0 ? (
+                  <span className="text-zinc-500 text-xs italic">Waiting for input...</span>
+                ) : (
+                  currentTokens.map((token, idx) => (
+                    <React.Fragment key={idx}>
+                      <span className="px-2 py-0.5 bg-zinc-800 border border-zinc-600 rounded text-sky-200 shadow-sm">
+                        {token.word}
+                      </span>
+                      {idx < currentTokens.length - 1 && (
+                        <span className="text-zinc-600">→</span>
+                      )}
+                    </React.Fragment>
+                  ))
+                )}
+                {sentenceState === "ACCUMULATING" && (
+                  <span className="text-sky-400 ml-1 animate-pulse font-bold">_</span>
+                )}
+              </div>
+              
+              <div className="mt-auto flex items-center justify-between border-t border-zinc-800/80 pt-2">
+                <div className="flex items-center gap-1 text-[10px] font-mono">
+                  {sentenceState === "DISPATCHING" ? (
+                    <span className="text-amber-400 flex items-center gap-1">
+                      <Loader2 className="w-3 h-3 animate-spin" /> Sending to AI...
+                    </span>
+                  ) : (
+                    <span className="text-sky-400 flex items-center gap-1">
+                      <Loader2 className="w-3 h-3 animate-spin" /> Accumulating...
+                    </span>
+                  )}
+                </div>
+                {sentenceState === "ACCUMULATING" && currentTokens.length > 0 && (
+                  <button
+                    onClick={() => manualDispatch()}
+                    className="px-2 py-1 rounded text-[10px] font-bold font-mono bg-sky-500 hover:bg-sky-400 text-black transition-colors"
+                  >
+                    Phrase Now
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -76,6 +76,7 @@ export default function App() {
   const [officialNotes, setOfficialNotes] = useState(
     "Identity document verified. Customer ISL sign clear."
   );
+  const [snapshots, setSnapshots] = useState<string[]>([]);
 
   // Modals state
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -473,6 +474,7 @@ export default function App() {
     livenessCode,
     confidenceAverage: confidenceScore,
     conversationHistory: fullConversationLog,
+    snapshots,
   };
 
   if (currentView === 'login') {
@@ -524,9 +526,10 @@ export default function App() {
           recordingDuration={formatDuration(recordingSeconds)}
           customerName={customerName}
           customerAadhaar={customerAadhaar}
-          onCaptureSnapshot={() =>
-            alert("HD Snapshot captured & logged to RBI Audit Trail.")
-          }
+          onCaptureSnapshot={(dataUrl) => {
+            setSnapshots((prev) => [...prev, dataUrl]);
+            alert("HD Snapshot captured & logged to RBI Audit Trail.");
+          }}
           onTriggerLiveness={handleTriggerLiveness}
           currentStepLabel={
             steps[currentStepIndex]?.label || "Identity Verification"
@@ -554,7 +557,8 @@ export default function App() {
       <PhrasedSentenceStrip 
         sentences={phrasedQueue}
         fullHistory={fullConversationLog}
-        isAccumulating={sentenceState === "ACCUMULATING"} 
+        sentenceState={sentenceState}
+        currentTokens={currentTokens}
       />
 
       {/* 3. KYC Progress Strip */}

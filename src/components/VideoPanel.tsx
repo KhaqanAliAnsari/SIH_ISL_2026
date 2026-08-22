@@ -33,7 +33,6 @@ import {
 import {
   getStopGestureName,
   setStopGestureName,
-  manualDispatch,
 } from "../lib/sentenceEngine";
 import { TemplateRecorderModal } from "./TemplateRecorderModal";
 
@@ -45,7 +44,7 @@ interface VideoPanelProps {
   recordingDuration: string;
   customerName: string;
   customerAadhaar: string;
-  onCaptureSnapshot?: () => void;
+  onCaptureSnapshot?: (dataUrl: string) => void;
   onTriggerLiveness?: () => void;
   currentStepLabel: string;
   isLivenessMatchConfirmed?: boolean;
@@ -769,56 +768,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           </div>
         )}
 
-        {/* ACCUMULATOR STRIP (Bottom Center) */}
-        {(currentSentenceTokens.length > 0 || sentenceEngineState === "DISPATCHING") && (
-          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 w-11/12 max-w-2xl bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-lg p-2.5 text-white shadow-xl transition-all">
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
-                  <Activity className="w-3 h-3 text-sky-400" />
-                  Live Sentence Buffer ({currentSentenceTokens.length} tokens)
-                </span>
-                <span className="text-[9px] font-mono text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded border border-zinc-700">
-                  STOP sign: {activeStopGesture.toUpperCase()}
-                </span>
-              </div>
 
-              <div className="flex items-center gap-2">
-                {sentenceEngineState === "ACCUMULATING" && (
-                  <button
-                    onClick={() => manualDispatch()}
-                    className="px-2 py-0.5 rounded text-[10px] font-bold font-mono bg-sky-500 hover:bg-sky-400 text-black transition-colors"
-                    title="Manual trigger to phrase accumulated sentence now"
-                  >
-                    Phrase Now
-                  </button>
-                )}
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
-                  sentenceEngineState === "DISPATCHING" ? "bg-amber-500/20 text-amber-300 animate-pulse" :
-                  "bg-sky-500/20 text-sky-300"
-                }`}>
-                  {sentenceEngineState === "DISPATCHING" ? "SENDING TO CLOUD..." : "ACCUMULATING..."}
-                </span>
-              </div>
-            </div>
-            
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-sm max-h-20 overflow-y-auto">
-              {currentSentenceTokens.map((token, idx) => (
-                <React.Fragment key={idx}>
-                  <span className="px-2 py-0.5 bg-zinc-800 border border-zinc-600 rounded text-sky-200 shadow-sm">
-                    {token.word}
-                  </span>
-                  {idx < currentSentenceTokens.length - 1 && (
-                    <span className="text-zinc-600">→</span>
-                  )}
-                </React.Fragment>
-              ))}
-              {sentenceEngineState === "ACCUMULATING" && (
-                <span className="text-sky-400 ml-1 animate-pulse font-bold">_</span>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Video Panel Footer */}
@@ -831,7 +781,12 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         </div>
 
         <button
-          onClick={onCaptureSnapshot}
+          onClick={() => {
+            if (canvasRef.current) {
+              const dataUrl = canvasRef.current.toDataURL("image/jpeg", 0.9);
+              onCaptureSnapshot?.(dataUrl);
+            }
+          }}
           className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 font-medium text-xs text-white flex items-center gap-1.5 transition-colors"
         >
           <Camera className="w-3.5 h-3.5 text-zinc-400" />

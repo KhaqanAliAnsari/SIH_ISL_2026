@@ -189,6 +189,29 @@ export const AuditModal: React.FC<AuditModalProps> = ({
                 </div>
               </div>
 
+              {/* Captured Snapshots */}
+              {sessionData.snapshots && sessionData.snapshots.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
+                    Captured Live Photo Verification ({sessionData.snapshots.length})
+                  </h4>
+                  <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
+                    {sessionData.snapshots.map((dataUrl, idx) => (
+                      <div key={idx} className="shrink-0 relative rounded border border-zinc-800 overflow-hidden">
+                        <img 
+                          src={dataUrl} 
+                          alt={`Captured snapshot ${idx + 1}`} 
+                          className="h-24 object-cover"
+                        />
+                        <div className="absolute bottom-0 inset-x-0 bg-black/60 text-[10px] text-white p-1 font-mono text-center">
+                          Record #{idx + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* ISL Conversation Log */}
               {sessionData.conversationHistory && sessionData.conversationHistory.length > 0 && (
                 <div>

@@ -44,6 +44,7 @@ export interface SessionData {
   livenessCode: string;
   confidenceAverage: number;
   conversationHistory?: PhrasedSentence[];
+  snapshots?: string[];
 }
 
 export interface Customer {
