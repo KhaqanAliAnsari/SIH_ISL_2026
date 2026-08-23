@@ -58,5 +58,11 @@
     "fact": "SIH_ISL_2026 liveness verification: Default code is '8421'. The system uses real DTW gesture recognition to match signed digits against the expected liveness sequence. Each recognized gesture is compared against the next expected digit (supports both raw digit '8' and word form 'eight'). Progress is tracked via livenessMatchIndex state in App.tsx, passed down to VideoPanel, AIAssistPanel, and CustomerSideModal. When all digits match in sequence, the liveness KYC field (id '5') is auto-confirmed. The confirm button in AIAssistPanel is disabled until all digits are verified. Matched digits glow green, active digit pulses amber, pending digits stay neutral.",
     "userId": "antigravity_user",
     "timestamp": "2026-08-23T07:34:54.739Z"
+  },
+  {
+    "id": "1787510421458",
+    "fact": "Merged friend's bugfixes (Vite watcher ignore, VideoPanel play() AbortError fix, removed redundant client-side retry in sentenceEngine) but intentionally kept the user's server-side GeminiPool (which manages multi-key rotation and rate limits) because it's critical for their Vercel environment with 4 API keys.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-23T18:40:21.458Z"
   }
 ]

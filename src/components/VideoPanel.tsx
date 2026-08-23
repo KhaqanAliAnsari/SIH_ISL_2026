@@ -175,7 +175,13 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          videoRef.current.play();
+          try {
+            await videoRef.current.play();
+          } catch (playErr: any) {
+            if (playErr?.name !== "AbortError") {
+              console.warn("[VideoPanel] video.play() error:", playErr);
+            }
+          }
         }
         setUseWebcam(true);
       } catch (err) {

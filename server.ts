@@ -23,7 +23,15 @@ async function startServer() {
       server: {
         middlewareMode: true,
         watch: {
-          ignored: ['**/isl_dtw/**', '**/graphify-out/**', '**/.git/**'],
+          ignored: [
+            '**/isl_dtw/**',
+            '**/graphify-out/**',
+            '**/.git/**',
+            '**/*.zip',
+            '**/*.db',
+            '**/.agents/**',
+            '**/node_modules/**',
+          ],
         },
       },
       appType: "spa",
