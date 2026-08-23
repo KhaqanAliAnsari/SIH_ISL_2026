@@ -17,7 +17,15 @@ export default defineConfig(() => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {
-        ignored: ['**/graphify-out/**', '**/.git/**', '**/isl_dtw/**'],
+        ignored: [
+          '**/graphify-out/**',
+          '**/.git/**',
+          '**/isl_dtw/**',
+          '**/*.zip',
+          '**/*.db',
+          '**/.agents/**',
+          '**/node_modules/**',
+        ],
       },
     },
   };
