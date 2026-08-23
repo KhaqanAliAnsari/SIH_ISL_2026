@@ -27,6 +27,7 @@ interface AIAssistPanelProps {
   liveCaptionText: string;
   confidenceScore: number;
   livenessCode: string;
+  livenessMatchIndex?: number;
 }
 
 export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
@@ -40,6 +41,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
   liveCaptionText,
   confidenceScore,
   livenessCode,
+  livenessMatchIndex = 0,
 }) => {
   const [isTrayOpen, setIsTrayOpen] = useState(true);
 
@@ -166,25 +168,59 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
             </div>
 
             <p className="text-xs text-zinc-400">
-              Recognized sequence signed by customer in real-time:
+              Real-time digit sequence verification:
             </p>
 
-            <div className="p-3 bg-zinc-900 border border-zinc-800 rounded text-center">
-              <span className="text-xs text-zinc-500 font-mono block mb-1">
-                Customer Signed Response
+            <div className="p-3 bg-zinc-900 border border-zinc-800 rounded">
+              <span className="text-xs text-zinc-500 font-mono block mb-2 text-center">
+                Expected Sequence
               </span>
-              <span className="font-mono font-bold text-xl text-amber-300 tracking-widest">
-                Customer signed: {livenessCode.split("").join(" → ")}
-              </span>
+              <div className="flex items-center justify-center gap-2">
+                {livenessCode.split("").map((digit, idx) => {
+                  const isMatched = idx < livenessMatchIndex;
+                  const isActive = idx === livenessMatchIndex && livenessMatchIndex < livenessCode.length;
+                  return (
+                    <React.Fragment key={idx}>
+                      {idx > 0 && (
+                        <span className={`text-lg ${isMatched ? 'text-emerald-500' : 'text-zinc-600'}`}>→</span>
+                      )}
+                      <span className={`font-mono font-bold text-xl w-8 h-8 flex items-center justify-center rounded transition-all duration-300 ${
+                        isMatched
+                          ? 'text-emerald-400 bg-emerald-950 border border-emerald-600'
+                          : isActive
+                            ? 'text-amber-300 bg-amber-950 border border-amber-600 animate-pulse'
+                            : 'text-zinc-500 bg-zinc-950 border border-zinc-700'
+                      }`}>
+                        {digit}
+                      </span>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+              <div className="text-center mt-2">
+                <span className={`text-[10px] font-mono font-bold ${
+                  livenessMatchIndex >= livenessCode.length ? 'text-emerald-400' : 'text-zinc-500'
+                }`}>
+                  {livenessMatchIndex >= livenessCode.length
+                    ? '✓ ALL DIGITS VERIFIED'
+                    : `${livenessMatchIndex}/${livenessCode.length} DIGITS MATCHED`
+                  }
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center justify-end gap-2 pt-1">
               <button
                 onClick={() => onConfirmField("5")}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-md flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-950"
+                disabled={livenessMatchIndex < livenessCode.length}
+                className={`w-full font-bold text-xs py-2.5 px-4 rounded-md flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm ${
+                  livenessMatchIndex >= livenessCode.length
+                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950'
+                    : 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Confirm Liveness Check</span>
+                <span>{livenessMatchIndex >= livenessCode.length ? 'Confirm Liveness Check' : 'Awaiting Digit Sequence...'}</span>
               </button>
             </div>
           </div>

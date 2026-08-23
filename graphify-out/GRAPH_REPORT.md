@@ -1,16 +1,16 @@
 # Graph Report - SIH_ISL_2026  (2026-08-23)
 
 ## Corpus Check
-- 269 files · ~478,526 words
+- 269 files · ~479,484 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3604 nodes · 6761 edges · 258 communities (198 shown, 60 thin omitted)
+- 3604 nodes · 6768 edges · 255 communities (194 shown, 61 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 118 edges (avg confidence: 0.69)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f2d20f9c`
+- Built from commit: `8e5f82f9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -96,12 +96,12 @@
 - _is_ignored
 - dedup.py
 - _file_label_reassignments
-- introspect_postgres
+- lucide-react
 - _install_claude_hook
 - security.py
 - index.mjs
 - _coerce_hyperedge_member_refs
-- PhrasedSentence
+- PhrasedSentenceStrip.tsx
 - affected.py
 - _label_batch_with_retry
 - transcribe.py
@@ -109,19 +109,17 @@
 - update_config.cjs
 - install.py
 - semantic_cleanup.py
-- _run_hook_guard
+- _NoFileRedirectHandler
 - google_workspace.py
 - _ImageRef
 - default_graph_json
-- lucide-react
 - csharp.py
-- html.py
 - paths.py
 - validate_extraction
 - _always_on
 - _looks_like_context_exceeded
 - _get_backend_api_key
-- tree_html.py
+- check_graph_file_size_cap
 - verilog.py
 - _agents_install
 - _ip_is_blocked
@@ -156,7 +154,6 @@
 - normalize_sections
 - humanize_label
 - react-dom
-- safe_fetch
 - graphify reference: query, path, explain
 - graphify reference: query, path, explain
 - graphify reference: query, path, explain
@@ -296,7 +293,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (258 total, 60 thin omitted)
+## Communities (255 total, 61 thin omitted)
 
 ### Community 0 - "dependencies"
 Cohesion: 0.13
@@ -307,8 +304,8 @@ Cohesion: 0.09
 Nodes (21): DOM, DOM.Iterable, ES2022, node, vite/client, compilerOptions, allowImportingTsExtensions, allowJs (+13 more)
 
 ### Community 2 - "App.tsx"
-Cohesion: 0.11
-Nodes (24): AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps, EditFieldModal() (+16 more)
+Cohesion: 0.12
+Nodes (23): AppView, AIAssistPanel(), AIAssistPanelProps, AuditModal(), AuditModalProps, CustomerSideModal(), CustomerSideModalProps, EditFieldModal() (+15 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.13
@@ -319,8 +316,8 @@ Cohesion: 0.36
 Nodes (7): Login(), LoginProps, Registration(), RegistrationProps, isSupabaseConfigured, supabase, Customer
 
 ### Community 5 - "sentenceEngine.ts"
-Cohesion: 0.19
-Nodes (18): App(), VideoPanelProps, clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens(), initSentenceEngine(), isStopGesture() (+10 more)
+Cohesion: 0.24
+Nodes (14): App(), clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens(), getEngineState(), initSentenceEngine(), isStopGesture() (+6 more)
 
 ### Community 6 - "SignKYC — Bank Official Console (V-CIP Assist View)"
 Cohesion: 0.33
@@ -343,8 +340,8 @@ Cohesion: 0.20
 Nodes (9): 1. Install Dependencies, 2. Record Reference Templates, 3. Run Real-time Gesture Recognition, Custom Options:, 🧬 Feature Vector Layout (106 dimensions per frame), 📁 Project Structure, 🚀 Quickstart Guide, Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition (Holistic) (+1 more)
 
 ### Community 15 - "VideoPanel.tsx"
-Cohesion: 0.10
-Nodes (33): TemplateRecorderModal(), TemplateRecorderModalProps, KEY_LANDMARKS, VideoPanel(), cachedTemplateNames, clearBuffer(), encodeNpy(), FEATURE_DIM (+25 more)
+Cohesion: 0.11
+Nodes (32): TemplateRecorderModal(), TemplateRecorderModalProps, KEY_LANDMARKS, VideoPanel(), cachedTemplateNames, clearBuffer(), encodeNpy(), FEATURE_DIM (+24 more)
 
 ### Community 16 - "_read_text"
 Cohesion: 0.02
@@ -359,20 +356,20 @@ Cohesion: 0.06
 Nodes (63): _log_path(), log_query(), _log_responses(), nodes_from_result(), Any, Path, Query logging for graphify — append-only JSONL, fail-silent., Append one JSONL record to the query log. Never raises. (+55 more)
 
 ### Community 19 - "watch.py"
-Cohesion: 0.05
-Nodes (67): dedupe_edges(), dedupe_nodes(), Collapse nodes sharing an ``id``, last-writer-wins on attributes. Mirrors what…, Collapse exact parallel edges by ``(source, target, relation)``, keeping the…, community_member_sigs(), Per-community membership fingerprints: ``{cid: sha256(sorted member ids)}``.…, Remap community IDs to maximize overlap with a previous assignment. Uses greedy…, remap_communities_to_previous() (+59 more)
+Cohesion: 0.06
+Nodes (65): dedupe_edges(), dedupe_nodes(), Collapse nodes sharing an ``id``, last-writer-wins on attributes. Mirrors what…, Collapse exact parallel edges by ``(source, target, relation)``, keeping the…, community_member_sigs(), Per-community membership fingerprints: ``{cid: sha256(sorted member ids)}``.…, Remap community IDs to maximize overlap with a previous assignment. Uses greedy…, remap_communities_to_previous() (+57 more)
 
 ### Community 20 - "cli.py"
-Cohesion: 0.06
-Nodes (59): distinct_repo_tags(), prefix_graph_for_global(), prune_repo_from_graph(), Return a copy of G with all node IDs prefixed with repo_tag::. Labels are…, Return a unique, human-meaningful repo tag per input graph for merge-graphs.…, Remove all nodes tagged with repo_tag from G in-place. Returns count removed., _clone_repo(), _default_graph_path() (+51 more)
+Cohesion: 0.05
+Nodes (73): distinct_repo_tags(), prefix_graph_for_global(), prune_repo_from_graph(), Return a copy of G with all node IDs prefixed with repo_tag::. Labels are…, Return a unique, human-meaningful repo tag per input graph for merge-graphs.…, Remove all nodes tagged with repo_tag from G in-place. Returns count removed., _clone_repo(), _default_graph_path() (+65 more)
 
 ### Community 21 - "cache.py"
 Cohesion: 0.06
 Nodes (64): _absolutize_ids_in(), _absolutize_source_files_in(), _body_content(), cache_dir(), cached_files(), cached_word_count(), check_semantic_cache(), _cleanup_stale_ast_entries() (+56 more)
 
 ### Community 22 - "export.py"
-Cohesion: 0.10
-Nodes (33): attach_hyperedges(), _cap_filename(), _cypher_escape(), _cypher_label(), _dedup_node_filenames(), _git_head(), _obsidian_safe_stem(), _obsidian_tag() (+25 more)
+Cohesion: 0.05
+Nodes (58): _node_community_map(), Invert communities dict: node_id -> community_id., attach_hyperedges(), _cap_filename(), _cypher_escape(), _cypher_label(), _dedup_node_filenames(), existing_graph_node_count() (+50 more)
 
 ### Community 23 - "Path"
 Cohesion: 0.03
@@ -415,8 +412,8 @@ Cohesion: 0.06
 Nodes (32): For always-on context in Devin sessions, For --cluster-only, For git commit hook, For /graphify add, For /graphify explain, For /graphify path, For /graphify query, For --update (incremental re-extraction) (+24 more)
 
 ### Community 33 - "analyze.py"
-Cohesion: 0.08
-Nodes (45): _cross_community_surprises(), _cross_file_surprises(), _cross_language(), _file_category(), find_import_cycles(), god_nodes(), graph_diff(), _is_concept_node() (+37 more)
+Cohesion: 0.10
+Nodes (37): _cross_community_surprises(), _cross_file_surprises(), _cross_language(), _file_category(), find_import_cycles(), god_nodes(), graph_diff(), _is_concept_node() (+29 more)
 
 ### Community 34 - "prs.py"
 Cohesion: 0.23
@@ -610,17 +607,13 @@ Nodes (59): _collision_rank(), _content_token_swap(), _crossfile_fileanchored_bl
 Cohesion: 0.25
 Nodes (8): disambiguate_file_labels_in_nodes(), _disambiguate_file_node_labels(), _file_label_reassignments(), Shortest trailing path suffix (basename + k parent dirs) of *sf* that is unique…, Given (key, label, source_file) triples, return {key: new_label} for file nodes…, Relabel colliding-basename file nodes on a graph (#2032). Ids/edges are never…, Relabel colliding-basename file nodes on a raw node-dict list, in place…, _shortest_unique_suffix()
 
-### Community 82 - "introspect_postgres"
-Cohesion: 0.50
-Nodes (4): introspect_postgres(), _quote_ident(), Connect to PostgreSQL, reconstruct DDL, and extract via extract_sql()., Double-quote a PostgreSQL identifier, escaping embedded double-quotes.
-
 ### Community 83 - "_install_claude_hook"
 Cohesion: 0.16
 Nodes (19): _claude_pretooluse_hooks(), _gemini_hook(), _install_claude_hook(), _install_codebuddy_hook(), _install_codex_hook(), _install_gemini_hook(), Return the absolute path to the graphify executable, with forward slashes.…, Add graphify PreToolUse hook to .codex/hooks.json. (+11 more)
 
 ### Community 84 - "security.py"
-Cohesion: 0.11
-Nodes (15): _max_graph_file_bytes(), _NoFileRedirectHandler, Path, urllib handler that routes http:// through _SSRFGuardedHTTPConnection., urllib handler that routes https:// through _SSRFGuardedHTTPSConnection., Redirect handler that re-validates every redirect target. Prevents open-…, Resolve *path* and verify it stays inside *base*. *base* defaults to the…, Return the graph.json size cap in bytes. Honors the… (+7 more)
+Cohesion: 0.10
+Nodes (19): _build_opener(), _max_graph_file_bytes(), Path, urllib handler that routes http:// through _SSRFGuardedHTTPConnection., urllib handler that routes https:// through _SSRFGuardedHTTPSConnection., Fetch *url* and return raw bytes. Protections applied: - URL scheme validated…, Fetch *url* and return decoded text (UTF-8, replacing bad bytes). Wraps…, Resolve *path* and verify it stays inside *base*. *base* defaults to the… (+11 more)
 
 ### Community 85 - "index.mjs"
 Cohesion: 0.40
@@ -630,9 +623,9 @@ Nodes (4): __dirname, MEMORY_FILE, server, transport
 Cohesion: 0.33
 Nodes (6): _coerce_hyperedge_member_refs(), _coerce_id(), _hashable(), Coerce a hyperedge member list to hashable scalar ids, deduped in order.…, Return a str for a numeric id, else the value unchanged. ``bool`` is excluded…, True when value can be a dict key / set member (same probe as the inline ``try:…
 
-### Community 87 - "PhrasedSentence"
-Cohesion: 0.67
-Nodes (3): PhrasedSentenceStrip(), PhrasedSentenceStripProps, PhrasedSentence
+### Community 87 - "PhrasedSentenceStrip.tsx"
+Cohesion: 0.38
+Nodes (9): PhrasedSentenceStrip(), PhrasedSentenceStripProps, VideoPanelProps, getStopGestureName(), manualDispatch(), SentenceEngineCallbacks, PhrasedSentence, SentenceEngineState (+1 more)
 
 ### Community 88 - "affected.py"
 Cohesion: 0.26
@@ -658,10 +651,6 @@ Nodes (15): _install_kilo_plugin(), _kilo_config_path(), _kilo_config_write_path
 Cohesion: 0.19
 Nodes (14): _normalize_hyperedge_members(), Canonicalize a hyperedge's member list onto the `nodes` key, in place. If…, _append_rationale_attr(), _is_sentence_like_rationale_label(), load_validated_semantic_fragment(), Path, Load and validate a semantic chunk, rejecting oversize files before parsing.…, Clean up a semantic extraction fragment in-place. Operations: 1. Removes nodes… (+6 more)
 
-### Community 95 - "_run_hook_guard"
-Cohesion: 0.18
-Nodes (14): _hook_strict_enabled(), _is_cwd_relative(), _mark_session_denied(), _query_stamp_fresh(), Resolve strict mode: GRAPHIFY_HOOK_STRICT env overrides the baked-in flag…, True if a query/explain/path ran within GRAPHIFY_HOOK_STRICT_TTL (default…, Atomically claim a one-time strict block for this session. Returns True only on…, Shell-agnostic PreToolUse guard (#522). Reads the tool-call JSON from stdin… (+6 more)
-
 ### Community 96 - "google_workspace.py"
 Cohesion: 0.24
 Nodes (14): convert_google_workspace_file(), _extract_file_id_from_url(), _extract_resource_key(), Any, Path, Optional Google Workspace shortcut export support. Google Drive for desktop…, Export a Google Workspace shortcut to a Markdown sidecar. Returns the converted…, Extract a Drive file ID from common Google Docs/Drive URL shapes. (+6 more)
@@ -677,10 +666,6 @@ Nodes (13): default_graph_json(), Default ``graph.json`` path under the configur
 ### Community 100 - "csharp.py"
 Cohesion: 0.50
 Nodes (4): _is_cs_file(), C# cross-file resolution. The config-driven C# *extractor* (``extract_csharp``…, Arbitrate all C# ``inherits``/``implements``/``references`` targets. The…, _resolve_csharp_type_references()
-
-### Community 101 - "html.py"
-Cohesion: 0.18
-Nodes (13): Shared constants/helpers for the graphify exporters package. Symbols used by…, _html_document_title(), _html_script(), _html_styles(), _hyperedge_script(), Graph, html — moved verbatim from graphify/export.py., Return a portable label for the graph.html <title>. Tracked artifacts must not… (+5 more)
 
 ### Community 102 - "paths.py"
 Cohesion: 0.08
@@ -702,9 +687,9 @@ Nodes (5): _looks_like_context_exceeded(), _looks_like_timeout(), Heuristically 
 Cohesion: 0.14
 Nodes (14): _backend_env_keys(), detect_backend(), _format_backend_env_keys(), _get_backend_api_key(), _ollama_host_is_link_local_or_metadata(), Return accepted API-key environment variables for a backend., Return the first configured API key for backend, or an empty string., Return user-facing accepted API-key variable names. (+6 more)
 
-### Community 107 - "tree_html.py"
-Cohesion: 0.30
-Nodes (11): _is_file_node_label(), Whether *label* is a file node's label for *source_file* — the bare basename,…, build_tree(), _common_root(), emit_html(), _make_truncation_leaf(), Any, Path (+3 more)
+### Community 107 - "check_graph_file_size_cap"
+Cohesion: 0.25
+Nodes (13): _is_file_node_label(), Whether *label* is a file node's label for *source_file* — the bare basename,…, check_graph_file_size_cap(), Reject *path* if its size exceeds the configured graph-file cap. Protects…, build_tree(), _common_root(), emit_html(), _make_truncation_leaf() (+5 more)
 
 ### Community 108 - "verilog.py"
 Cohesion: 0.24
@@ -825,10 +810,6 @@ Nodes (6): html_anchor_id(), normalize_communities(), normalize_sections(), Gene
 ### Community 141 - "humanize_label"
 Cohesion: 0.33
 Nodes (6): humanize_label(), node_display_name(), Readable node label for tables and summaries., Truncate without splitting Mermaid syntax., Convert graph labels into short labels people can scan in a diagram., truncate_text()
-
-### Community 143 - "safe_fetch"
-Cohesion: 0.33
-Nodes (6): _build_opener(), Fetch *url* and return raw bytes. Protections applied: - URL scheme validated…, Fetch *url* and return decoded text (UTF-8, replacing bad bytes). Wraps…, safe_fetch(), safe_fetch_text(), OpenerDirector
 
 ### Community 144 - "graphify reference: query, path, explain"
 Cohesion: 0.33
@@ -1073,12 +1054,12 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 ## Knowledge Gaps
 - **809 isolated node(s):** `__dirname`, `MEMORY_FILE`, `server`, `transport`, `name` (+804 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **60 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `dispatch_command()` connect `cli.py` to `introspect_cargo`, `_build_server`, `reflect.py`, `watch.py`, `cache.py`, `export.py`, `Path`, `hooks.py`, `serve.py`, `analyze.py`, `prs.py`, `write_callflow_html`, `extract_files_direct`, `_call_claude_cli`, `diagnostics.py`, `ingest.py`, `llm.py`, `build.py`, `detect`, `cluster.py`, `__main__.py`, `_file_label_reassignments`, `introspect_postgres`, `affected.py`, `save_manifest`, `semantic_cleanup.py`, `_run_hook_guard`, `html.py`, `paths.py`, `_get_backend_api_key`, `tree_html.py`, `_load_graph`?**
+- **Why does `dispatch_command()` connect `cli.py` to `introspect_cargo`, `_build_server`, `reflect.py`, `watch.py`, `cache.py`, `export.py`, `Path`, `hooks.py`, `serve.py`, `analyze.py`, `prs.py`, `write_callflow_html`, `extract_files_direct`, `_call_claude_cli`, `diagnostics.py`, `ingest.py`, `llm.py`, `build.py`, `detect`, `cluster.py`, `__main__.py`, `_file_label_reassignments`, `affected.py`, `save_manifest`, `semantic_cleanup.py`, `paths.py`, `_get_backend_api_key`, `check_graph_file_size_cap`, `_load_graph`?**
   _High betweenness centrality (0.058) - this node is a cross-community bridge._
 - **Why does `extract()` connect `Path` to `csharp.py`, `_make_id`, `extract.py`, `resolver_registry.py`, `watch.py`, `cli.py`, `cache.py`, `symbol_resolution.py`, `CsharpNameResolver`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._

@@ -72,7 +72,8 @@ export default function App() {
   const customerName = customerData?.full_name || "Priya Sharma";
   const customerAadhaar = customerData?.aadhaar_no || "4829 1049 8821";
   
-  const [livenessCode, setLivenessCode] = useState("8429");
+  const [livenessCode, setLivenessCode] = useState("8421");
+  const [livenessMatchIndex, setLivenessMatchIndex] = useState(0);
   const [officialNotes, setOfficialNotes] = useState(
     "Identity document verified. Customer ISL sign clear."
   );
@@ -176,7 +177,7 @@ export default function App() {
     {
       id: "5",
       label: "Liveness Code Repeat",
-      aiValue: "8 - 4 - 2 - 9",
+      aiValue: "8 - 4 - 2 - 1",
       confidence: 96,
       isConfirmed: false,
       stepIndex: 4,
@@ -290,7 +291,8 @@ export default function App() {
     } else if (nextState === "liveness_code_step") {
       setStatus("LIVE");
       setConfidenceScore(96);
-      setLiveCaptionText("REPEATING LIVENESS CODE: 8 ... 4 ... 2 ... 9");
+      setLivenessMatchIndex(0);
+      setLiveCaptionText(`LIVENESS CODE PROMPTED: ${livenessCode.split("").join(" ... ")}`);
       setCurrentStepIndex(4);
       setSteps((prev) =>
         prev.map((s, idx) => {
@@ -431,7 +433,8 @@ export default function App() {
   const handleTriggerLiveness = () => {
     const newCode = Math.floor(1000 + Math.random() * 9000).toString();
     setLivenessCode(newCode);
-    setLiveCaptionText(`REPEATING LIVENESS CODE: ${newCode.split("").join(" ... ")}`);
+    setLivenessMatchIndex(0);
+    setLiveCaptionText(`LIVENESS CODE PROMPTED: ${newCode.split("").join(" ... ")}`);
     handleSelectDemoState("liveness_code_step");
   };
 
@@ -456,8 +459,56 @@ export default function App() {
       
       // 2. Feed to sentence engine
       pushGesture(gesture, confidence);
+
+      // 3. Liveness sequence matching — check if signed digit matches next expected
+      setLivenessMatchIndex((prevIdx) => {
+        // Only match during the liveness step and if not already fully matched
+        if (prevIdx >= livenessCode.length) return prevIdx;
+
+        const expectedDigit = livenessCode[prevIdx];
+        const signedGesture = gesture.trim().toLowerCase();
+
+        // Match the gesture name against the expected digit
+        // Supports both digit string ("8") and word form ("eight")
+        const digitWords: Record<string, string> = {
+          "0": "zero", "1": "one", "2": "two", "3": "three", "4": "four",
+          "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine",
+        };
+        const isMatch =
+          signedGesture === expectedDigit ||
+          signedGesture === digitWords[expectedDigit];
+
+        if (isMatch) {
+          const nextIdx = prevIdx + 1;
+          if (nextIdx >= livenessCode.length) {
+            // All digits matched! Auto-confirm the liveness field
+            setLiveCaptionText(`LIVENESS VERIFIED: All ${livenessCode.length} digits matched in sequence`);
+            // Auto-confirm liveness KYC field (id "5")
+            setTimeout(() => {
+              setFields((prev) =>
+                prev.map((f) =>
+                  f.id === "5"
+                    ? {
+                        ...f,
+                        isConfirmed: true,
+                        confirmedValue: livenessCode.split("").join(" - "),
+                        confirmedAt: new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" }) + " IST",
+                      }
+                    : f
+                )
+              );
+            }, 500);
+          } else {
+            setLiveCaptionText(
+              `LIVENESS: Matched digit ${expectedDigit} (${nextIdx}/${livenessCode.length})`
+            );
+          }
+          return nextIdx;
+        }
+        return prevIdx;
+      });
     },
-    []
+    [livenessCode]
   );
 
   const currentSessionData: SessionData = {
@@ -523,6 +574,7 @@ export default function App() {
         <VideoPanel
           demoState={demoState}
           livenessCode={livenessCode}
+          livenessMatchIndex={livenessMatchIndex}
           recordingDuration={formatDuration(recordingSeconds)}
           customerName={customerName}
           customerAadhaar={customerAadhaar}
@@ -550,6 +602,7 @@ export default function App() {
           liveCaptionText={liveCaptionText}
           confidenceScore={confidenceScore}
           livenessCode={livenessCode}
+          livenessMatchIndex={livenessMatchIndex}
         />
       </main>
 
@@ -608,6 +661,7 @@ export default function App() {
         onClose={() => setIsCustomerViewOpen(false)}
         reSignFieldLabel={reSignFieldLabel}
         livenessCode={livenessCode}
+        livenessMatchIndex={livenessMatchIndex}
         isLivenessStep={demoState === "liveness_code_step"}
         customerName={customerName}
       />

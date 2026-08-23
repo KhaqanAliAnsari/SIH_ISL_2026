@@ -40,5 +40,23 @@
     "fact": "SIH_ISL_2026 performance deep-test findings (August 2026): The primary bottleneck in the buffer/frame rendering system is NOT GPU acceleration (correctly configured with delegate:'GPU', COOP/COEP headers present). The real culprits are: (1) Math.sqrt() called inside the innermost DTW loop in dtwWorker.ts L140 — mathematically unnecessary for ranking and costs ~15-30% of DTW time; (2) getRingBufferSnapshot() creates a full copy on every match attempt despite dtwDistance() already supporting start/length params; (3) The rAF detection loop useEffect depends on drawLandmarks which changes identity when showMesh/demoState changes, causing loop restarts and visible stutter. Feature vector parity between Python and TS is confirmed correct (106-dim, same normalization). The 1.0-x mirroring in TS is intentional for CSS scaleX(-1) compensation.",
     "userId": "antigravity_user",
     "timestamp": "2026-08-22T19:17:00.514Z"
+  },
+  {
+    "id": "1787466706836",
+    "fact": "SIH_ISL_2026 project: Writing files to isl_dtw/templates/ during template recording triggers Vite's file watcher, causing a full page reload. MUST ensure isl_dtw/ is in the watch.ignored list in BOTH vite.config.ts AND server.ts (middleware-mode Vite instance). This was a recurring bug that was fixed by adding '**/isl_dtw/**' to the ignored globs. Any directory where the API writes runtime data files must be excluded from Vite's watcher to prevent HMR-triggered reloads.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-23T06:31:46.836Z"
+  },
+  {
+    "id": "1787467696424",
+    "fact": "SIH_ISL_2026 TemplateRecorderModal.tsx had 5 bugs fixed in one pass: (1) saveTemplate() captured stale recordedCount from closure → fixed with recordedCountRef mirror, (2) frames kept arriving past MAX_FRAMES because setState is async → fixed with synchronous savingRef guard, (3) timerRef mixed setTimeout/clearInterval → split into countdownTimerRef + delayTimerRef with correct clear functions, (4) closing modal via X button didn't reset state (component stays mounted, returns null) → added useEffect on isOpen to reset everything, (5) no guard against empty framesRef → added early return in saveTemplate. These are all common React state-machine anti-patterns in components that mix refs, closures, and async state.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-23T06:48:16.424Z"
+  },
+  {
+    "id": "1787470494739",
+    "fact": "SIH_ISL_2026 liveness verification: Default code is '8421'. The system uses real DTW gesture recognition to match signed digits against the expected liveness sequence. Each recognized gesture is compared against the next expected digit (supports both raw digit '8' and word form 'eight'). Progress is tracked via livenessMatchIndex state in App.tsx, passed down to VideoPanel, AIAssistPanel, and CustomerSideModal. When all digits match in sequence, the liveness KYC field (id '5') is auto-confirmed. The confirm button in AIAssistPanel is disabled until all digits are verified. Matched digits glow green, active digit pulses amber, pending digits stay neutral.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-23T07:34:54.739Z"
   }
 ]

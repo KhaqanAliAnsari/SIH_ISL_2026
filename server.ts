@@ -20,7 +20,12 @@ async function startServer() {
   // Vite middleware for development vs static build for production
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        watch: {
+          ignored: ['**/isl_dtw/**', '**/graphify-out/**', '**/.git/**'],
+        },
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);

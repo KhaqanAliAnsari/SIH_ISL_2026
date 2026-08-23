@@ -48,6 +48,7 @@ interface VideoPanelProps {
   onTriggerLiveness?: () => void;
   currentStepLabel: string;
   isLivenessMatchConfirmed?: boolean;
+  livenessMatchIndex?: number;
   onGestureRecognized?: (gesture: string, distance: number, confidence: number) => void;
   currentSentenceTokens?: SentenceToken[];
   sentenceEngineState?: SentenceEngineState;
@@ -66,6 +67,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   onTriggerLiveness,
   currentStepLabel,
   isLivenessMatchConfirmed = false,
+  livenessMatchIndex = 0,
   onGestureRecognized,
   currentSentenceTokens = [],
   sentenceEngineState = "IDLE",
@@ -102,7 +104,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const recorderFrameHandlerRef = useRef<((frame: Float32Array) => void) | null>(null);
 
   // Stable refs for rAF loop — prevents useEffect restart on callback identity changes
-  const drawLandmarksRef = useRef<(ctx: CanvasRenderingContext2D, result: HolisticResult, w: number, h: number) => void>(() => {});
+  const drawLandmarksRef = useRef<(ctx: CanvasRenderingContext2D, result: HolisticResult, w: number, h: number) => void>(() => { });
   const onGestureRecognizedRef = useRef(onGestureRecognized);
 
   const handleRegisterFrameHandler = useCallback((handler: ((frame: Float32Array) => void) | null) => {
@@ -370,11 +372,11 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         // 2. Extract 106-dim feature vector
         const featureVec = extractHolisticFeatureVector(result);
         const detected = isBodyDetected(featureVec);
-        
+
         lastResultRef.current = result;
         lastFeatureVecRef.current = featureVec;
         handVisibleRef.current = detected;
-        
+
         // Dispatch frame to template recorder if active
         if (recorderFrameHandlerRef.current) {
           recorderFrameHandlerRef.current(featureVec);
@@ -487,11 +489,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
           {/* Model Status Indicator */}
           {useWebcam && (
-            <div className={`flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border ${
-              modelReady
+            <div className={`flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border ${modelReady
                 ? "bg-sky-500/10 text-sky-400 border-sky-500/30"
                 : "bg-zinc-800 text-zinc-400 border-zinc-700"
-            }`}>
+              }`}>
               <Zap className="w-3 h-3" />
               {modelLoading ? "MediaPipe Full is Loading..." : modelReady ? "MediaPipe Active" : "AI Standby"}
             </div>
@@ -549,11 +550,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
                               setActiveStopGesture(name);
                               setStopGestureName(name);
                             }}
-                            className={`px-1.5 py-0.5 rounded text-[10px] font-mono border ${
-                              activeStopGesture === name
+                            className={`px-1.5 py-0.5 rounded text-[10px] font-mono border ${activeStopGesture === name
                                 ? "bg-sky-500 text-black border-sky-400 font-bold"
                                 : "bg-zinc-800 text-zinc-300 border-zinc-700 hover:bg-zinc-700"
-                            }`}
+                              }`}
                           >
                             {name}
                           </button>
@@ -591,11 +591,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
               <div className="absolute right-0 top-full mt-1 w-48 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl p-2 z-50 flex flex-col gap-2">
                 <button
                   onClick={() => setShowMesh(!showMesh)}
-                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${
-                    showMesh
+                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${showMesh
                       ? "bg-zinc-800 border-zinc-600 text-white font-bold"
                       : "bg-zinc-900 border-zinc-700 text-zinc-400 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Activity className="w-3.5 h-3.5" />
                   <span>{showMesh ? "Landmarks On" : "Landmarks Off"}</span>
@@ -603,11 +602,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
                 <button
                   onClick={toggleWebcam}
-                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${
-                    useWebcam
+                  className={`w-full px-2 py-1.5 rounded text-xs font-medium border flex items-center gap-2 transition-colors ${useWebcam
                       ? "bg-sky-500/10 border-sky-500/30 text-sky-400 font-bold"
                       : "bg-zinc-900 border-zinc-700 text-zinc-400 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <Camera className="w-3.5 h-3.5" />
                   <span>{useWebcam ? "Webcam Active" : "Use Camera"}</span>
@@ -714,20 +712,35 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
             </p>
 
             <div className="flex items-center justify-center gap-3 py-2 bg-zinc-900 rounded border border-zinc-800">
-              {livenessCode.split("").map((digit, idx) => (
-                <div
-                  key={idx}
-                  className="w-12 h-14 rounded bg-zinc-950 text-white font-mono font-bold text-2xl flex items-center justify-center border border-zinc-700"
-                >
-                  {digit}
-                </div>
-              ))}
+              {livenessCode.split("").map((digit, idx) => {
+                const isMatched = idx < livenessMatchIndex;
+                const isActive = idx === livenessMatchIndex && livenessMatchIndex < livenessCode.length;
+                return (
+                  <div
+                    key={idx}
+                    className={`w-12 h-14 rounded font-mono font-bold text-2xl flex items-center justify-center border transition-all duration-300 ${
+                      isMatched
+                        ? 'bg-emerald-950 text-emerald-400 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+                        : isActive
+                          ? 'bg-amber-950 text-amber-300 border-amber-500 animate-pulse shadow-[0_0_12px_rgba(245,158,11,0.3)]'
+                          : 'bg-zinc-950 text-white border-zinc-700'
+                    }`}
+                  >
+                    {digit}
+                  </div>
+                );
+              })}
             </div>
 
             <div className="mt-2 flex items-center justify-between text-xs">
-              <span className="text-white font-bold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-                Signed Sequence Matches Prompt
+              <span className={`font-bold flex items-center gap-1 ${
+                livenessMatchIndex >= livenessCode.length ? 'text-emerald-400' : 'text-zinc-400'
+              }`}>
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                {livenessMatchIndex >= livenessCode.length
+                  ? 'All Digits Verified ✓'
+                  : `Matched ${livenessMatchIndex}/${livenessCode.length} digits`
+                }
               </span>
               <button
                 onClick={onTriggerLiveness}
@@ -739,12 +752,12 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           </div>
         )}
 
-        {/* LIVENESS MATCH INDICATOR */}
-        {(demoState === "liveness_code_step" || isLivenessMatchConfirmed) && !showRecognitionBanner && (
+        {/* LIVENESS MATCH CONFIRMED INDICATOR */}
+        {livenessMatchIndex >= livenessCode.length && demoState === "liveness_code_step" && !showRecognitionBanner && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-            <div className="bg-white text-black font-black text-sm px-4 py-2 rounded-lg border-2 border-white flex items-center gap-2 uppercase tracking-wider">
+            <div className="bg-emerald-500 text-black font-black text-sm px-4 py-2 rounded-lg border-2 border-emerald-400 flex items-center gap-2 uppercase tracking-wider shadow-lg shadow-emerald-500/20">
               <CheckCircle2 className="w-5 h-5 text-black" />
-              <span>MATCH CONFIRMED</span>
+              <span>LIVENESS VERIFIED</span>
             </div>
           </div>
         )}
@@ -753,7 +766,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         {demoState === "low_confidence_or_escalated" && (
           <div className="absolute bottom-3 right-3 z-20 w-60 h-40 bg-zinc-950 rounded-lg border border-zinc-700 p-2 text-white">
             <div className="flex items-center justify-between text-[10px] font-mono font-bold uppercase text-white mb-1 border-b border-zinc-800 pb-1">
-              <span className="flex items-center gap-1"><UserCheck className="w-3 h-3"/> Bridged ISL Interpreter</span>
+              <span className="flex items-center gap-1"><UserCheck className="w-3 h-3" /> Bridged ISL Interpreter</span>
               <span className="text-zinc-500">#INT-104</span>
             </div>
             <div className="w-full h-28 bg-zinc-900 rounded border border-zinc-800 flex flex-col items-center justify-center text-center p-2">
@@ -794,7 +807,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         </button>
       </div>
 
-      <TemplateRecorderModal 
+      <TemplateRecorderModal
         isOpen={isRecorderOpen}
         onClose={() => setIsRecorderOpen(false)}
         registerFrameHandler={handleRegisterFrameHandler}

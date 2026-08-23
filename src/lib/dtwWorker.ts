@@ -30,7 +30,7 @@ interface GestureTemplateClass {
 let templateClasses: Record<string, GestureTemplateClass> = {};
 let threshold = DEFAULT_THRESHOLD;
 let lastRecognitionTime = 0;
-const COOLDOWN_MS = 1200;
+const COOLDOWN_MS = 500;
 
 // ─── Ring Buffer (O(1) push, no shift/copy) ──────────────────────────
 const ringBuffer: Float32Array[] = new Array(BUFFER_SIZE);
@@ -298,7 +298,10 @@ self.onmessage = async (e: MessageEvent) => {
           if (!res.ok) return null;
 
           const arrayBuffer = await res.arrayBuffer();
-          const frames = parseNpy(arrayBuffer);
+          const rawFrames = parseNpy(arrayBuffer);
+          
+          // Downsample template to 15 FPS to match live buffer optimizations
+          const frames = rawFrames.filter((_, idx) => idx % 2 === 0);
 
           let name = filename.replace(/^reference_/, "").replace(/\.npy$/, "");
           const match = name.match(/^(.+?)_\d+$/);

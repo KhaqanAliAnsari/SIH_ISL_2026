@@ -26,22 +26,63 @@ export const TemplateRecorderModal: React.FC<TemplateRecorderModalProps> = ({
 
   const framesRef = useRef<Float32Array[]>([]);
   const stateRef = useRef(state);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  // BUG 1 FIX: Mirror recordedCount in a ref so saveTemplate always reads the latest value
+  const recordedCountRef = useRef(0);
+  // BUG 2 FIX: Synchronous guard to prevent frames from arriving after MAX_FRAMES hit
+  const savingRef = useRef(false);
+  // BUG 3 FIX: Separate refs for the countdown interval and the delay timeout
+  const countdownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const delayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
-  // Keep ref in sync for the fast update loop
+  // Keep refs in sync
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
 
+  useEffect(() => {
+    recordedCountRef.current = recordedCount;
+  }, [recordedCount]);
+
+  // BUG 4 FIX: Reset all state when modal closes (isOpen goes false)
+  useEffect(() => {
+    if (!isOpen) {
+      // Clean up timers
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+      if (delayTimerRef.current) {
+        clearTimeout(delayTimerRef.current);
+        delayTimerRef.current = null;
+      }
+      // Reset all state
+      setState('IDLE');
+      setRecordedCount(0);
+      setFrameCount(0);
+      setCountdown(0);
+      setLastSavedFile("");
+      framesRef.current = [];
+      savingRef.current = false;
+      // Detach frame handler
+      registerFrameHandler(null);
+    }
+  }, [isOpen, registerFrameHandler]);
+
   // Handle incoming frames from VideoPanel
   useEffect(() => {
     if (state === 'RECORDING') {
+      savingRef.current = false; // Reset guard when entering RECORDING
       registerFrameHandler((frame: Float32Array) => {
+        // BUG 2 FIX: Bail immediately if we've already hit MAX_FRAMES
+        if (savingRef.current) return;
+
         // Must copy the frame because the ring buffer recycles Float32Arrays!
         framesRef.current.push(new Float32Array(frame));
         setFrameCount(framesRef.current.length);
 
         if (framesRef.current.length >= MAX_FRAMES) {
+          // BUG 2 FIX: Set guard SYNCHRONOUSLY before async setState
+          savingRef.current = true;
           setState('SAVED');
           saveTemplate();
         }
@@ -52,17 +93,28 @@ export const TemplateRecorderModal: React.FC<TemplateRecorderModalProps> = ({
     return () => registerFrameHandler(null);
   }, [state, registerFrameHandler]);
 
-  // Clear timer on unmount
+  // Clear timers on unmount
   useEffect(() => {
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
+      if (delayTimerRef.current) clearTimeout(delayTimerRef.current);
     };
   }, []);
 
   const saveTemplate = async () => {
     try {
       const framesToSave = framesRef.current;
-      const num = (recordedCount + 1).toString().padStart(2, "0");
+
+      // BUG 5 FIX: Guard against empty frame arrays
+      if (framesToSave.length === 0) {
+        console.warn("[TemplateRecorder] saveTemplate called with 0 frames, skipping.");
+        setState('IDLE');
+        return;
+      }
+
+      // BUG 1 FIX: Read from ref instead of stale closure variable
+      const currentCount = recordedCountRef.current;
+      const num = (currentCount + 1).toString().padStart(2, "0");
       const filename = `reference_${gestureName.toLowerCase().replace(/ /g, "_")}_${num}.npy`;
       
       const npyData = encodeNpy(framesToSave);
@@ -80,8 +132,8 @@ export const TemplateRecorderModal: React.FC<TemplateRecorderModalProps> = ({
           if (next >= TEMPLATES_PER_CLASS) {
             setState('DONE');
           } else {
-            // Wait 500ms in SAVED state to let the user see it, then rapid 0.5s countdown
-            timerRef.current = setTimeout(() => {
+            // BUG 3 FIX: Use delayTimerRef (setTimeout) — cleared with clearTimeout
+            delayTimerRef.current = setTimeout(() => {
               setState('COUNTDOWN');
               startCountdown(0.5);
             }, 500);
@@ -99,14 +151,26 @@ export const TemplateRecorderModal: React.FC<TemplateRecorderModalProps> = ({
   };
 
   const startCountdown = (duration: number = COUNTDOWN_SECONDS) => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    // BUG 3 FIX: Clear both timer types correctly
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+      countdownTimerRef.current = null;
+    }
+    if (delayTimerRef.current) {
+      clearTimeout(delayTimerRef.current);
+      delayTimerRef.current = null;
+    }
+
     let timeLeft = duration;
     setCountdown(timeLeft);
-    timerRef.current = setInterval(() => {
+    countdownTimerRef.current = setInterval(() => {
       timeLeft -= 0.1;
       setCountdown(Math.max(0, timeLeft));
       if (timeLeft <= 0) {
-        if (timerRef.current) clearInterval(timerRef.current);
+        if (countdownTimerRef.current) {
+          clearInterval(countdownTimerRef.current);
+          countdownTimerRef.current = null;
+        }
         framesRef.current = []; // Clear buffer
         setFrameCount(0);
         setState('RECORDING');
@@ -122,13 +186,19 @@ export const TemplateRecorderModal: React.FC<TemplateRecorderModalProps> = ({
   };
 
   const handleCancel = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      clearTimeout(timerRef.current);
+    // BUG 3 FIX: Clear both timer types with correct functions
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+      countdownTimerRef.current = null;
+    }
+    if (delayTimerRef.current) {
+      clearTimeout(delayTimerRef.current);
+      delayTimerRef.current = null;
     }
     setState('IDLE');
     setRecordedCount(0);
     framesRef.current = [];
+    savingRef.current = false;
   };
 
   if (!isOpen) return null;

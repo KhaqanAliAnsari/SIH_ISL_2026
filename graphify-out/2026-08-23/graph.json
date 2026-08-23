@@ -369,8 +369,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_main_main",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "main()"
     },
     {
@@ -436,8 +436,8 @@
       "source_location": "L460",
       "_origin": "ast",
       "id": "agents_skills_graphify_main_rationale_460",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "console entry point. wraps the cli so that when a downstream consumer closes..."
     },
     {
@@ -869,8 +869,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_node_community_map",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_node_community_map()"
     },
     {
@@ -928,8 +928,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_surprising_connections",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "surprising_connections()"
     },
     {
@@ -1012,8 +1012,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_suggest_questions",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "suggest_questions()"
     },
     {
@@ -1069,8 +1069,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_rationale_59",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "invert communities dict: node_id -> community_id."
     },
     {
@@ -1102,8 +1102,8 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_rationale_138",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "find connections that are genuinely surprising - not obvious from file..."
     },
     {
@@ -1168,8 +1168,8 @@
       "source_location": "L434",
       "_origin": "ast",
       "id": "agents_skills_graphify_analyze_rationale_434",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "generate questions the graph is uniquely positioned to answer. based on:..."
     },
     {
@@ -1212,8 +1212,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "benchmark.py"
     },
     {
@@ -1224,8 +1224,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_safe",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "_safe()"
     },
     {
@@ -1236,8 +1236,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_hr",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "_hr()"
     },
     {
@@ -1248,8 +1248,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_estimate_tokens",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "_estimate_tokens()"
     },
     {
@@ -1260,8 +1260,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_query_subgraph_tokens",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "_query_subgraph_tokens()"
     },
     {
@@ -1271,8 +1271,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_py_graph",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "graph"
     },
     {
@@ -1283,8 +1283,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_run_benchmark",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "run_benchmark()"
     },
     {
@@ -1295,8 +1295,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_print_benchmark",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "print_benchmark()"
     },
     {
@@ -1306,8 +1306,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_1",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "token-reduction benchmark - measures how much context graphify saves vs naive..."
     },
     {
@@ -1317,8 +1317,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_15",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "return unicode_char if stdout can encode it, else ascii_fallback. windows..."
     },
     {
@@ -1328,8 +1328,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_29",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "horizontal rule that survives non-utf-8 stdout (e.g. windows cp1252 console)."
     },
     {
@@ -1339,8 +1339,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_38",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "run bfs from best-matching nodes and return estimated tokens in the subgraph..."
     },
     {
@@ -1350,8 +1350,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_90",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "measure token reduction: corpus tokens vs graphify query tokens. args:..."
     },
     {
@@ -1361,8 +1361,8 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "agents_skills_graphify_benchmark_rationale_137",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "print a human-readable benchmark report."
     },
     {
@@ -1384,8 +1384,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_is_ast_tier",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "_is_ast_tier()"
     },
     {
@@ -1420,8 +1420,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_fold_node_aliases",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "_fold_node_aliases()"
     },
     {
@@ -1432,8 +1432,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_fold_edge_aliases",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "_fold_edge_aliases()"
     },
     {
@@ -1468,8 +1468,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_coerce_non_string_ids",
-      "community": 86,
-      "community_name": "_coerce_hyperedge_member_refs",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "_coerce_non_string_ids()"
     },
     {
@@ -1504,8 +1504,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_is_file_node_label",
-      "community": 33,
-      "community_name": "analyze.py",
+      "community": 107,
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "_is_file_node_label()"
     },
     {
@@ -1552,8 +1552,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_disambiguate_file_labels_in_nodes",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 81,
+      "community_name": "_file_label_reassignments",
       "norm_label": "disambiguate_file_labels_in_nodes()"
     },
     {
@@ -1611,8 +1611,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_edge_data",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "edge_data()"
     },
     {
@@ -1622,8 +1622,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_py_graph",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "graph"
     },
     {
@@ -1718,8 +1718,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_doc_twin_remap",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "_doc_twin_remap()"
     },
     {
@@ -1730,8 +1730,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_build_build_from_json",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "build_from_json()"
     },
     {
@@ -1849,8 +1849,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_45",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "ast vs semantic tier. _origin wins when present; unstamped legacy items..."
     },
     {
@@ -1882,8 +1882,8 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_188",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "fold legacy node field aliases onto canonical keys, in place (#2194). ``name``..."
     },
     {
@@ -1893,8 +1893,8 @@
       "source_location": "L206",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_206",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "fold legacy edge field aliases onto canonical keys, in place (#2194). ``type``..."
     },
     {
@@ -1926,8 +1926,8 @@
       "source_location": "L256",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_256",
-      "community": 86,
-      "community_name": "_coerce_hyperedge_member_refs",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "coerce numeric node ids and edge/hyperedge references to str, in place (#2326)...."
     },
     {
@@ -1959,8 +1959,8 @@
       "source_location": "L351",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_351",
-      "community": 33,
-      "community_name": "analyze.py",
+      "community": 107,
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "whether *label* is a file node's label for *source_file* \u2014 the bare basename,..."
     },
     {
@@ -2003,8 +2003,8 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_412",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 81,
+      "community_name": "_file_label_reassignments",
       "norm_label": "relabel colliding-basename file nodes on a raw node-dict list, in place..."
     },
     {
@@ -2047,8 +2047,8 @@
       "source_location": "L535",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_535",
-      "community": 139,
-      "community_name": "edge_data",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "return one edge attribute dict for (u, v), tolerating multigraph. for..."
     },
     {
@@ -2135,8 +2135,8 @@
       "source_location": "L767",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_767",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "map a markdown quick-scan's bare doc node ``<slug>`` to the semantic..."
     },
     {
@@ -2146,8 +2146,8 @@
       "source_location": "L799",
       "_origin": "ast",
       "id": "agents_skills_graphify_build_rationale_799",
-      "community": 103,
-      "community_name": "build_from_json",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "build a networkx graph from an extraction dict. directed=true produces a..."
     },
     {
@@ -6011,8 +6011,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_file_within_size_cap",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_file_within_size_cap()"
     },
     {
@@ -6022,8 +6022,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_py_path",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "path"
     },
     {
@@ -6034,8 +6034,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_zip_within_caps",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_zip_within_caps()"
     },
     {
@@ -6046,8 +6046,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_env_template",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "_is_env_template()"
     },
     {
@@ -6058,8 +6058,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_prose_note",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "_is_prose_note()"
     },
     {
@@ -6070,8 +6070,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_generic_keyword_hit",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "_generic_keyword_hit()"
     },
     {
@@ -6094,8 +6094,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_sensitive",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "_is_sensitive()"
     },
     {
@@ -6178,8 +6178,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_extract_pdf_text",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "extract_pdf_text()"
     },
     {
@@ -6190,8 +6190,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_docx_to_markdown",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "docx_to_markdown()"
     },
     {
@@ -6202,8 +6202,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_xlsx_to_markdown",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "xlsx_to_markdown()"
     },
     {
@@ -6226,8 +6226,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_convert_office_file",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "convert_office_file()"
     },
     {
@@ -6238,8 +6238,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_count_words",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "count_words()"
     },
     {
@@ -6250,8 +6250,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_regular_file",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_is_regular_file()"
     },
     {
@@ -6262,8 +6262,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_has_coverage_artifacts",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_has_coverage_artifacts()"
     },
     {
@@ -6274,8 +6274,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_has_venv_markers",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_has_venv_markers()"
     },
     {
@@ -6286,8 +6286,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_noise_dir",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_is_noise_dir()"
     },
     {
@@ -6310,8 +6310,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_parse_gitignore_line",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_parse_gitignore_line()"
     },
     {
@@ -6322,8 +6322,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_find_vcs_root",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_find_vcs_root()"
     },
     {
@@ -6334,8 +6334,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_path_identity",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_path_identity()"
     },
     {
@@ -6346,8 +6346,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_git_tracked_path_keys",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_git_tracked_path_keys()"
     },
     {
@@ -6358,8 +6358,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_git_info_exclude",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_git_info_exclude()"
     },
     {
@@ -6370,8 +6370,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_read_ignore_text",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_read_ignore_text()"
     },
     {
@@ -6382,8 +6382,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_load_dir_own_ignore",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_load_dir_own_ignore()"
     },
     {
@@ -6394,8 +6394,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_load_graphifyignore",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "_load_graphifyignore()"
     },
     {
@@ -6418,8 +6418,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_ignored",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_is_ignored()"
     },
     {
@@ -6430,8 +6430,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_is_scan_ignored",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_is_scan_ignored()"
     },
     {
@@ -6442,8 +6442,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_ignored_predicate",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "ignored_predicate()"
     },
     {
@@ -6454,8 +6454,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_auto_follow_symlinks",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_auto_follow_symlinks()"
     },
     {
@@ -6466,8 +6466,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_resolves_under_root",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_resolves_under_root()"
     },
     {
@@ -6478,8 +6478,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_detect",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "detect()"
     },
     {
@@ -6490,8 +6490,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_os_path",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_os_path()"
     },
     {
@@ -6502,8 +6502,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_md5_file",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_md5_file()"
     },
     {
@@ -6514,8 +6514,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_stat_and_hash",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "_stat_and_hash()"
     },
     {
@@ -6597,8 +6597,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_67",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "true if *path* exists and its on-disk size is within *cap*."
     },
     {
@@ -6608,8 +6608,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_75",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "reject a zip-based office file that is a likely zip/xml bomb. two layers,..."
     },
     {
@@ -6619,8 +6619,8 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_152",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "true for `.env.example` / `.envrc.sample` style committed templates (#2184)."
     },
     {
@@ -6630,8 +6630,8 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_209",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "a prose/note file (.md/.rst/...) whose stem is a multi-word topic slug is..."
     },
     {
@@ -6641,8 +6641,8 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_220",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "true if a generic secret keyword appears load-bearing in the filename. secret-..."
     },
     {
@@ -6663,8 +6663,8 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_274",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 161,
+      "community_name": "_is_sensitive",
       "norm_label": "return true if this file likely contains secrets and should be skipped."
     },
     {
@@ -6729,8 +6729,8 @@
       "source_location": "L542",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_542",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "extract plain text from a pdf file using pypdf."
     },
     {
@@ -6740,8 +6740,8 @@
       "source_location": "L559",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_559",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "convert a .docx file to markdown text using python-docx."
     },
     {
@@ -6751,8 +6751,8 @@
       "source_location": "L601",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_601",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "convert an .xlsx file to markdown text using openpyxl."
     },
     {
@@ -6773,8 +6773,8 @@
       "source_location": "L723",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_723",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "convert a .docx or .xlsx to a markdown sidecar in out_dir. returns the path of..."
     },
     {
@@ -6784,8 +6784,8 @@
       "source_location": "L812",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_812",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "true only for regular files (symlinks followed). named pipes, sockets and..."
     },
     {
@@ -6795,8 +6795,8 @@
       "source_location": "L882",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_882",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "true only when *d* holds files a coverage tool actually generated. ``coverage``..."
     },
     {
@@ -6806,8 +6806,8 @@
       "source_location": "L904",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_904",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "true only when *d* has actual virtualenv/conda structure on disk...."
     },
     {
@@ -6817,8 +6817,8 @@
       "source_location": "L927",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_927",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "return true if this directory name looks like a venv, cache, or dep dir."
     },
     {
@@ -6839,8 +6839,8 @@
       "source_location": "L988",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_988",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "parse one raw line from a .graphifyignore file per gitignore spec. - strip..."
     },
     {
@@ -6850,8 +6850,8 @@
       "source_location": "L1012",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1012",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "walk upward from start; return the first directory containing a vcs marker."
     },
     {
@@ -6861,8 +6861,8 @@
       "source_location": "L1025",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1025",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "portable comparison key for an existing filesystem path."
     },
     {
@@ -6872,8 +6872,8 @@
       "source_location": "L1030",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1030",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "return tracked-file keys and their ancestor-directory keys under *root*...."
     },
     {
@@ -6883,8 +6883,8 @@
       "source_location": "L1084",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1084",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "resolve ``$git_dir/info/exclude`` for the repo rooted at ``vcs_root``...."
     },
     {
@@ -6894,8 +6894,8 @@
       "source_location": "L1129",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1129",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "read an ignore file, preferring utf-8 but never silently dropping a rule. these..."
     },
     {
@@ -6905,8 +6905,8 @@
       "source_location": "L1181",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1181",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "read .gitignore/.graphifyignore directly inside *d* (not its ancestors). merges..."
     },
     {
@@ -6916,8 +6916,8 @@
       "source_location": "L1208",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1208",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "read .graphifyignore files and return (anchor_dir, pattern) pairs. patterns are..."
     },
     {
@@ -6938,8 +6938,8 @@
       "source_location": "L1287",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1287",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "return true if the path should be ignored per .graphifyignore patterns. uses..."
     },
     {
@@ -6949,8 +6949,8 @@
       "source_location": "L1388",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1388",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "apply ignore rules while preserving git-tracked paths. ``patterns`` combines..."
     },
     {
@@ -6960,8 +6960,8 @@
       "source_location": "L1409",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1409",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "build a per-path predicate answering \"would detect() exclude this path?\"...."
     },
     {
@@ -6971,8 +6971,8 @@
       "source_location": "L1491",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1491",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "return whether ``root`` has any direct symlinked child. kept for callers that..."
     },
     {
@@ -6982,8 +6982,8 @@
       "source_location": "L1507",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1507",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "true when ``path`` resolves to a target inside ``root``."
     },
     {
@@ -6993,8 +6993,8 @@
       "source_location": "L1816",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1816",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "r\"\"\"return an os path string safe for open()/stat() on windows long paths. on..."
     },
     {
@@ -7004,8 +7004,8 @@
       "source_location": "L1844",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1844",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "md5 of file contents streamed in 64kb chunks \u2014 for change detection only."
     },
     {
@@ -7015,8 +7015,8 @@
       "source_location": "L1857",
       "_origin": "ast",
       "id": "agents_skills_graphify_detect_rationale_1857",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 69,
+      "community_name": "Path",
       "norm_label": "stat + md5 a single file; returns none on oserror (e.g. deleted mid-run)."
     },
     {
@@ -7393,8 +7393,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_export_backup_if_protected",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 19,
+      "community_name": "watch.py",
       "norm_label": "backup_if_protected()"
     },
     {
@@ -7642,8 +7642,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "agents_skills_graphify_export_rationale_37",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 19,
+      "community_name": "watch.py",
       "norm_label": "snapshot graph artifacts to a dated subfolder before an overwrite. triggers..."
     },
     {
@@ -7829,8 +7829,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_base",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "exporters/base.py"
     },
     {
@@ -7840,8 +7840,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_base_rationale_1",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "shared constants/helpers for the graphify exporters package. symbols used by..."
     },
     {
@@ -7851,8 +7851,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "graphdb.py"
     },
     {
@@ -7863,8 +7863,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_push_to_neo4j",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "push_to_neo4j()"
     },
     {
@@ -7874,8 +7874,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_py_graph",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "graph"
     },
     {
@@ -7886,8 +7886,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_push_to_falkordb",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "push_to_falkordb()"
     },
     {
@@ -7897,8 +7897,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_rationale_1",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "graphdb \u2014 moved verbatim from graphify/export.py."
     },
     {
@@ -7908,8 +7908,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_rationale_16",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "push graph directly to a running neo4j instance via the python driver...."
     },
     {
@@ -7919,8 +7919,8 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_graphdb_rationale_88",
-      "community": 79,
-      "community_name": "_node_community_map",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "push graph directly to a running falkordb instance via the python sdk...."
     },
     {
@@ -7930,8 +7930,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "html.py"
     },
     {
@@ -7942,8 +7942,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_viz_node_limit",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_viz_node_limit()"
     },
     {
@@ -7954,8 +7954,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_html_styles",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_html_styles()"
     },
     {
@@ -7966,8 +7966,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_hyperedge_script",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_hyperedge_script()"
     },
     {
@@ -7978,8 +7978,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_html_script",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_html_script()"
     },
     {
@@ -7990,8 +7990,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_html_document_title",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_html_document_title()"
     },
     {
@@ -8002,8 +8002,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_to_html",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "to_html()"
     },
     {
@@ -8013,8 +8013,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_py_graph",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "graph"
     },
     {
@@ -8024,8 +8024,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_rationale_1",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "html \u2014 moved verbatim from graphify/export.py."
     },
     {
@@ -8035,8 +8035,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_rationale_16",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "return the effective viz node limit, honoring graphify_viz_node_limit env var...."
     },
     {
@@ -8046,8 +8046,8 @@
       "source_location": "L352",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_rationale_352",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "return a portable label for the graph.html <title>. tracked artifacts must not..."
     },
     {
@@ -8057,8 +8057,8 @@
       "source_location": "L403",
       "_origin": "ast",
       "id": "agents_skills_graphify_exporters_html_rationale_403",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "generate an interactive vis.js html visualization of the graph. features: node..."
     },
     {
@@ -9027,8 +9027,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_extract_xaml_csharp_class_nodes",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "_xaml_csharp_class_nodes()"
     },
     {
@@ -9194,8 +9194,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_extract_collect_files",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 79,
+      "community_name": "_is_ignored",
       "norm_label": "collect_files()"
     },
     {
@@ -16234,8 +16234,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_google_workspace_google_workspace_enabled",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "google_workspace_enabled()"
     },
     {
@@ -16374,8 +16374,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "agents_skills_graphify_google_workspace_rationale_26",
-      "community": 62,
-      "community_name": "detect.py",
+      "community": 73,
+      "community_name": "detect",
       "norm_label": "return true when google workspace shortcut export is enabled."
     },
     {
@@ -16842,8 +16842,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_ids",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 78,
+      "community_name": "manifest_ingest.py",
       "norm_label": "ids.py"
     },
     {
@@ -16854,8 +16854,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_ids_normalize_id",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "normalize_id()"
     },
     {
@@ -16866,8 +16866,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_ids_make_id",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "make_id()"
     },
     {
@@ -16877,8 +16877,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_ids_rationale_1",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 78,
+      "community_name": "manifest_ingest.py",
       "norm_label": "single source of truth for node-id normalization. three independent producers..."
     },
     {
@@ -16888,8 +16888,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "agents_skills_graphify_ids_rationale_51",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "r\"\"\"normalize a single id string to its canonical form. guarantees, all..."
     },
     {
@@ -16899,8 +16899,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "agents_skills_graphify_ids_rationale_87",
-      "community": 106,
-      "community_name": "make_id",
+      "community": 71,
+      "community_name": "build.py",
       "norm_label": "build a canonical node id from one or more name parts. parts are joined with..."
     },
     {
@@ -17198,8 +17198,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_platform_skill_destination",
-      "community": 47,
-      "community_name": "Path",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_platform_skill_destination()"
     },
     {
@@ -17233,8 +17233,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_install_skill_references",
-      "community": 47,
-      "community_name": "Path",
+      "community": 104,
+      "community_name": "_always_on",
       "norm_label": "_install_skill_references()"
     },
     {
@@ -17281,8 +17281,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_remove_claude_skill_registration",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "_remove_claude_skill_registration()"
     },
     {
@@ -17317,8 +17317,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_skill_registration",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_skill_registration()"
     },
     {
@@ -17353,8 +17353,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_remove_marker_section",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "_remove_marker_section()"
     },
     {
@@ -17365,8 +17365,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_print_banner",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_print_banner()"
     },
     {
@@ -17509,8 +17509,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_vscode_uninstall",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "vscode_uninstall()"
     },
     {
@@ -17569,8 +17569,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_antigravity_uninstall",
-      "community": 28,
-      "community_name": "dispatch_install_cli",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_antigravity_uninstall()"
     },
     {
@@ -17617,8 +17617,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_devin_rules_uninstall",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "_devin_rules_uninstall()"
     },
     {
@@ -17629,8 +17629,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_strip_json_comments",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_strip_json_comments()"
     },
     {
@@ -17641,8 +17641,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_load_json_like",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_load_json_like()"
     },
     {
@@ -17653,8 +17653,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_kilo_config_path",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_kilo_config_path()"
     },
     {
@@ -17665,8 +17665,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_kilo_config_write_path",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_kilo_config_write_path()"
     },
     {
@@ -17677,8 +17677,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_install_kilo_plugin",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_install_kilo_plugin()"
     },
     {
@@ -17689,8 +17689,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_uninstall_kilo_plugin",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "_uninstall_kilo_plugin()"
     },
     {
@@ -17881,8 +17881,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_kilo_uninstall_global",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_kilo_uninstall_global()"
     },
     {
@@ -17905,8 +17905,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_kilo_uninstall",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "_kilo_uninstall()"
     },
     {
@@ -17989,8 +17989,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_strip_graphify_md_section",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "_strip_graphify_md_section()"
     },
     {
@@ -18025,8 +18025,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_install_uninstall_codebuddy_hook",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "_uninstall_codebuddy_hook()"
     },
     {
@@ -18082,8 +18082,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_59",
-      "community": 47,
-      "community_name": "Path",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "return the skill destination for a platform and scope."
     },
     {
@@ -18104,8 +18104,8 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_145",
-      "community": 47,
-      "community_name": "Path",
+      "community": 104,
+      "community_name": "_always_on",
       "norm_label": "atomically install a packaged references/ sidecar next to skill.md. stages the..."
     },
     {
@@ -18148,8 +18148,8 @@
       "source_location": "L259",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_259",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "remove the project-scoped claude skill registration file/section."
     },
     {
@@ -18192,8 +18192,8 @@
       "source_location": "L522",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_522",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "remove every section whose heading line is exactly ``marker``. the heading is..."
     },
     {
@@ -18203,8 +18203,8 @@
       "source_location": "L560",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_560",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "amber brain banner on graphify install. tty-only, never raises."
     },
     {
@@ -18291,8 +18291,8 @@
       "source_location": "L890",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_890",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "remove graphify vs code copilot chat skill and .github/copilot-instructions.md..."
     },
     {
@@ -18346,8 +18346,8 @@
       "source_location": "L1047",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1047",
-      "community": 28,
-      "community_name": "dispatch_install_cli",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "remove graphify antigravity rules, workflow, and skill files."
     },
     {
@@ -18390,8 +18390,8 @@
       "source_location": "L1154",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1154",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "remove .windsurf/rules/graphify.md."
     },
     {
@@ -18401,8 +18401,8 @@
       "source_location": "L1192",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1192",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "remove jsonc-style comments while leaving string content intact."
     },
     {
@@ -18412,8 +18412,8 @@
       "source_location": "L1266",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1266",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "write automated kilo edits to kilo.json so existing jsonc stays untouched."
     },
     {
@@ -18423,8 +18423,8 @@
       "source_location": "L1270",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1270",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "write graphify.js plugin and register it without rewriting user jsonc."
     },
     {
@@ -18434,8 +18434,8 @@
       "source_location": "L1294",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1294",
-      "community": 77,
-      "community_name": "__main__.py",
+      "community": 93,
+      "community_name": "install.py",
       "norm_label": "remove graphify.js plugin and deregister it without rewriting user jsonc."
     },
     {
@@ -18621,8 +18621,8 @@
       "source_location": "L1707",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1707",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 77,
+      "community_name": "__main__.py",
       "norm_label": "remove kilo always-on project wiring and global skill/command files."
     },
     {
@@ -18698,8 +18698,8 @@
       "source_location": "L1873",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1873",
-      "community": 95,
-      "community_name": "_remove_marker_section",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "strip the ## graphify section from one claude.md-style file. returns true if a..."
     },
     {
@@ -18731,8 +18731,8 @@
       "source_location": "L1940",
       "_origin": "ast",
       "id": "agents_skills_graphify_install_rationale_1940",
-      "community": 93,
-      "community_name": "install.py",
+      "community": 28,
+      "community_name": "dispatch_install_cli",
       "norm_label": "remove graphify pretooluse hook from .codebuddy/settings.json."
     },
     {
@@ -18788,8 +18788,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_resolve_ollama_base_url",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_resolve_ollama_base_url()"
     },
     {
@@ -18800,8 +18800,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_custom_providers_path",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 70,
+      "community_name": "llm.py",
       "norm_label": "_custom_providers_path()"
     },
     {
@@ -18823,8 +18823,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_provider_base_url_ok",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 70,
+      "community_name": "llm.py",
       "norm_label": "provider_base_url_ok()"
     },
     {
@@ -18835,8 +18835,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_load_custom_providers",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 70,
+      "community_name": "llm.py",
       "norm_label": "_load_custom_providers()"
     },
     {
@@ -18895,7 +18895,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_no_window_kwargs",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "_no_window_kwargs()"
     },
@@ -18908,7 +18908,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_resolve_api_timeout",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_resolve_api_timeout()"
     },
     {
@@ -18920,7 +18920,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_resolve_max_retries",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_resolve_max_retries()"
     },
     {
@@ -18944,7 +18944,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_extraction_system",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_extraction_system()"
     },
     {
@@ -19209,7 +19209,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_sanitize_fragment",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_sanitize_fragment()"
     },
     {
@@ -19221,7 +19221,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_parse_llm_json",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_parse_llm_json()"
     },
     {
@@ -19257,7 +19257,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_response_is_hollow",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_response_is_hollow()"
     },
     {
@@ -19268,8 +19268,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_backend_env_keys",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_backend_env_keys()"
     },
     {
@@ -19280,8 +19280,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_get_backend_api_key",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_get_backend_api_key()"
     },
     {
@@ -19292,8 +19292,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_format_backend_env_keys",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_format_backend_env_keys()"
     },
     {
@@ -19317,7 +19317,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_backend_pkg_hint",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_backend_pkg_hint()"
     },
     {
@@ -19329,7 +19329,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_call_openai_compat",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_call_openai_compat()"
     },
     {
@@ -19341,7 +19341,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_call_claude",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_call_claude()"
     },
     {
@@ -19352,8 +19352,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_claude_cli_envelope",
-      "community": 73,
-      "community_name": "_call_claude_cli",
+      "community": 64,
+      "community_name": "_call_llm",
       "norm_label": "_claude_cli_envelope()"
     },
     {
@@ -19364,8 +19364,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_claude_cli_error",
-      "community": 73,
-      "community_name": "_call_claude_cli",
+      "community": 64,
+      "community_name": "_call_llm",
       "norm_label": "_claude_cli_error()"
     },
     {
@@ -19376,7 +19376,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_claude_cli_supports_json_schema",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "_claude_cli_supports_json_schema()"
     },
@@ -19388,7 +19388,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_call_claude_cli",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "_call_claude_cli()"
     },
@@ -19401,7 +19401,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_azure_client",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_azure_client()"
     },
     {
@@ -19413,7 +19413,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_call_azure",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_call_azure()"
     },
     {
@@ -19425,7 +19425,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_call_bedrock",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "_call_bedrock()"
     },
     {
@@ -19627,8 +19627,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_ollama_host_is_link_local_or_metadata",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_ollama_host_is_link_local_or_metadata()"
     },
     {
@@ -19639,8 +19639,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_validate_ollama_base_url",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "_validate_ollama_base_url()"
     },
     {
@@ -19651,8 +19651,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_detect_backend",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "detect_backend()"
     },
     {
@@ -19745,8 +19745,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_62",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "resolve the ollama base url. honors an explicit ollama_base_url first..."
     },
     {
@@ -19756,8 +19756,8 @@
       "source_location": "L229",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_229",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 70,
+      "community_name": "llm.py",
       "norm_label": "structural safety check for a custom-provider base_url. a custom provider..."
     },
     {
@@ -19811,7 +19811,7 @@
       "source_location": "L393",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_393",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "subprocess kwargs that suppress the console window claude.cmd would otherwise..."
     },
@@ -19823,7 +19823,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_405",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "honour graphify_api_timeout env var override, else use default (seconds)."
     },
     {
@@ -19834,7 +19834,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_418",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "how many times the provider sdk retries a transient error (notably http 429..."
     },
     {
@@ -19856,7 +19856,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_493",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "return the semantic-extraction system prompt, optionally in deep mode."
     },
     {
@@ -20054,7 +20054,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_954",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "force ``nodes``/``edges``/``hyperedges`` to lists of dicts, in place. a model..."
     },
     {
@@ -20065,7 +20065,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_990",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "strip optional markdown fences and parse json. returns empty fragment on..."
     },
     {
@@ -20098,7 +20098,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1114",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "detect a successful http response that yielded no usable extraction. a local..."
     },
     {
@@ -20108,8 +20108,8 @@
       "source_location": "L1134",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1134",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "return accepted api-key environment variables for a backend."
     },
     {
@@ -20119,8 +20119,8 @@
       "source_location": "L1146",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1146",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "return the first configured api key for backend, or an empty string."
     },
     {
@@ -20130,8 +20130,8 @@
       "source_location": "L1155",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1155",
-      "community": 64,
-      "community_name": "_call_llm",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "return user-facing accepted api-key variable names."
     },
     {
@@ -20153,7 +20153,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1172",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "package-missing message that works for the recommended `uv tool` install. `uv..."
     },
     {
@@ -20164,7 +20164,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1200",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "call any openai-compatible api (kimi, openai, etc.) and return parsed json."
     },
     {
@@ -20175,7 +20175,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1337",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "call anthropic claude directly (not via openai compat layer)."
     },
     {
@@ -20185,8 +20185,8 @@
       "source_location": "L1375",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1375",
-      "community": 73,
-      "community_name": "_call_claude_cli",
+      "community": 64,
+      "community_name": "_call_llm",
       "norm_label": "parse the json returned by `claude -p --output-format json`. older claude code..."
     },
     {
@@ -20196,8 +20196,8 @@
       "source_location": "L1407",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1407",
-      "community": 73,
-      "community_name": "_call_claude_cli",
+      "community": 64,
+      "community_name": "_call_llm",
       "norm_label": "return the cli's own error text when the envelope flags `is_error`. `claude -p`..."
     },
     {
@@ -20207,7 +20207,7 @@
       "source_location": "L1454",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1454",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "return true if this claude code cli accepts ``--json-schema``. structured..."
     },
@@ -20218,7 +20218,7 @@
       "source_location": "L1487",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1487",
-      "community": 73,
+      "community": 65,
       "community_name": "_call_claude_cli",
       "norm_label": "call claude via the locally-installed claude code cli (`claude -p`). routes..."
     },
@@ -20230,7 +20230,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1638",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "construct an azureopenai client with env-driven api_version and timeout."
     },
     {
@@ -20241,7 +20241,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1669",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "call azure openai service via the azureopenai sdk client."
     },
     {
@@ -20252,7 +20252,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_1701",
       "community": 65,
-      "community_name": "_call_bedrock",
+      "community_name": "_call_claude_cli",
       "norm_label": "call aws bedrock via boto3 converse api using the standard aws credential chain."
     },
     {
@@ -20427,8 +20427,8 @@
       "source_location": "L2805",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_2805",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "true if *host* is, or resolves to, a link-local / cloud-metadata address...."
     },
     {
@@ -20438,8 +20438,8 @@
       "source_location": "L2832",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_2832",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "warn if ollama_base_url looks unsafe; hard-block link-local/metadata (f3)...."
     },
     {
@@ -20449,8 +20449,8 @@
       "source_location": "L2879",
       "_origin": "ast",
       "id": "agents_skills_graphify_llm_rationale_2879",
-      "community": 70,
-      "community_name": "llm.py",
+      "community": 106,
+      "community_name": "_get_backend_api_key",
       "norm_label": "return the name of whichever backend has an api key set, or none. priority:..."
     },
     {
@@ -21290,8 +21290,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "paths.py"
     },
     {
@@ -21302,8 +21302,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_atomic_replace",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "_atomic_replace()"
     },
     {
@@ -21314,8 +21314,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_write_text_atomic",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "write_text_atomic()"
     },
     {
@@ -21385,8 +21385,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_py_path",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "path"
     },
     {
@@ -21422,7 +21422,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_stem_filename_budget",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "stem_filename_budget()"
     },
     {
@@ -21445,8 +21445,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_load_node_link_graph",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "load_node_link_graph()"
     },
     {
@@ -21456,8 +21456,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_rationale_1",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "single source of truth for the graphify output-directory name. the output..."
     },
     {
@@ -21467,8 +21467,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_rationale_30",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "atomically replace ``path`` with content written by ``write_fn(f)``. writes a..."
     },
     {
@@ -21478,8 +21478,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_rationale_92",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "atomically write ``text`` (utf-8) to ``path``. see :func:`_atomic_replace`."
     },
     {
@@ -21567,7 +21567,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_rationale_364",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "largest filename stem an exporter may write directly into ``output_dir``...."
     },
     {
@@ -21588,8 +21588,8 @@
       "source_location": "L411",
       "_origin": "ast",
       "id": "agents_skills_graphify_paths_rationale_411",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 102,
+      "community_name": "paths.py",
       "norm_label": "load a graphify graph.json into a networkx graph, accepting both writers. the..."
     },
     {
@@ -21599,8 +21599,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_pg_introspect",
-      "community": 82,
-      "community_name": "introspect_postgres",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "pg_introspect.py"
     },
     {
@@ -21611,8 +21611,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_pg_introspect_quote_ident",
-      "community": 82,
-      "community_name": "introspect_postgres",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "_quote_ident()"
     },
     {
@@ -21623,8 +21623,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_pg_introspect_introspect_postgres",
-      "community": 82,
-      "community_name": "introspect_postgres",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "introspect_postgres()"
     },
     {
@@ -21634,8 +21634,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "agents_skills_graphify_pg_introspect_rationale_7",
-      "community": 82,
-      "community_name": "introspect_postgres",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "double-quote a postgresql identifier, escaping embedded double-quotes."
     },
     {
@@ -21645,8 +21645,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "agents_skills_graphify_pg_introspect_rationale_12",
-      "community": 82,
-      "community_name": "introspect_postgres",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "connect to postgresql, reconstruct ddl, and extract via extract_sql()."
     },
     {
@@ -21861,8 +21861,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_gh",
-      "community": 34,
-      "community_name": "prs.py",
+      "community": 133,
+      "community_name": "_build_server",
       "norm_label": "_gh()"
     },
     {
@@ -21873,8 +21873,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_detect_default_branch",
-      "community": 34,
-      "community_name": "prs.py",
+      "community": 133,
+      "community_name": "_build_server",
       "norm_label": "_detect_default_branch()"
     },
     {
@@ -21885,7 +21885,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_parse_ci",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "_parse_ci()"
     },
@@ -21897,8 +21897,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_fetch_prs",
-      "community": 34,
-      "community_name": "prs.py",
+      "community": 133,
+      "community_name": "_build_server",
       "norm_label": "fetch_prs()"
     },
     {
@@ -21910,7 +21910,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_fetch_pr_files",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "fetch_pr_files()"
     },
     {
@@ -21922,7 +21922,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_path_match",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "_path_match()"
     },
     {
@@ -21934,7 +21934,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_compute_pr_impact",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "compute_pr_impact()"
     },
     {
@@ -21945,7 +21945,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_format_prs_text",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "format_prs_text()"
     },
@@ -21957,7 +21957,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_fetch_worktrees",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "fetch_worktrees()"
     },
@@ -21970,7 +21970,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_load_graph_json",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "_load_graph_json()"
     },
     {
@@ -21981,7 +21981,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_py_path",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "path"
     },
     {
@@ -21993,7 +21993,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_build_community_labels",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "build_community_labels()"
     },
     {
@@ -22005,7 +22005,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_attach_graph_impact",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "attach_graph_impact()"
     },
     {
@@ -22133,8 +22133,8 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_158",
-      "community": 34,
-      "community_name": "prs.py",
+      "community": 133,
+      "community_name": "_build_server",
       "norm_label": "auto-detect the repo's default branch via gh, then git, then fall back to..."
     },
     {
@@ -22145,7 +22145,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_246",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "true if graph_src and pr_file refer to the same file (path-boundary safe)."
     },
     {
@@ -22156,7 +22156,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_253",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "return (communities_touched, nodes_affected) for a set of changed files. builds..."
     },
     {
@@ -22166,7 +22166,7 @@
       "source_location": "L286",
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_286",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "plain-text pr summary for mcp output (no ansi)."
     },
@@ -22177,7 +22177,7 @@
       "source_location": "L302",
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_302",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "returns {branch: worktree_path}."
     },
@@ -22189,7 +22189,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_339",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "return {community_id: [top_labels]} extracted from graph node data."
     },
     {
@@ -22200,7 +22200,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_prs_rationale_354",
       "community": 112,
-      "community_name": "_build_server",
+      "community_name": "attach_graph_impact",
       "norm_label": "fetch pr file lists concurrently, compute graph impact, return community labels."
     },
     {
@@ -22549,8 +22549,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_reflect_lessons_fresh",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "lessons_fresh()"
     },
     {
@@ -22835,8 +22835,8 @@
       "source_location": "L531",
       "_origin": "ast",
       "id": "agents_skills_graphify_reflect_rationale_531",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 20,
+      "community_name": "cli.py",
       "norm_label": "true if ``out_path`` exists and is at least as new as every input that feeds it..."
     },
     {
@@ -22967,8 +22967,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "agents_skills_graphify_report",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "report.py"
     },
     {
@@ -22979,8 +22979,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_report_portable_root_label",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "_portable_root_label()"
     },
     {
@@ -22991,8 +22991,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_report_safe_community_name",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "_safe_community_name()"
     },
     {
@@ -23003,8 +23003,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_report_load_learning_for_report",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 18,
+      "community_name": "reflect.py",
       "norm_label": "load_learning_for_report()"
     },
     {
@@ -23015,8 +23015,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_report_learning_section",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "_learning_section()"
     },
     {
@@ -23027,8 +23027,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_report_generate",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "generate()"
     },
     {
@@ -23038,8 +23038,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "agents_skills_graphify_report_py_graph",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "graph"
     },
     {
@@ -23049,8 +23049,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "agents_skills_graphify_report_rationale_10",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "portable label for the report header \u2014 the project directory basename...."
     },
     {
@@ -23060,8 +23060,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "agents_skills_graphify_report_rationale_34",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "mirrors export.safe_name so community hub filenames and report wikilinks always..."
     },
     {
@@ -23071,8 +23071,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "agents_skills_graphify_report_rationale_41",
-      "community": 19,
-      "community_name": "watch.py",
+      "community": 18,
+      "community_name": "reflect.py",
       "norm_label": "assemble the report's work-memory inputs from sibling artifacts. reads the..."
     },
     {
@@ -23082,8 +23082,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "agents_skills_graphify_report_rationale_66",
-      "community": 18,
-      "community_name": "reflect.py",
+      "community": 33,
+      "community_name": "analyze.py",
       "norm_label": "append the ``## work-memory lessons`` section, or nothing when empty."
     },
     {
@@ -23862,8 +23862,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_check_graph_file_size_cap",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 107,
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "check_graph_file_size_cap()"
     },
     {
@@ -23874,8 +23874,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_sanitize_label",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "sanitize_label()"
     },
     {
@@ -24064,8 +24064,8 @@
       "source_location": "L358",
       "_origin": "ast",
       "id": "agents_skills_graphify_security_rationale_358",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 107,
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "reject *path* if its size exceeds the configured graph-file cap. protects..."
     },
     {
@@ -24075,8 +24075,8 @@
       "source_location": "L395",
       "_origin": "ast",
       "id": "agents_skills_graphify_security_rationale_395",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "strip control characters and cap length. safe for embedding in json data..."
     },
     {
@@ -24280,8 +24280,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_load_graph",
-      "community": 25,
-      "community_name": "serve.py",
+      "community": 116,
+      "community_name": "_load_graph",
       "norm_label": "_load_graph()"
     },
     {
@@ -24304,7 +24304,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_communities_from_graph",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "_communities_from_graph()"
     },
     {
@@ -24315,7 +24315,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_max_server_contexts",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "_max_server_contexts()"
     },
@@ -24329,7 +24329,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_graphcontextcache",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "_graphcontextcache"
     },
     {
@@ -24341,7 +24341,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_graphcontextcache_init",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": ".__init__()"
     },
     {
@@ -24353,7 +24353,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_graphcontextcache_load_entry",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "._load_entry()"
     },
     {
@@ -24365,7 +24365,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_graphcontextcache_load",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": ".load()"
     },
     {
@@ -24401,7 +24401,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_has_chinese",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "_has_chinese()"
     },
     {
@@ -24413,7 +24413,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_segment_chinese",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "_segment_chinese()"
     },
     {
@@ -24425,7 +24425,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_is_searchable",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "_is_searchable()"
     },
     {
@@ -24437,7 +24437,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_query_terms",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "_query_terms()"
     },
     {
@@ -24772,8 +24772,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_community_header",
-      "community": 101,
-      "community_name": "html.py",
+      "community": 22,
+      "community_name": "export.py",
       "norm_label": "_community_header()"
     },
     {
@@ -24784,7 +24784,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_build_server",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "_build_server()"
     },
@@ -24918,7 +24918,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_76",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "reconstruct community dict from community property stored on nodes."
     },
     {
@@ -24928,7 +24928,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_86",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "return the project-context lru capacity (default 8, minimum 1)...."
     },
@@ -24940,7 +24940,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_103",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "thread-safe graph contexts: one pinned default plus an lru of projects."
     },
     {
@@ -24951,7 +24951,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_112",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "build one entry for an already-resolved path and known file key...."
     },
     {
@@ -24962,7 +24962,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_134",
       "community": 116,
-      "community_name": "_GraphContextCache",
+      "community_name": "_load_graph",
       "norm_label": "return a fresh context, retaining project contexts by lru order...."
     },
     {
@@ -24984,7 +24984,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_191",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "segment chinese text and keep the original term for exact matching."
     },
     {
@@ -24995,7 +24995,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_202",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "true if term is chinese, non-english, or an english word longer than 2 chars."
     },
     {
@@ -25006,7 +25006,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_263",
       "community": 139,
-      "community_name": "edge_data",
+      "community_name": "_query_terms",
       "norm_label": "split a query into searchable terms, segmenting chinese text, then drop..."
     },
     {
@@ -25225,7 +25225,7 @@
       "source_location": "L1509",
       "_origin": "ast",
       "id": "agents_skills_graphify_serve_rationale_1509",
-      "community": 112,
+      "community": 133,
       "community_name": "_build_server",
       "norm_label": "build the configured low-level mcp server (shared by every transport). all..."
     },
@@ -25878,7 +25878,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "tree_html.py"
     },
     {
@@ -25890,7 +25890,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_common_root",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "_common_root()"
     },
     {
@@ -25902,7 +25902,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_make_truncation_leaf",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "_make_truncation_leaf()"
     },
     {
@@ -25913,7 +25913,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_py_any",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "any"
     },
     {
@@ -25925,7 +25925,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_build_tree",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "build_tree()"
     },
     {
@@ -25937,7 +25937,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_emit_html",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "emit_html()"
     },
     {
@@ -25948,8 +25948,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_write_tree_html",
-      "community": 20,
-      "community_name": "cli.py",
+      "community": 107,
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "write_tree_html()"
     },
     {
@@ -25960,7 +25960,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_py_path",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "path"
     },
     {
@@ -25971,7 +25971,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_rationale_1",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "tree_html \u2014 emit a d3 v7 collapsible-tree html view of a graph. a self-..."
     },
     {
@@ -25982,7 +25982,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_tree_html_rationale_75",
       "community": 107,
-      "community_name": "tree_html.py",
+      "community_name": "check_graph_file_size_cap",
       "norm_label": "build a ``{name, total_count, children}`` hierarchy. each leaf is either a code..."
     },
     {
@@ -25993,7 +25993,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_validate",
       "community": 103,
-      "community_name": "build_from_json",
+      "community_name": "validate_extraction",
       "norm_label": "validate.py"
     },
     {
@@ -26005,7 +26005,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_validate_validate_extraction",
       "community": 103,
-      "community_name": "build_from_json",
+      "community_name": "validate_extraction",
       "norm_label": "validate_extraction()"
     },
     {
@@ -26017,7 +26017,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_validate_assert_valid",
       "community": 103,
-      "community_name": "build_from_json",
+      "community_name": "validate_extraction",
       "norm_label": "assert_valid()"
     },
     {
@@ -26028,7 +26028,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_validate_rationale_11",
       "community": 103,
-      "community_name": "build_from_json",
+      "community_name": "validate_extraction",
       "norm_label": "validate an extraction json dict against the graphify schema. returns a list of..."
     },
     {
@@ -26039,7 +26039,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_validate_rationale_91",
       "community": 103,
-      "community_name": "build_from_json",
+      "community_name": "validate_extraction",
       "norm_label": "raise valueerror with all errors if extraction is invalid."
     },
     {
@@ -26795,7 +26795,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "wiki.py"
     },
     {
@@ -26807,7 +26807,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_safe_filename",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_safe_filename()"
     },
     {
@@ -26819,7 +26819,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_md_link",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_md_link()"
     },
     {
@@ -26831,7 +26831,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_cross_community_links",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_cross_community_links()"
     },
     {
@@ -26842,7 +26842,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_py_graph",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "graph"
     },
     {
@@ -26854,7 +26854,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_community_article",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_community_article()"
     },
     {
@@ -26866,7 +26866,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_god_node_article",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_god_node_article()"
     },
     {
@@ -26878,7 +26878,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_index_md",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "_index_md()"
     },
     {
@@ -26890,7 +26890,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_to_wiki",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "to_wiki()"
     },
     {
@@ -26901,7 +26901,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_py_path",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "path"
     },
     {
@@ -26912,7 +26912,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_rationale_34",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "make a label safe for use as a filename across platforms and as a markdown link..."
     },
     {
@@ -26923,7 +26923,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_rationale_60",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "render a link to another wiki article as a portable relative markdown link...."
     },
     {
@@ -26934,7 +26934,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_rationale_94",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "return (community_label, edge_count) pairs for cross-community connections,..."
     },
     {
@@ -26945,7 +26945,7 @@
       "_origin": "ast",
       "id": "agents_skills_graphify_wiki_rationale_272",
       "community": 102,
-      "community_name": "wiki.py",
+      "community_name": "paths.py",
       "norm_label": "generate a wikipedia-style wiki from the graph. writes: - index.md \u2014 agent..."
     },
     {
@@ -27618,7 +27618,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "package_dependencies_lucide_react",
-      "community": 99,
+      "community": 82,
       "community_name": "lucide-react",
       "norm_label": "lucide-react"
     },
@@ -27629,7 +27629,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "lucide_react",
-      "community": 99,
+      "community": 82,
       "community_name": "lucide-react",
       "norm_label": "lucide-react"
     },
@@ -28298,33 +28298,33 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestrip.tsx"
     },
     {
       "label": "PhrasedSentenceStripProps",
       "file_type": "code",
       "source_file": "src/components/PhrasedSentenceStrip.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestripprops"
     },
     {
       "label": "PhrasedSentenceStrip()",
       "file_type": "code",
       "source_file": "src/components/PhrasedSentenceStrip.tsx",
-      "source_location": "L11",
+      "source_location": "L13",
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip_phrasedsentencestrip",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestrip()"
     },
     {
@@ -28370,8 +28370,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_templaterecordermodal",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "templaterecordermodal.tsx"
     },
     {
@@ -28383,8 +28383,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_templaterecordermodal_templaterecordermodalprops",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "templaterecordermodalprops"
     },
     {
@@ -28395,8 +28395,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_templaterecordermodal_templaterecordermodal",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "templaterecordermodal()"
     },
     {
@@ -28414,20 +28414,20 @@
       "label": "VideoPanelProps",
       "file_type": "code",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L42",
+      "source_location": "L41",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_videopanel_videopanelprops",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "videopanelprops"
     },
     {
       "label": "KEY_LANDMARKS",
       "file_type": "code",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L58",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "src_components_videopanel_key_landmarks",
       "community": 15,
@@ -28438,7 +28438,7 @@
       "label": "VideoPanel()",
       "file_type": "code",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L60",
+      "source_location": "L59",
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_videopanel_videopanel",
@@ -28453,8 +28453,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_dtwengine",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "dtwengine.ts"
     },
     {
@@ -28464,8 +28464,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_lib_dtwengine_stop_gesture_name",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "stop_gesture_name"
     },
     {
@@ -28475,8 +28475,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_lib_dtwengine_feature_dim",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "feature_dim"
     },
     {
@@ -28488,8 +28488,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_matchresult",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "matchresult"
     },
     {
@@ -28499,8 +28499,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_dtwengine_pendingpromises",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "pendingpromises"
     },
     {
@@ -28511,8 +28511,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_initworker",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "initworker()"
     },
     {
@@ -28523,8 +28523,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_posttoworker",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "posttoworker()"
     },
     {
@@ -28534,8 +28534,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_lib_dtwengine_cachedtemplatenames",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "cachedtemplatenames"
     },
     {
@@ -28546,8 +28546,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_loadtemplates",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "loadtemplates()"
     },
     {
@@ -28602,60 +28602,60 @@
       "label": "clearBuffer()",
       "file_type": "code",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L83",
+      "source_location": "L86",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_clearbuffer",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "clearbuffer()"
     },
     {
       "label": "setThreshold()",
       "file_type": "code",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L88",
+      "source_location": "L91",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_setthreshold",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "setthreshold()"
     },
     {
       "label": "matchGesture()",
       "file_type": "code",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L92",
+      "source_location": "L95",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_matchgesture",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "matchgesture()"
     },
     {
       "label": "isStopGesture()",
       "file_type": "code",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L101",
+      "source_location": "L104",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_isstopgesture",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "isstopgesture()"
     },
     {
       "label": "encodeNpy()",
       "file_type": "code",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L107",
+      "source_location": "L110",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwengine_encodenpy",
-      "community": 69,
-      "community_name": "dtwEngine.ts",
+      "community": 15,
+      "community_name": "VideoPanel.tsx",
       "norm_label": "encodenpy()"
     },
     {
@@ -28673,7 +28673,7 @@
       "label": "GestureVariation",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L13",
+      "source_location": "L19",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -28686,7 +28686,7 @@
       "label": "GestureTemplateClass",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L18",
+      "source_location": "L24",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -28699,7 +28699,7 @@
       "label": "templateClasses",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L24",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_lib_dtwworker_templateclasses",
       "community": 31,
@@ -28710,7 +28710,7 @@
       "label": "ringBuffer",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L30",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_lib_dtwworker_ringbuffer",
       "community": 31,
@@ -28718,10 +28718,21 @@
       "norm_label": "ringbuffer"
     },
     {
+      "label": "snapshotBuffer",
+      "file_type": "code",
+      "source_file": "src/lib/dtwWorker.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_lib_dtwworker_snapshotbuffer",
+      "community": 31,
+      "community_name": "dtwWorker.ts",
+      "norm_label": "snapshotbuffer"
+    },
+    {
       "label": "dtwPrevRow",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L36",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "src_lib_dtwworker_dtwprevrow",
       "community": 31,
@@ -28732,7 +28743,7 @@
       "label": "dtwCurrRow",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L37",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "src_lib_dtwworker_dtwcurrrow",
       "community": 31,
@@ -28743,7 +28754,7 @@
       "label": "parseNpy()",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L39",
+      "source_location": "L49",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwworker_parsenpy",
@@ -28755,7 +28766,7 @@
       "label": "euclideanDistanceSq()",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L85",
+      "source_location": "L95",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwworker_euclideandistancesq",
@@ -28767,7 +28778,7 @@
       "label": "dtwDistance()",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L110",
+      "source_location": "L120",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwworker_dtwdistance",
@@ -28776,22 +28787,22 @@
       "norm_label": "dtwdistance()"
     },
     {
-      "label": "getRingBufferSnapshot()",
+      "label": "fillSnapshot()",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L158",
+      "source_location": "L180",
       "_callable": true,
       "_origin": "ast",
-      "id": "src_lib_dtwworker_getringbuffersnapshot",
+      "id": "src_lib_dtwworker_fillsnapshot",
       "community": 31,
       "community_name": "dtwWorker.ts",
-      "norm_label": "getringbuffersnapshot()"
+      "norm_label": "fillsnapshot()"
     },
     {
       "label": "matchGesture()",
       "file_type": "code",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L174",
+      "source_location": "L195",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_dtwworker_matchgesture",
@@ -28811,45 +28822,10 @@
       "norm_label": "holisticlandmarker.ts"
     },
     {
-      "label": "pendingPromises",
-      "file_type": "code",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L18",
-      "_origin": "ast",
-      "id": "src_lib_holisticlandmarker_pendingpromises",
-      "community": 15,
-      "community_name": "VideoPanel.tsx",
-      "norm_label": "pendingpromises"
-    },
-    {
-      "label": "getWorker()",
-      "file_type": "code",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L20",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "src_lib_holisticlandmarker_getworker",
-      "community": 15,
-      "community_name": "VideoPanel.tsx",
-      "norm_label": "getworker()"
-    },
-    {
-      "label": "postToWorker()",
-      "file_type": "code",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L35",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "src_lib_holisticlandmarker_posttoworker",
-      "community": 15,
-      "community_name": "VideoPanel.tsx",
-      "norm_label": "posttoworker()"
-    },
-    {
       "label": "FEATURE_DIM",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L43",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_feature_dim",
       "community": 15,
@@ -28860,7 +28836,7 @@
       "label": "POSE_UPPER_BODY_INDICES",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L46",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_pose_upper_body_indices",
       "community": 15,
@@ -28871,7 +28847,7 @@
       "label": "POSE_HEAD_INDICES",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L47",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_pose_head_indices",
       "community": 15,
@@ -28882,7 +28858,7 @@
       "label": "HAND_CONNECTIONS",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L50",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_hand_connections",
       "community": 15,
@@ -28893,7 +28869,7 @@
       "label": "POSE_UPPER_BODY_CONNECTIONS",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L59",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_pose_upper_body_connections",
       "community": 15,
@@ -28904,7 +28880,7 @@
       "label": "HolisticResult",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L63",
+      "source_location": "L44",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -28917,7 +28893,7 @@
       "label": "initHolisticLandmarker()",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L72",
+      "source_location": "L56",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_initholisticlandmarker",
@@ -28929,7 +28905,7 @@
       "label": "detectHolistic()",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L83",
+      "source_location": "L99",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_detectholistic",
@@ -28941,7 +28917,7 @@
       "label": "extractHolisticFeatureVector()",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L95",
+      "source_location": "L146",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_extractholisticfeaturevector",
@@ -28953,7 +28929,7 @@
       "label": "isBodyDetected()",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L150",
+      "source_location": "L201",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_isbodydetected",
@@ -28965,24 +28941,13 @@
       "label": "closeHolisticLandmarker()",
       "file_type": "code",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L160",
+      "source_location": "L211",
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_holisticlandmarker_closeholisticlandmarker",
       "community": 15,
       "community_name": "VideoPanel.tsx",
       "norm_label": "closeholisticlandmarker()"
-    },
-    {
-      "label": "holisticWorker.ts",
-      "file_type": "code",
-      "source_file": "src/lib/holisticWorker.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_lib_holisticworker",
-      "community": 133,
-      "community_name": "holisticWorker.ts",
-      "norm_label": "holisticworker.ts"
     },
     {
       "label": "sentenceEngine.ts",
@@ -29004,8 +28969,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_lib_sentenceengine_sentenceenginecallbacks",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentenceenginecallbacks"
     },
     {
@@ -29239,8 +29204,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 5,
-      "community_name": "sentenceEngine.ts",
+      "community": 2,
+      "community_name": "App.tsx",
       "norm_label": "main.tsx"
     },
     {
@@ -29336,7 +29301,7 @@
       "label": "Customer",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -29349,39 +29314,39 @@
       "label": "SentenceToken",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L59",
+      "source_location": "L60",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_sentencetoken",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentencetoken"
     },
     {
       "label": "PhrasedSentence",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L66",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_phrasedsentence",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentence"
     },
     {
       "label": "SentenceEngineState",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L75",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_sentenceenginestate",
-      "community": 87,
-      "community_name": "PhrasedSentence",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentenceenginestate"
     },
     {
@@ -106542,7 +106507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/App.tsx",
-      "source_location": "L213",
+      "source_location": "L214",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app_app",
@@ -106554,7 +106519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/App.tsx",
-      "source_location": "L457",
+      "source_location": "L458",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_app_app",
@@ -107122,7 +107087,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/PhrasedSentenceStrip.tsx",
-      "source_location": "L11",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_phrasedsentencestrip",
@@ -107133,11 +107098,47 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/PhrasedSentenceStrip.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_phrasedsentencestrip",
       "target": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip",
+      "target": "src_lib_sentenceengine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip",
+      "target": "src_lib_sentenceengine_getstopgesturename",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip",
+      "target": "src_lib_sentenceengine_manualdispatch",
       "confidence_score": 1.0
     },
     {
@@ -107165,16 +107166,88 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip",
+      "target": "src_types_sentenceenginestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip",
+      "target": "src_types_sentencetoken",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/components/PhrasedSentenceStrip.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
       "target": "src_types_phrasedsentence",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
+      "target": "src_types_sentenceenginestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
+      "target": "src_types_sentencetoken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip_phrasedsentencestrip",
+      "target": "src_lib_sentenceengine_getstopgesturename"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/PhrasedSentenceStrip.tsx",
+      "source_location": "L162",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_components_phrasedsentencestrip_phrasedsentencestrip",
+      "target": "src_lib_sentenceengine_manualdispatch"
     },
     {
       "relation": "contains",
@@ -107321,7 +107394,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L38",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
@@ -107334,7 +107407,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/TemplateRecorderModal.tsx",
-      "source_location": "L68",
+      "source_location": "L120",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_templaterecordermodal_templaterecordermodal",
@@ -107345,7 +107418,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L38",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
@@ -107356,7 +107429,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L58",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
@@ -107367,7 +107440,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L60",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
@@ -107378,7 +107451,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L42",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
@@ -107622,18 +107695,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel",
-      "target": "src_lib_sentenceengine_manualdispatch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L33",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_components_videopanel",
       "target": "src_lib_sentenceengine_setstopgesturename",
       "confidence_score": 1.0
     },
@@ -107690,7 +107751,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L43",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanelprops",
@@ -107702,7 +107763,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L54",
+      "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanelprops",
@@ -107714,7 +107775,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L53",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanelprops",
@@ -107727,7 +107788,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L407",
+      "source_location": "L416",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107739,7 +107800,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L679",
+      "source_location": "L674",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107751,7 +107812,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L135",
+      "source_location": "L137",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107763,7 +107824,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L133",
+      "source_location": "L135",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107775,7 +107836,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L394",
+      "source_location": "L403",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107787,7 +107848,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L387",
+      "source_location": "L395",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107799,7 +107860,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L462",
+      "source_location": "L461",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107811,7 +107872,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L364",
+      "source_location": "L368",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107823,7 +107884,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L367",
+      "source_location": "L371",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107835,7 +107896,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L121",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107847,7 +107908,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L368",
+      "source_location": "L372",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107859,7 +107920,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L82",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107871,19 +107932,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L789",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_components_videopanel_videopanel",
-      "target": "src_lib_sentenceengine_manualdispatch"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/components/VideoPanel.tsx",
-      "source_location": "L535",
+      "source_location": "L533",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_components_videopanel_videopanel",
@@ -107904,7 +107953,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L83",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine",
@@ -107915,7 +107964,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L107",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine",
@@ -107981,7 +108030,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L101",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine",
@@ -108003,7 +108052,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L92",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine",
@@ -108058,7 +108107,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L88",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine",
@@ -108093,7 +108142,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L85",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine_clearbuffer",
@@ -108105,7 +108154,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwEngine.ts",
-      "source_location": "L89",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwengine_setthreshold",
@@ -108116,7 +108165,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L37",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108127,7 +108176,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L110",
+      "source_location": "L120",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108138,7 +108187,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L36",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108149,7 +108198,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L85",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108160,7 +108209,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L18",
+      "source_location": "L180",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_dtwworker",
+      "target": "src_lib_dtwworker_fillsnapshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/dtwWorker.ts",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108171,7 +108231,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L13",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108182,18 +108242,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L158",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_dtwworker",
-      "target": "src_lib_dtwworker_getringbuffersnapshot",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L174",
+      "source_location": "L195",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108204,7 +108253,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L39",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108215,7 +108264,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L30",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108226,7 +108275,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L24",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_dtwworker",
+      "target": "src_lib_dtwworker_snapshotbuffer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/dtwWorker.ts",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker",
@@ -108238,7 +108298,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L133",
+      "source_location": "L151",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker_dtwdistance",
@@ -108250,7 +108310,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L216",
+      "source_location": "L238",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker_matchgesture",
@@ -108262,18 +108322,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L192",
+      "source_location": "L213",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker_matchgesture",
-      "target": "src_lib_dtwworker_getringbuffersnapshot",
+      "target": "src_lib_dtwworker_fillsnapshot",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L160",
+      "source_location": "L211",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108284,7 +108344,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L83",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108295,7 +108355,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L95",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108306,7 +108366,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L43",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108317,18 +108377,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L20",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker",
-      "target": "src_lib_holisticlandmarker_getworker",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L50",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108339,7 +108388,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L63",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108350,7 +108399,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L72",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108361,7 +108410,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L150",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108372,18 +108421,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L18",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker",
-      "target": "src_lib_holisticlandmarker_pendingpromises",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L47",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108394,7 +108432,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L59",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
@@ -108405,70 +108443,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L46",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_holisticlandmarker",
       "target": "src_lib_holisticlandmarker_pose_upper_body_indices",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L35",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker",
-      "target": "src_lib_holisticlandmarker_posttoworker",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker_posttoworker",
-      "target": "src_lib_holisticlandmarker_getworker",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L161",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker_closeholisticlandmarker",
-      "target": "src_lib_holisticlandmarker_posttoworker",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L88",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker_detectholistic",
-      "target": "src_lib_holisticlandmarker_posttoworker",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/holisticLandmarker.ts",
-      "source_location": "L75",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_lib_holisticlandmarker_initholisticlandmarker",
-      "target": "src_lib_holisticlandmarker_posttoworker",
       "confidence_score": 1.0
     },
     {
@@ -108900,7 +108879,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -108933,7 +108912,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -108955,7 +108934,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -108966,7 +108945,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L59",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -119034,5 +119013,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f2d20f9c9441577864f6567e4d8cffd429d57d95"
+  "built_at_commit": "8e5f82f92bf27a92c3b5783f7fcb6093b3061eb7"
 }

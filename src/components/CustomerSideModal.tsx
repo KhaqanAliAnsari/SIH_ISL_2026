@@ -6,6 +6,7 @@ interface CustomerSideModalProps {
   onClose: () => void;
   reSignFieldLabel: string | null;
   livenessCode: string;
+  livenessMatchIndex?: number;
   isLivenessStep: boolean;
   customerName: string;
 }
@@ -15,6 +16,7 @@ export const CustomerSideModal: React.FC<CustomerSideModalProps> = ({
   onClose,
   reSignFieldLabel,
   livenessCode,
+  livenessMatchIndex = 0,
   isLivenessStep,
   customerName,
 }) => {
@@ -91,15 +93,25 @@ export const CustomerSideModal: React.FC<CustomerSideModalProps> = ({
               <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300 font-bold block mb-1">
                 LIVENESS VERIFICATION CODE — SIGN THESE DIGITS IN ORDER
               </span>
-              <div className="flex justify-center gap-3 font-mono font-bold text-2xl text-amber-300 py-1">
-                {livenessCode.split("").map((digit, i) => (
-                  <span
-                    key={i}
-                    className="w-10 h-12 bg-amber-950/60 border border-amber-700/80 rounded flex items-center justify-center shadow-inner"
-                  >
-                    {digit}
-                  </span>
-                ))}
+              <div className="flex justify-center gap-3 font-mono font-bold text-2xl py-1">
+                {livenessCode.split("").map((digit, i) => {
+                  const isMatched = i < livenessMatchIndex;
+                  const isActive = i === livenessMatchIndex && livenessMatchIndex < livenessCode.length;
+                  return (
+                    <span
+                      key={i}
+                      className={`w-10 h-12 rounded flex items-center justify-center shadow-inner transition-all duration-300 ${
+                        isMatched
+                          ? 'bg-emerald-950/60 border border-emerald-500/80 text-emerald-400'
+                          : isActive
+                            ? 'bg-amber-950/60 border border-amber-500/80 text-amber-300 animate-pulse'
+                            : 'bg-amber-950/60 border border-amber-700/80 text-amber-300'
+                      }`}
+                    >
+                      {digit}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           )}
