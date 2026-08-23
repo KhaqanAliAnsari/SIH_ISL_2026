@@ -202,6 +202,95 @@ function resetIdleTimer(): void {
   }
 }
 
+// ─── Retry Configuration ─────────────────────────────────────────────
+const MAX_CLIENT_RETRIES = 3;
+const CLIENT_BASE_BACKOFF_MS = 2_000;
+const CLIENT_MAX_BACKOFF_MS = 12_000;
+
+/**
+ * Check if an HTTP status or error warrants a retry.
+ */
+function isRetryableError(status: number): boolean {
+  return status === 429 || status === 503 || status === 502 || status === 500;
+}
+
+/**
+ * Sleep for a given number of milliseconds.
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Fetch with exponential backoff retries for transient errors.
+ */
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  maxRetries: number = MAX_CLIENT_RETRIES
+): Promise<Response> {
+  let lastError: Error | null = null;
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+
+      if (response.ok) {
+        return response;
+      }
+
+      // Check if the error is retryable
+      if (isRetryableError(response.status) && attempt < maxRetries - 1) {
+        // Try to get retry-after hint from response body
+        let retryAfterMs = Math.min(
+          CLIENT_BASE_BACKOFF_MS * Math.pow(2, attempt),
+          CLIENT_MAX_BACKOFF_MS
+        );
+
+        // Check for Retry-After header
+        const retryAfterHeader = response.headers.get("Retry-After");
+        if (retryAfterHeader) {
+          const seconds = parseInt(retryAfterHeader, 10);
+          if (!isNaN(seconds) && seconds > 0) {
+            retryAfterMs = Math.min(seconds * 1000, CLIENT_MAX_BACKOFF_MS);
+          }
+        }
+
+        console.warn(
+          `[SentenceEngine] API returned ${response.status} on attempt ${attempt + 1}/${maxRetries}. ` +
+          `Retrying in ${retryAfterMs}ms...`
+        );
+        await sleep(retryAfterMs);
+        continue;
+      }
+
+      // Non-retryable HTTP error
+      throw new Error(`API responded with ${response.status}`);
+    } catch (err: any) {
+      lastError = err;
+
+      // Network errors (fetch throws on network failure) — retry
+      if (err.name === "TypeError" && attempt < maxRetries - 1) {
+        const backoffMs = Math.min(
+          CLIENT_BASE_BACKOFF_MS * Math.pow(2, attempt),
+          CLIENT_MAX_BACKOFF_MS
+        );
+        console.warn(
+          `[SentenceEngine] Network error on attempt ${attempt + 1}/${maxRetries}: ${err.message}. ` +
+          `Retrying in ${backoffMs}ms...`
+        );
+        await sleep(backoffMs);
+        continue;
+      }
+
+      // Re-throw if not retryable or last attempt
+      throw err;
+    }
+  }
+
+  throw lastError || new Error("All retry attempts failed");
+}
+
 async function dispatchSentence(reason: DispatchReason): Promise<void> {
   clearIdleTimer();
 
@@ -239,7 +328,7 @@ async function dispatchSentence(reason: DispatchReason): Promise<void> {
   setState("WAITING_RESPONSE");
 
   try {
-    const response = await fetch(API_ENDPOINT, {
+    const response = await fetchWithRetry(API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -250,10 +339,6 @@ async function dispatchSentence(reason: DispatchReason): Promise<void> {
         mergeLetters: reason === "manual",
       }),
     });
-
-    if (!response.ok) {
-      throw new Error(`API responded with ${response.status}`);
-    }
 
     const data = await response.json();
 
@@ -268,7 +353,7 @@ async function dispatchSentence(reason: DispatchReason): Promise<void> {
     callbacks?.onSentenceComplete(completedSentence);
     console.log(`[SentenceEngine] Phrased: "${completedSentence.phrasedText}"`);
   } catch (err: any) {
-    console.error("[SentenceEngine] API error:", err);
+    console.error("[SentenceEngine] API error after all retries:", err);
 
     // Fallback: join raw tokens
     const fallbackSentence: PhrasedSentence = {
@@ -285,3 +370,4 @@ async function dispatchSentence(reason: DispatchReason): Promise<void> {
     setState("IDLE");
   }
 }
+

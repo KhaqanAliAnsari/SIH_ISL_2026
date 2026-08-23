@@ -6,7 +6,7 @@
   "4": "Login.tsx",
   "5": "sentenceEngine.ts",
   "6": "SignKYC — Bank Official Console (V-CIP Assist View)",
-  "7": "index.ts",
+  "7": "GeminiKeyPool",
   "8": "vite.config.ts",
   "9": "rules/graphify.md",
   "10": "workflows/graphify.md",
@@ -25,12 +25,20 @@
   "23": "Path",
   "24": "hooks.py",
   "25": "serve.py",
+<<<<<<< Updated upstream
   "26": "objc.py",
+=======
+  "26": "extract",
+>>>>>>> Stashed changes
   "27": "_kotlin_package_index",
   "28": "dispatch_install_cli",
   "29": "symbol_resolution.py",
   "30": "Obsidian Flavored Markdown Skill",
+<<<<<<< Updated upstream
   "31": "dtwWorker.ts",
+=======
+  "31": "check_graph_file_size_cap",
+>>>>>>> Stashed changes
   "32": "/graphify",
   "33": "analyze.py",
   "34": "prs.py",
@@ -40,12 +48,20 @@
   "38": "_make_id",
   "39": "mcp_ingest.py",
   "40": "extract_files_direct",
+<<<<<<< Updated upstream
   "41": "mem0-memory/package.json",
+=======
+  "41": "dtwWorker.ts",
+>>>>>>> Stashed changes
   "42": "What You Must Do When Invoked",
   "43": "JSON Canvas Skill",
   "44": "_key",
   "45": "What You Must Do When Invoked",
+<<<<<<< Updated upstream
   "46": "extract_xaml",
+=======
+  "46": "PhrasedSentence",
+>>>>>>> Stashed changes
   "47": "Path",
   "48": "scip_ingest.py",
   "49": "What You Must Do When Invoked",
@@ -68,16 +84,17 @@
   "66": "callflow_html.py",
   "67": "diagnostics.py",
   "68": "ingest.py",
-  "69": "Path",
+  "69": "xlsx_to_markdown",
   "70": "llm.py",
   "71": "build.py",
   "72": "Counter",
-  "73": "detect",
-  "74": "file_slice.py",
+  "73": "_load_dir_own_ignore",
+  "74": "_extract_with_adaptive_retry",
   "75": "pick_text",
   "76": "cluster.py",
   "77": "__main__.py",
   "78": "manifest_ingest.py",
+<<<<<<< Updated upstream
   "79": "_is_ignored",
   "80": "dedup.py",
   "81": "_file_label_reassignments",
@@ -114,6 +131,34 @@
   "114": "_QueryScores",
   "115": "Obsidian CLI",
   "116": "_load_graph",
+=======
+  "79": "_os_path",
+  "80": "dedup.py",
+  "81": "objc.py",
+  "82": "_resolve_temperature",
+  "83": "_install_claude_hook",
+  "84": "security.py",
+  "85": "introspect_postgres",
+  "86": "paths.py",
+  "87": "lucide-react",
+  "88": "affected.py",
+  "89": "mem0ai",
+  "90": "transcribe.py",
+  "91": "save_manifest",
+  "93": "install.py",
+  "94": "semantic_cleanup.py",
+  "95": "_path_identity",
+  "96": "google_workspace.py",
+  "97": "_ImageRef",
+  "102": "wiki.py",
+  "104": "_always_on",
+  "107": "tree_html.py",
+  "108": "verilog.py",
+  "109": "_agents_install",
+  "110": "_ip_is_blocked",
+  "113": "resolver_registry.py",
+  "115": "Obsidian CLI",
+>>>>>>> Stashed changes
   "117": "graphify reference: extra exports and benchmark",
   "118": "graphify reference: extra exports and benchmark",
   "119": "graphify reference: extra exports and benchmark",
@@ -130,6 +175,7 @@
   "130": "graphify reference: extra exports and benchmark",
   "131": "first_present",
   "132": "introspect_cargo",
+<<<<<<< Updated upstream
   "133": "_build_server",
   "134": "Migrating a language extractor out of extract.py",
   "135": "test_mem0.mjs",
@@ -137,6 +183,10 @@
   "137": "vite",
   "138": "@mediapipe/tasks-vision",
   "139": "_query_terms",
+=======
+  "133": "Path",
+  "134": "Migrating a language extractor out of extract.py",
+>>>>>>> Stashed changes
   "140": "normalize_sections",
   "141": "humanize_label",
   "142": "react-dom",
@@ -155,8 +205,11 @@
   "156": "graphify reference: query, path, explain",
   "157": "graphify reference: query, path, explain",
   "158": "scripts",
+<<<<<<< Updated upstream
   "159": "@supabase/supabase-js",
   "161": "_is_sensitive",
+=======
+>>>>>>> Stashed changes
   "162": "pascal_resolution.py",
   "163": "package.json",
   "167": "_ApiKeyMiddleware",
@@ -250,6 +303,13 @@
   "257": "trae/references/extraction-spec.md",
   "258": "vscode/references/extraction-spec.md",
   "259": "windows/references/extraction-spec.md",
+<<<<<<< Updated upstream
+=======
+  "260": "dotenv",
+  "261": "express",
+  "263": "@supabase/supabase-js",
+  "264": "@tailwindcss/vite",
+>>>>>>> Stashed changes
   "265": "kiro-steering.md",
   "266": "command-kilo.md",
   "267": "exporters/__init__.py"

@@ -16,7 +16,11 @@
   "14": "Real-time Dynamic Time Warping (DTW) ISL Gesture Recognition (Holistic)",
   "15": "VideoPanel.tsx",
   "16": "_read_text",
+<<<<<<< Updated upstream
   "17": "extract.py",
+=======
+  "17": "resolution.py",
+>>>>>>> Stashed changes
   "18": "reflect.py",
   "19": "watch.py",
   "20": "cli.py",
@@ -25,17 +29,27 @@
   "23": "Path",
   "24": "hooks.py",
   "25": "serve.py",
+<<<<<<< Updated upstream
   "26": "objc.py",
   "27": "_kotlin_package_index",
   "28": "dispatch_install_cli",
   "29": "symbol_resolution.py",
   "30": "Obsidian Flavored Markdown Skill",
   "31": "dtwWorker.ts",
+=======
+  "26": "_extract_generic",
+  "27": "extract.py",
+  "28": "dispatch_install_cli",
+  "29": "symbol_resolution.py",
+  "30": "Obsidian Flavored Markdown Skill",
+  "31": "_resolve_js_module_path",
+>>>>>>> Stashed changes
   "32": "/graphify",
   "33": "analyze.py",
   "34": "prs.py",
   "35": "write_callflow_html",
   "36": "/graphify",
+<<<<<<< Updated upstream
   "37": "sanitize_metadata",
   "38": "_make_id",
   "39": "mcp_ingest.py",
@@ -46,6 +60,18 @@
   "44": "_key",
   "45": "What You Must Do When Invoked",
   "46": "extract_xaml",
+=======
+  "37": "_make_id",
+  "38": "_file_stem",
+  "39": "mcp_ingest.py",
+  "40": "extract_files_direct",
+  "41": "extractors/__init__.py",
+  "42": "What You Must Do When Invoked",
+  "43": "JSON Canvas Skill",
+  "44": "_is_type_like_definition",
+  "45": "What You Must Do When Invoked",
+  "46": "_js_extra_walk",
+>>>>>>> Stashed changes
   "47": "Path",
   "48": "scip_ingest.py",
   "49": "What You Must Do When Invoked",
@@ -64,13 +90,21 @@
   "62": "detect.py",
   "63": "CsharpNameResolver",
   "64": "_call_llm",
+<<<<<<< Updated upstream
   "65": "_call_claude_cli",
+=======
+  "65": "_call_bedrock",
+>>>>>>> Stashed changes
   "66": "callflow_html.py",
   "67": "diagnostics.py",
   "68": "ingest.py",
   "69": "Path",
   "70": "llm.py",
+<<<<<<< Updated upstream
   "71": "build.py",
+=======
+  "71": "build_merge",
+>>>>>>> Stashed changes
   "72": "Counter",
   "73": "detect",
   "74": "file_slice.py",
@@ -78,6 +112,7 @@
   "76": "cluster.py",
   "77": "__main__.py",
   "78": "manifest_ingest.py",
+<<<<<<< Updated upstream
   "79": "_is_ignored",
   "80": "dedup.py",
   "81": "_file_label_reassignments",
@@ -114,6 +149,46 @@
   "114": "_QueryScores",
   "115": "Obsidian CLI",
   "116": "_load_graph",
+=======
+  "79": "build_from_json",
+  "80": "deduplicate_entities",
+  "81": "objc.py",
+  "82": "pascal.py",
+  "83": "_install_claude_hook",
+  "84": "security.py",
+  "85": "dtwEngine.ts",
+  "86": "edge_data",
+  "87": "build.py",
+  "88": "affected.py",
+  "89": "MinHash",
+  "90": "transcribe.py",
+  "91": "save_manifest",
+  "92": "extractors/base.py",
+  "93": "install.py",
+  "94": "semantic_cleanup.py",
+  "95": "_is_ignored",
+  "96": "google_workspace.py",
+  "97": "_ImageRef",
+  "98": "default_graph_json",
+  "99": "make_id",
+  "100": "_run_hook_guard",
+  "101": "html.py",
+  "102": "wiki.py",
+  "103": "dedup.py",
+  "104": "_always_on",
+  "105": "_extract_with_adaptive_retry",
+  "106": "_build_server",
+  "107": "tree_html.py",
+  "108": "verilog.py",
+  "109": "_agents_install",
+  "110": "_ip_is_blocked",
+  "111": "powershell.py",
+  "112": "attach_graph_impact",
+  "113": "resolver_registry.py",
+  "114": "_norm",
+  "115": "Obsidian CLI",
+  "116": "_GraphContextCache",
+>>>>>>> Stashed changes
   "117": "graphify reference: extra exports and benchmark",
   "118": "graphify reference: extra exports and benchmark",
   "119": "graphify reference: extra exports and benchmark",
@@ -130,6 +205,7 @@
   "130": "graphify reference: extra exports and benchmark",
   "131": "first_present",
   "132": "introspect_cargo",
+<<<<<<< Updated upstream
   "133": "_build_server",
   "134": "Migrating a language extractor out of extract.py",
   "135": "test_mem0.mjs",
@@ -140,6 +216,19 @@
   "140": "normalize_sections",
   "141": "humanize_label",
   "142": "react-dom",
+=======
+  "133": "_is_sensitive",
+  "134": "Migrating a language extractor out of extract.py",
+  "135": "_collision_rank",
+  "136": "go.py",
+  "137": "json_config.py",
+  "138": "rust.py",
+  "139": "_query_terms",
+  "140": "normalize_sections",
+  "141": "humanize_label",
+  "142": "_label_batch_with_retry",
+  "143": "safe_fetch",
+>>>>>>> Stashed changes
   "144": "graphify reference: query, path, explain",
   "145": "graphify reference: query, path, explain",
   "146": "graphify reference: query, path, explain",
@@ -155,11 +244,22 @@
   "156": "graphify reference: query, path, explain",
   "157": "graphify reference: query, path, explain",
   "158": "scripts",
+<<<<<<< Updated upstream
   "159": "@supabase/supabase-js",
   "160": "@vitejs/plugin-react",
   "161": "_is_sensitive",
   "162": "pascal_resolution.py",
   "163": "package.json",
+=======
+  "159": "apex.py",
+  "160": "razor.py",
+  "161": "zig.py",
+  "162": "pascal_resolution.py",
+  "163": "package.json",
+  "164": "_content_token_swap",
+  "165": "_extract_python_rationale",
+  "166": "_format_backend_env_keys",
+>>>>>>> Stashed changes
   "167": "_ApiKeyMiddleware",
   "168": "graphify reference: add a URL and watch a folder",
   "169": "graphify reference: commit hook and native AGENTS.md integration",
@@ -204,6 +304,10 @@
   "208": "graphify reference: commit hook and native CLAUDE.md integration",
   "209": "graphify reference: incremental update and cluster-only",
   "210": "graphify/__init__.py",
+<<<<<<< Updated upstream
+=======
+  "211": "_QueryScores",
+>>>>>>> Stashed changes
   "212": "graphify reference: GitHub clone and cross-repo merge",
   "213": "graphify reference: transcribe video and audio",
   "214": "graphify reference: GitHub clone and cross-repo merge",
@@ -237,6 +341,10 @@
   "242": "claude-md.md",
   "243": "gemini-md.md",
   "244": "vscode-instructions.md",
+<<<<<<< Updated upstream
+=======
+  "245": "_cut_lines_to_budget",
+>>>>>>> Stashed changes
   "246": "agents/references/extraction-spec.md",
   "247": "amp/references/extraction-spec.md",
   "248": "claude/references/extraction-spec.md",
@@ -251,6 +359,14 @@
   "257": "trae/references/extraction-spec.md",
   "258": "vscode/references/extraction-spec.md",
   "259": "windows/references/extraction-spec.md",
+<<<<<<< Updated upstream
+=======
+  "260": "dotenv",
+  "261": "express",
+  "262": "react-dom",
+  "263": "@supabase/supabase-js",
+  "264": "@tailwindcss/vite",
+>>>>>>> Stashed changes
   "265": "kiro-steering.md",
   "266": "command-kilo.md",
   "267": "exporters/__init__.py"
