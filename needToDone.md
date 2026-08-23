@@ -29,18 +29,18 @@ The biggest real gap. Everything currently on screen is hardcoded.
 - [x] **Task 1.4: Real Confidence Thresholds:** DTW is hard-gated at >= 90% confidence threshold.
 
 ### Phase 2: Environment & Backend Polish
-- [ ] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/phrase-sentence` return real AI output.
-- [ ] **Task 2.2: Deployment Verification:** Confirm the Vercel deployment actually works end-to-end.
+- [x] **Task 2.1: API Keys:** Set a real `GEMINI_API_KEY` in `.env` so `/api/generate-audit-report` and `/api/phrase-sentence` return real AI output.
+- [x] **Task 2.2: Deployment Verification:** Confirm the Vercel deployment actually works end-to-end.
 
 ### Phase 3: Liveness Verification (Optional / Scripted)
-- [ ] **Task 3.1: Liveness Comparison:** Wire the `handleTriggerLiveness` random code generation to the real recognition pipeline to compare the signed response against the prompted digits. (If time is short, keep this scripted for the demo).
+- [x] **Task 3.1: Liveness Comparison:** Wire the `handleTriggerLiveness` random code generation to the real recognition pipeline to compare the signed response against the prompted digits. (If time is short, keep this scripted for the demo).
 
 ### Phase 4: Data Persistence (Optional)
-- [ ] **Task 4.1: Supabase Setup:** Create the `kyc_sessions` table in a real Supabase project.
-- [ ] **Task 4.2: Real Database Insertion:** Update `src/lib/supabase.ts` with real credentials to ensure the insert in `AuditModal.tsx` persists data. (Skip if not required for the demo pitch).
+- [x] **Task 4.1: Supabase Setup:** Create the `kyc_sessions` table in a real Supabase project.
+- [x] **Task 4.2: Real Database Insertion:** Update `src/lib/supabase.ts` with real credentials to ensure the insert in `AuditModal.tsx` persists data. (Skip if not required for the demo pitch).
 
 ### Phase 5: Customer-Side View
-- [ ] **Task 5.1: Customer View Validation:** Ensure `CustomerSideModal` correctly simulates the customer view for the demo. No actual second client is needed, just an inspectable preview.
+- [x] **Task 5.1: Customer View Validation:** Ensure `CustomerSideModal` correctly simulates the customer view for the demo. No actual second client is needed, just an inspectable preview.
 
 ---
 
