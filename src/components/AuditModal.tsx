@@ -70,13 +70,13 @@ export const AuditModal: React.FC<AuditModalProps> = ({
         report_summary: report?.summary || "",
         created_at: new Date().toISOString()
       }]);
-      
+
       if (error) throw error;
       setSubmitted(true);
     } catch (err) {
       console.error("Supabase insert error:", err);
       // Fallback: still show submitted so UI doesn't break if Supabase isn't configured yet
-      setSubmitted(true); 
+      setSubmitted(true);
     } finally {
       setLoading(false);
     }
@@ -198,9 +198,9 @@ export const AuditModal: React.FC<AuditModalProps> = ({
                   <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-2">
                     {sessionData.snapshots.map((dataUrl, idx) => (
                       <div key={idx} className="shrink-0 relative rounded border border-zinc-800 overflow-hidden">
-                        <img 
-                          src={dataUrl} 
-                          alt={`Captured snapshot ${idx + 1}`} 
+                        <img
+                          src={dataUrl}
+                          alt={`Captured snapshot ${idx + 1}`}
                           className="h-24 object-cover"
                         />
                         <div className="absolute bottom-0 inset-x-0 bg-black/60 text-[10px] text-white p-1 font-mono text-center">

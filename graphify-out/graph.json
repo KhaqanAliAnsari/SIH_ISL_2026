@@ -3243,8 +3243,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_callflow_html_safe_filename",
-      "community": 35,
-      "community_name": "write_callflow_html",
+      "community": 66,
+      "community_name": "callflow_html.py",
       "norm_label": "safe_filename()"
     },
     {
@@ -3519,8 +3519,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_callflow_html_build_section_node_map",
-      "community": 66,
-      "community_name": "callflow_html.py",
+      "community": 35,
+      "community_name": "write_callflow_html",
       "norm_label": "build_section_node_map()"
     },
     {
@@ -4076,8 +4076,8 @@
       "source_location": "L409",
       "_origin": "ast",
       "id": "agents_skills_graphify_callflow_html_rationale_409",
-      "community": 35,
-      "community_name": "write_callflow_html",
+      "community": 66,
+      "community_name": "callflow_html.py",
       "norm_label": "create a conservative filename stem from a project name."
     },
     {
@@ -4307,8 +4307,8 @@
       "source_location": "L897",
       "_origin": "ast",
       "id": "agents_skills_graphify_callflow_html_rationale_897",
-      "community": 66,
-      "community_name": "callflow_html.py",
+      "community": 35,
+      "community_name": "write_callflow_html",
       "norm_label": "map section_id -> list of nodes belonging to its communities."
     },
     {
@@ -23768,8 +23768,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_nofileredirecthandler",
-      "community": 95,
-      "community_name": "_NoFileRedirectHandler",
+      "community": 84,
+      "community_name": "security.py",
       "norm_label": "_nofileredirecthandler"
     },
     {
@@ -23780,8 +23780,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_nofileredirecthandler_redirect_request",
-      "community": 95,
-      "community_name": "_NoFileRedirectHandler",
+      "community": 84,
+      "community_name": "security.py",
       "norm_label": ".redirect_request()"
     },
     {
@@ -23792,8 +23792,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_build_opener",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "_build_opener()"
     },
     {
@@ -23803,8 +23803,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "openerdirector",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "openerdirector"
     },
     {
@@ -23815,8 +23815,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_safe_fetch",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "safe_fetch()"
     },
     {
@@ -23827,8 +23827,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "agents_skills_graphify_security_safe_fetch_text",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "safe_fetch_text()"
     },
     {
@@ -24020,8 +24020,8 @@
       "source_location": "L232",
       "_origin": "ast",
       "id": "agents_skills_graphify_security_rationale_232",
-      "community": 95,
-      "community_name": "_NoFileRedirectHandler",
+      "community": 84,
+      "community_name": "security.py",
       "norm_label": "redirect handler that re-validates every redirect target. prevents open-..."
     },
     {
@@ -24031,8 +24031,8 @@
       "source_location": "L259",
       "_origin": "ast",
       "id": "agents_skills_graphify_security_rationale_259",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "fetch *url* and return raw bytes. protections applied: - url scheme validated..."
     },
     {
@@ -24042,8 +24042,8 @@
       "source_location": "L303",
       "_origin": "ast",
       "id": "agents_skills_graphify_security_rationale_303",
-      "community": 84,
-      "community_name": "security.py",
+      "community": 87,
+      "community_name": "safe_fetch",
       "norm_label": "fetch *url* and return decoded text (utf-8, replacing bad bytes). wraps..."
     },
     {
@@ -27552,8 +27552,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "package_dependencies_vitejs_plugin_react",
-      "community": 160,
-      "community_name": "@vitejs/plugin-react",
+      "community": 0,
+      "community_name": "dependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -27563,8 +27563,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "vitejs_plugin_react",
-      "community": 160,
-      "community_name": "@vitejs/plugin-react",
+      "community": 0,
+      "community_name": "dependencies",
       "norm_label": "@vitejs/plugin-react"
     },
     {
@@ -27596,8 +27596,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "package_dependencies_express",
-      "community": 0,
-      "community_name": "dependencies",
+      "community": 95,
+      "community_name": "express",
       "norm_label": "express"
     },
     {
@@ -27607,8 +27607,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "express",
-      "community": 0,
-      "community_name": "dependencies",
+      "community": 95,
+      "community_name": "express",
       "norm_label": "express"
     },
     {
@@ -28298,8 +28298,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestrip.tsx"
     },
     {
@@ -28311,8 +28311,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip_phrasedsentencestripprops",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestripprops"
     },
     {
@@ -28323,8 +28323,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_components_phrasedsentencestrip_phrasedsentencestrip",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentencestrip()"
     },
     {
@@ -28419,8 +28419,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_components_videopanel_videopanelprops",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "videopanelprops"
     },
     {
@@ -28969,8 +28969,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_lib_sentenceengine_sentenceenginecallbacks",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentenceenginecallbacks"
     },
     {
@@ -29028,8 +29028,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_sentenceengine_getstopgesturename",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "getstopgesturename()"
     },
     {
@@ -29100,8 +29100,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_lib_sentenceengine_manualdispatch",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "manualdispatch()"
     },
     {
@@ -29319,8 +29319,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_sentencetoken",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentencetoken"
     },
     {
@@ -29332,8 +29332,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_phrasedsentence",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "phrasedsentence"
     },
     {
@@ -29345,8 +29345,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "src_types_sentenceenginestate",
-      "community": 87,
-      "community_name": "PhrasedSentenceStrip.tsx",
+      "community": 5,
+      "community_name": "sentenceEngine.ts",
       "norm_label": "sentenceenginestate"
     },
     {
@@ -108310,7 +108310,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/dtwWorker.ts",
-      "source_location": "L238",
+      "source_location": "L249",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_dtwworker_matchgesture",
@@ -119013,5 +119013,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8e5f82f92bf27a92c3b5783f7fcb6093b3061eb7"
+  "built_at_commit": "618455352edbf5f5541b64acaa123afd33db5f5c"
 }

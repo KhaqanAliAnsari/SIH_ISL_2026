@@ -30,7 +30,7 @@ interface GestureTemplateClass {
 let templateClasses: Record<string, GestureTemplateClass> = {};
 let threshold = DEFAULT_THRESHOLD;
 let lastRecognitionTime = 0;
-const COOLDOWN_MS = 500;
+const COOLDOWN_MS = 1000;
 
 // ─── Ring Buffer (O(1) push, no shift/copy) ──────────────────────────
 const ringBuffer: Float32Array[] = new Array(BUFFER_SIZE);
@@ -201,7 +201,7 @@ function matchGesture() {
     bufferFill: ringCount,
   };
 
-  if (ringCount < 15 || Object.keys(templateClasses).length === 0) {
+  if (ringCount < 8 || Object.keys(templateClasses).length === 0) {
     return result;
   }
 
@@ -228,21 +228,41 @@ function matchGesture() {
         Math.floor(tempLen * 1.2),
       ];
 
-      for (const sliceLen of lengthsToTry) {
+      let baseRawDist = Infinity;
+
+      for (let i = 0; i < lengthsToTry.length; i++) {
+        const sliceLen = lengthsToTry[i];
         if (seqLen < sliceLen) {
           continue;
         }
 
-        const startIndex = seqLen - sliceLen;
-        const maxRawCost = (bestVariationDist / 30.0) * Math.max(sliceLen, tempLen);
-        const rawDist = dtwDistance(snapshotBuffer, variation.sequence, maxRawCost, startIndex, sliceLen);
-        
-        if (rawDist === Infinity) continue; 
+        // Early rejection for extreme outliers
+        if (i > 0 && baseRawDist !== Infinity) {
+          const baseNormDist = (baseRawDist / tempLen) * 30.0;
+          if (baseNormDist > threshold * 2.0) {
+            break; // Skip 0.8x and 1.2x if 1.0x is completely off
+          }
+        }
 
-        const normDist = (rawDist / Math.max(sliceLen, tempLen)) * 30.0;
+        // Sliding Window: slide backwards up to 8 frames (~0.5s leniency at 15fps)
+        const maxOffset = Math.min(8, seqLen - sliceLen);
         
-        if (normDist < bestVariationDist) {
-          bestVariationDist = normDist;
+        for (let offset = 0; offset <= maxOffset; offset++) {
+          const startIndex = seqLen - sliceLen - offset;
+          const maxRawCost = (bestVariationDist / 30.0) * Math.max(sliceLen, tempLen);
+          const rawDist = dtwDistance(snapshotBuffer, variation.sequence, maxRawCost, startIndex, sliceLen);
+          
+          if (offset === 0 && i === 0) {
+            baseRawDist = rawDist;
+          }
+
+          if (rawDist === Infinity) continue; 
+
+          const normDist = (rawDist / Math.max(sliceLen, tempLen)) * 30.0;
+          
+          if (normDist < bestVariationDist) {
+            bestVariationDist = normDist;
+          }
         }
       }
     }
@@ -266,10 +286,14 @@ function matchGesture() {
     if (calculatedConfidence >= 90) {
       result.gesture = bestGesture;
       result.confidence = calculatedConfidence;
-
-      ringHead = 0;
-      ringCount = 0;
       lastRecognitionTime = now;
+    }
+  }
+
+  // Debugging output
+  if (ringCount >= 8) {
+    if (Math.random() < 0.2) { // sample 20% to avoid spam
+      console.log(`[DTW Worker] matchGesture - minDistance: ${minDistance.toFixed(2)}, bestGesture: ${bestGesture}, ringCount: ${ringCount}`);
     }
   }
 

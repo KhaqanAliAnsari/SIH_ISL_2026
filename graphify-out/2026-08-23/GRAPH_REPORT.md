@@ -1,11 +1,11 @@
 # Graph Report - SIH_ISL_2026  (2026-08-23)
 
 ## Corpus Check
-- 269 files · ~478,950 words
+- 269 files · ~479,484 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3604 nodes · 6768 edges · 254 communities (194 shown, 60 thin omitted)
+- 3604 nodes · 6768 edges · 255 communities (194 shown, 61 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 118 edges (avg confidence: 0.69)
 - Token cost: 0 input · 0 output
 
@@ -101,6 +101,7 @@
 - security.py
 - index.mjs
 - _coerce_hyperedge_member_refs
+- PhrasedSentenceStrip.tsx
 - affected.py
 - _label_batch_with_retry
 - transcribe.py
@@ -108,6 +109,7 @@
 - update_config.cjs
 - install.py
 - semantic_cleanup.py
+- _NoFileRedirectHandler
 - google_workspace.py
 - _ImageRef
 - default_graph_json
@@ -152,7 +154,6 @@
 - normalize_sections
 - humanize_label
 - react-dom
-- safe_fetch
 - graphify reference: query, path, explain
 - graphify reference: query, path, explain
 - graphify reference: query, path, explain
@@ -292,7 +293,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (254 total, 60 thin omitted)
+## Communities (255 total, 61 thin omitted)
 
 ### Community 0 - "dependencies"
 Cohesion: 0.13
@@ -315,8 +316,8 @@ Cohesion: 0.36
 Nodes (7): Login(), LoginProps, Registration(), RegistrationProps, isSupabaseConfigured, supabase, Customer
 
 ### Community 5 - "sentenceEngine.ts"
-Cohesion: 0.17
-Nodes (23): App(), PhrasedSentenceStrip(), PhrasedSentenceStripProps, VideoPanelProps, clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens() (+15 more)
+Cohesion: 0.24
+Nodes (14): App(), clearIdleTimer(), DispatchReason, dispatchSentence(), getCurrentTokens(), getEngineState(), initSentenceEngine(), isStopGesture() (+6 more)
 
 ### Community 6 - "SignKYC — Bank Official Console (V-CIP Assist View)"
 Cohesion: 0.33
@@ -611,8 +612,8 @@ Cohesion: 0.16
 Nodes (19): _claude_pretooluse_hooks(), _gemini_hook(), _install_claude_hook(), _install_codebuddy_hook(), _install_codex_hook(), _install_gemini_hook(), Return the absolute path to the graphify executable, with forward slashes.…, Add graphify PreToolUse hook to .codex/hooks.json. (+11 more)
 
 ### Community 84 - "security.py"
-Cohesion: 0.11
-Nodes (15): _max_graph_file_bytes(), _NoFileRedirectHandler, Path, urllib handler that routes http:// through _SSRFGuardedHTTPConnection., urllib handler that routes https:// through _SSRFGuardedHTTPSConnection., Redirect handler that re-validates every redirect target. Prevents open-…, Resolve *path* and verify it stays inside *base*. *base* defaults to the…, Return the graph.json size cap in bytes. Honors the… (+7 more)
+Cohesion: 0.10
+Nodes (19): _build_opener(), _max_graph_file_bytes(), Path, urllib handler that routes http:// through _SSRFGuardedHTTPConnection., urllib handler that routes https:// through _SSRFGuardedHTTPSConnection., Fetch *url* and return raw bytes. Protections applied: - URL scheme validated…, Fetch *url* and return decoded text (UTF-8, replacing bad bytes). Wraps…, Resolve *path* and verify it stays inside *base*. *base* defaults to the… (+11 more)
 
 ### Community 85 - "index.mjs"
 Cohesion: 0.40
@@ -621,6 +622,10 @@ Nodes (4): __dirname, MEMORY_FILE, server, transport
 ### Community 86 - "_coerce_hyperedge_member_refs"
 Cohesion: 0.33
 Nodes (6): _coerce_hyperedge_member_refs(), _coerce_id(), _hashable(), Coerce a hyperedge member list to hashable scalar ids, deduped in order.…, Return a str for a numeric id, else the value unchanged. ``bool`` is excluded…, True when value can be a dict key / set member (same probe as the inline ``try:…
+
+### Community 87 - "PhrasedSentenceStrip.tsx"
+Cohesion: 0.38
+Nodes (9): PhrasedSentenceStrip(), PhrasedSentenceStripProps, VideoPanelProps, getStopGestureName(), manualDispatch(), SentenceEngineCallbacks, PhrasedSentence, SentenceEngineState (+1 more)
 
 ### Community 88 - "affected.py"
 Cohesion: 0.26
@@ -805,10 +810,6 @@ Nodes (6): html_anchor_id(), normalize_communities(), normalize_sections(), Gene
 ### Community 141 - "humanize_label"
 Cohesion: 0.33
 Nodes (6): humanize_label(), node_display_name(), Readable node label for tables and summaries., Truncate without splitting Mermaid syntax., Convert graph labels into short labels people can scan in a diagram., truncate_text()
-
-### Community 143 - "safe_fetch"
-Cohesion: 0.33
-Nodes (6): _build_opener(), Fetch *url* and return raw bytes. Protections applied: - URL scheme validated…, Fetch *url* and return decoded text (UTF-8, replacing bad bytes). Wraps…, safe_fetch(), safe_fetch_text(), OpenerDirector
 
 ### Community 144 - "graphify reference: query, path, explain"
 Cohesion: 0.33
@@ -1053,7 +1054,7 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 ## Knowledge Gaps
 - **809 isolated node(s):** `__dirname`, `MEMORY_FILE`, `server`, `transport`, `name` (+804 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **60 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

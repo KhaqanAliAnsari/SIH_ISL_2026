@@ -28,6 +28,7 @@ import {
   getBufferFill,
   getTemplateCount,
   getTemplateNames,
+  clearBuffer,
   type MatchResult,
 } from "../lib/dtwEngine";
 import {
@@ -101,6 +102,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const lastUiFlushRef = useRef(0);
   const dtwCooldown = useRef(0);
   const dtwEvalCounter = useRef(0);
+  const debounceGestureRef = useRef<string | null>(null);
+  const debounceCountRef = useRef(0);
   const recorderFrameHandlerRef = useRef<((frame: Float32Array) => void) | null>(null);
 
   // Stable refs for rAF loop — prevents useEffect restart on callback identity changes
@@ -392,21 +395,26 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         // 4. Push to DTW buffer and match gestures via Web Worker
         if (dtwCooldown.current > 0) dtwCooldown.current--;
 
-        if (detected) {
-          // Fire-and-forget: pushes to worker and syncs the UI fill counter
-          pushFrame(featureVec).then(fill => {
-            bufferFillRef.current = fill;
-          });
+        if (detected && dtwCooldown.current === 0) {
+          // 15 FPS Downsampling: Only push every other frame
+          if (dtwEvalCounter.current % 2 === 0) {
+            pushFrame(featureVec).then(fill => {
+              bufferFillRef.current = fill;
+            });
+          }
 
           dtwEvalCounter.current++;
-          // Run match checks async, ensuring we don't pile up messages if the worker is busy
-          if (dtwEvalCounter.current % 2 === 0 && !isMatchingRef.current && dtwCooldown.current === 0) {
+          
+          if (dtwEvalCounter.current % 6 === 0 && !isMatchingRef.current) {
             isMatchingRef.current = true;
             matchGesture().then(match => {
               isMatchingRef.current = false;
               if (match.gesture) {
                 setLastMatch(match);
-                dtwCooldown.current = 45;
+                dtwCooldown.current = 30; // 1.0 second cooldown at 30fps
+                debounceGestureRef.current = null;
+                debounceCountRef.current = 0;
+                clearBuffer();
                 onGestureRecognizedRef.current?.(match.gesture, match.distance, match.confidence);
               }
             }).catch(err => {
