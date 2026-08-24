@@ -1,10 +1,8 @@
+import "dotenv/config";           // ← MUST be first: loads .env before any module reads process.env
 import express from "express";
-import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
 import { geminiPool, buildPhraseCacheKey } from "./geminiPool.js";
-
-dotenv.config();
 
 const app = express();
 app.use(express.json({ limit: "10mb" }));
@@ -118,7 +116,7 @@ Format: {"sentence": "the phrased sentence", "corrections": ["list of inferences
     // All resilience (multi-key rotation, retry, caching, dedup) is handled by the pool
     const result = await geminiPool.generateContent(
       {
-        model: "gemini-2.0-flash",
+        model: "gemini-3.6-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -169,7 +167,7 @@ Generate a structured JSON response with:
 
     // Audit reports are less frequent — no caching needed, but still get multi-key retry
     const result = await geminiPool.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.6-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",

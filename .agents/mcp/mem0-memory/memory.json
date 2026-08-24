@@ -64,5 +64,11 @@
     "fact": "Merged friend's bugfixes (Vite watcher ignore, VideoPanel play() AbortError fix, removed redundant client-side retry in sentenceEngine) but intentionally kept the user's server-side GeminiPool (which manages multi-key rotation and rate limits) because it's critical for their Vercel environment with 4 API keys.",
     "userId": "antigravity_user",
     "timestamp": "2026-08-23T18:40:21.458Z"
+  },
+  {
+    "id": "1787583551614",
+    "fact": "SIH_ISL_2026 project: gemini-2.0-flash was sunset/deprecated by Google in 2026. The API returns 404 with message to use gemini-3.6-flash instead. Updated api/index.ts to use gemini-3.6-flash. Also fixed dotenv import order: dotenv/config must be imported BEFORE geminiPool.js because GeminiKeyPool reads process.env in its constructor (module-level singleton).",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-24T14:59:11.614Z"
   }
 ]

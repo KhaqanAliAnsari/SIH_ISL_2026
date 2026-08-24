@@ -1,0 +1,1 @@
+{"nodes": [{"id": "isl_dtw_requirements", "label": "requirements.txt", "file_type": "code", "source_file": "isl_dtw/requirements.txt", "rationale": "Project dependencies including MediaPipe and FastDTW.", "verification": "unverified"}], "edges": [], "hyperedges": []}

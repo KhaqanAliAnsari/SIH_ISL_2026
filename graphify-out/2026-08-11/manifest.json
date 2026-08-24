@@ -1,0 +1,82 @@
+{
+  "package.json": {
+    "mtime": 1786438118.6023128,
+    "ast_hash": "a9570bb9da1749e84f4d5ee28d4a0437",
+    "semantic_hash": "a9570bb9da1749e84f4d5ee28d4a0437"
+  },
+  "server.ts": {
+    "mtime": 1786438118.6142044,
+    "ast_hash": "0ab3784cc11a37c81ca9118276715998",
+    "semantic_hash": "0ab3784cc11a37c81ca9118276715998"
+  },
+  "src/App.tsx": {
+    "mtime": 1786438118.5527034,
+    "ast_hash": "e24074356cf6c4dbc4a3cf720606397a",
+    "semantic_hash": "e24074356cf6c4dbc4a3cf720606397a"
+  },
+  "src/components/AIAssistPanel.tsx": {
+    "mtime": 1786438118.5842113,
+    "ast_hash": "a957a333a7ada559326b536128b0181b",
+    "semantic_hash": "a957a333a7ada559326b536128b0181b"
+  },
+  "src/components/AuditModal.tsx": {
+    "mtime": 1786438118.5687041,
+    "ast_hash": "9d582940747c57ca1efeb36e5a9ec464",
+    "semantic_hash": "9d582940747c57ca1efeb36e5a9ec464"
+  },
+  "src/components/CustomerSideModal.tsx": {
+    "mtime": 1786438118.58163,
+    "ast_hash": "4f446ce1517361c7452862a5221bcf55",
+    "semantic_hash": "4f446ce1517361c7452862a5221bcf55"
+  },
+  "src/components/EditFieldModal.tsx": {
+    "mtime": 1786438118.576608,
+    "ast_hash": "68267255627d73b5a8503f3fe1692555",
+    "semantic_hash": "68267255627d73b5a8503f3fe1692555"
+  },
+  "src/components/FooterControls.tsx": {
+    "mtime": 1786438118.5687041,
+    "ast_hash": "45b3cb8f0370b1c1793ba9fc06615f05",
+    "semantic_hash": "45b3cb8f0370b1c1793ba9fc06615f05"
+  },
+  "src/components/HeaderBar.tsx": {
+    "mtime": 1786438118.56613,
+    "ast_hash": "fb40fc4fe5acac715b2619b98a06799e",
+    "semantic_hash": "fb40fc4fe5acac715b2619b98a06799e"
+  },
+  "src/components/InterpreterModal.tsx": {
+    "mtime": 1786438118.589578,
+    "ast_hash": "09c0ca76987fcecf781c9ef02b991c25",
+    "semantic_hash": "09c0ca76987fcecf781c9ef02b991c25"
+  },
+  "src/components/KYCProgressStrip.tsx": {
+    "mtime": 1786438118.5875733,
+    "ast_hash": "d16fc12aa3f223a9c277f8413955c1c8",
+    "semantic_hash": "d16fc12aa3f223a9c277f8413955c1c8"
+  },
+  "src/components/VideoPanel.tsx": {
+    "mtime": 1786438118.564127,
+    "ast_hash": "509b3e39df3f8ed8870f785ce9085e73",
+    "semantic_hash": "509b3e39df3f8ed8870f785ce9085e73"
+  },
+  "src/main.tsx": {
+    "mtime": 1786438118.5476308,
+    "ast_hash": "2b36426d5ad7e08ef79746aa524f4fb7",
+    "semantic_hash": "2b36426d5ad7e08ef79746aa524f4fb7"
+  },
+  "src/types.ts": {
+    "mtime": 1786438118.559093,
+    "ast_hash": "e59ac1c1b272b78af9905eaad2e8bca1",
+    "semantic_hash": "e59ac1c1b272b78af9905eaad2e8bca1"
+  },
+  "tsconfig.json": {
+    "mtime": 1786438118.5952666,
+    "ast_hash": "8827451c4e35790dd3f3538c265e7d15",
+    "semantic_hash": "8827451c4e35790dd3f3538c265e7d15"
+  },
+  "vite.config.ts": {
+    "mtime": 1786438118.6122327,
+    "ast_hash": "9c319043c25764dfe83b687f74637c6c",
+    "semantic_hash": "9c319043c25764dfe83b687f74637c6c"
+  }
+}

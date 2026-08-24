@@ -1,0 +1,1 @@
+{"nodes": [{"id": "skills_amp_references_extraction_spec", "label": "Extraction Subagent Prompt (AMP)", "file_type": "document", "source_file": ".agents/skills/graphify/skills/amp/references/extraction-spec.md"}], "edges": [], "hyperedges": []}
