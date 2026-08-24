@@ -70,5 +70,11 @@
     "fact": "SIH_ISL_2026 project: gemini-2.0-flash was sunset/deprecated by Google in 2026. The API returns 404 with message to use gemini-3.6-flash instead. Updated api/index.ts to use gemini-3.6-flash. Also fixed dotenv import order: dotenv/config must be imported BEFORE geminiPool.js because GeminiKeyPool reads process.env in its constructor (module-level singleton).",
     "userId": "antigravity_user",
     "timestamp": "2026-08-24T14:59:11.614Z"
+  },
+  {
+    "id": "1787587450600",
+    "fact": "SIH_ISL_2026 project: Vercel serverless functions do not automatically bundle dynamically read files (like the .npy templates read via fs in api/index.ts). Fixed this by adding 'functions: { \"api/**/*.ts\": { \"includeFiles\": \"isl_dtw/templates/**\" } }' to vercel.json.",
+    "userId": "antigravity_user",
+    "timestamp": "2026-08-24T16:04:10.600Z"
   }
 ]
