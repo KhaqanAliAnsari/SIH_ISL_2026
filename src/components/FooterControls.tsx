@@ -31,9 +31,9 @@ export const FooterControls: React.FC<FooterControlsProps> = ({
   };
 
   return (
-    <footer className="h-16 bg-zinc-900/90 backdrop-blur-md border-t border-zinc-800 px-5 flex items-center justify-between shrink-0 z-20 select-none text-zinc-100">
+    <footer className="h-auto lg:h-16 py-3 lg:py-0 bg-zinc-900/90 backdrop-blur-md border-t border-zinc-800 px-3 lg:px-5 flex flex-col lg:flex-row items-center justify-between gap-3 shrink-0 z-20 select-none text-zinc-100">
       {/* Official Remarks Field */}
-      <div className="flex items-center gap-3 flex-1 max-w-2xl mr-4">
+      <div className="flex items-center gap-2 lg:gap-3 w-full lg:flex-1 max-w-2xl lg:mr-4">
         <div className="flex items-center gap-1.5 text-zinc-300 text-xs font-bold shrink-0">
           <FileText className="w-4 h-4 text-zinc-400" />
           <span className="hidden sm:inline">Official Remarks:</span>
@@ -62,7 +62,7 @@ export const FooterControls: React.FC<FooterControlsProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex flex-wrap items-center justify-center gap-2 lg:gap-3 shrink-0 w-full lg:w-auto">
         <button
           onClick={onSaveLater}
           className="px-3 py-1.5 rounded bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"

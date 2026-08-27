@@ -570,7 +570,7 @@ export default function App() {
       />
 
       {/* 2. Main Workstation Area */}
-      <main className="flex-1 p-3 grid grid-cols-12 gap-3 min-h-0 overflow-hidden">
+      <main className="flex-1 p-3 flex flex-col lg:grid lg:grid-cols-12 gap-3 min-h-0 overflow-y-auto lg:overflow-hidden">
         <VideoPanel
           demoState={demoState}
           livenessCode={livenessCode}

@@ -1,11 +1,21 @@
 const fs = require('fs');
-const path = 'C:\\Users\\11111\\.gemini\\config\\mcp_config.json';
-const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+const os = require('os');
+const path = require('path');
 
-config.mcpServers["mem0-memory"] = {
+const configPath = path.join(os.homedir(), '.gemini', 'config', 'mcp_config.json');
+let config = { mcpServers: {} };
+if (fs.existsSync(configPath)) {
+  try {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  } catch (e) {}
+}
+if (!config.mcpServers) config.mcpServers = {};
+
+config.mcpServers["mem0"] = {
   command: "node",
-  args: ["c:\\Users\\11111\\Downloads\\SIH_ISL_2026\\.agents\\mcp\\mem0-memory\\index.mjs"]
+  args: [path.join(__dirname, 'index.mjs')]
 };
 
-fs.writeFileSync(path, JSON.stringify(config, null, 2));
-console.log("mcp_config.json updated successfully.");
+fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+console.log("mcp_config.json updated successfully at " + configPath);
+
