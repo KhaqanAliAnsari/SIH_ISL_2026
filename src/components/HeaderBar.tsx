@@ -34,7 +34,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onOpenCustomerView,
 }) => {
   return (
-    <header className="h-16 bg-zinc-900/90 backdrop-blur-md border-b border-zinc-800 px-5 flex items-center justify-between select-none shrink-0 z-20">
+    <header className="py-2 h-auto lg:h-16 bg-zinc-900/90 backdrop-blur-md border-b border-zinc-800 px-3 lg:px-5 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2 select-none shrink-0 z-20">
       {/* Left: Bank Identity */}
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-9 h-9 rounded-lg border border-zinc-700/80 bg-zinc-800/80 text-white font-bold shadow-inner">
@@ -42,7 +42,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white text-sm tracking-tight">
+            <span className="font-bold text-white text-sm tracking-tight hidden sm:block">
               INDUS APEX BANK
             </span>
             <span className="text-[10px] font-mono tracking-wider uppercase px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700 font-semibold">

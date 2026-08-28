@@ -489,7 +489,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   }, [lastMatch]);
 
   return (
-    <div className="col-span-12 lg:col-span-7 flex flex-col h-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden relative">
+    <div className="col-span-12 lg:col-span-7 flex flex-col min-h-[40vh] lg:h-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden relative">
       {/* Video Overlay Top Header */}
       <div className="absolute top-0 left-0 right-0 px-3 py-2 bg-zinc-900/95 text-white z-20 flex items-center justify-between border-b border-zinc-800 shadow-none">
         {/* Record Indicator */}

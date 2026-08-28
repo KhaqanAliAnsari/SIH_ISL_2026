@@ -97,7 +97,7 @@ export const AIAssistPanel: React.FC<AIAssistPanelProps> = ({
   const completedFields = fields.filter((f) => f.isConfirmed);
 
   return (
-    <div className="col-span-12 lg:col-span-5 flex flex-col h-full bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden select-none text-zinc-100">
+    <div className="col-span-12 lg:col-span-5 flex flex-col shrink-0 lg:shrink lg:h-full min-h-[50vh] lg:min-h-0 bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden select-none text-zinc-100">
       {/* Sidebar Header */}
       <div className="p-3 bg-zinc-950/60 border-b border-zinc-800 flex items-center justify-between shrink-0">
         <div>
