@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
+import { Capacitor } from '@capacitor/core';
 import { HeaderBar } from "./components/HeaderBar";
 import { VideoPanel } from "./components/VideoPanel";
 import { AIAssistPanel } from "./components/AIAssistPanel";
@@ -33,6 +34,7 @@ import {
 } from "./types";
 import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
+import { ApiSettingsModal } from "./components/ApiSettingsModal";
 
 type AppView = 'login' | 'register' | 'console';
 
@@ -83,6 +85,7 @@ export default function App() {
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
   const [isInterpreterModalOpen, setIsInterpreterModalOpen] = useState(false);
   const [isCustomerViewOpen, setIsCustomerViewOpen] = useState(false);
+  const [isApiSettingsOpen, setIsApiSettingsOpen] = useState(false);
   const [editingField, setEditingField] = useState<KYCField | null>(null);
   const [reSignFieldLabel, setReSignFieldLabel] = useState<string | null>(null);
 
@@ -553,9 +556,19 @@ export default function App() {
       onCancel={() => setCurrentView('login')}
     />;
   }
+  // Detect native mobile (Capacitor) or explicit native URL flag for testing on PC
+  const isNativeApp = Capacitor.isNativePlatform() || new URLSearchParams(window.location.search).has('native');
 
   return (
-    <div className="w-full h-full min-h-screen font-sans flex flex-col bg-zinc-950 text-zinc-100 overflow-hidden select-none">
+    <div 
+      className="w-full h-full min-h-[100dvh] font-sans flex flex-col bg-zinc-950 text-zinc-100 overflow-hidden select-none"
+      style={{
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        paddingLeft: 'env(safe-area-inset-left)',
+        paddingRight: 'env(safe-area-inset-right)'
+      }}
+    >
       {/* 1. Header Bar */}
       <HeaderBar
         status={status}
@@ -567,6 +580,7 @@ export default function App() {
         empId={empId}
         branch={branch}
         onOpenCustomerView={() => setIsCustomerViewOpen(true)}
+        onOpenApiSettings={() => setIsApiSettingsOpen(true)}
       />
 
       {/* 2. Main Workstation Area */}
@@ -589,8 +603,8 @@ export default function App() {
           onGestureRecognized={handleGestureRecognized}
           currentSentenceTokens={currentTokens}
           sentenceEngineState={sentenceState}
+          forceStopCamera={isAuditModalOpen}
         />
-
         <AIAssistPanel
           demoState={demoState}
           fields={fields}
@@ -664,6 +678,11 @@ export default function App() {
         livenessMatchIndex={livenessMatchIndex}
         isLivenessStep={demoState === "liveness_code_step"}
         customerName={customerName}
+      />
+
+      <ApiSettingsModal
+        isOpen={isApiSettingsOpen}
+        onClose={() => setIsApiSettingsOpen(false)}
       />
     </div>
   );

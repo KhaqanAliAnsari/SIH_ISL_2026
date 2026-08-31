@@ -5,8 +5,19 @@ coverage/
 .DS_Store
 !.env.example
 
-
-
-
 .agents/**/.env
 *.log
+
+# Capacitor Android project (generated — do not commit build artifacts)
+android/.gradle/
+android/app/build/
+android/build/
+
+# Bundled MediaPipe models (large binaries — run bundle-models.mjs to regenerate)
+public/models/*.task
+# Keep the wasm dir but exclude large binaries if needed
+# public/models/wasm/
+
+# APK outputs
+*.apk
+*.aab

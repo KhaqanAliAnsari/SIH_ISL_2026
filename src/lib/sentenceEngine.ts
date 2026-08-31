@@ -239,23 +239,60 @@ async function dispatchSentence(reason: DispatchReason): Promise<void> {
   setState("WAITING_RESPONSE");
 
   try {
-    const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tokens: tokensToSend.map(t => ({
-          word: t.word,
-          confidence: t.confidence,
-        })),
-        mergeLetters: reason === "manual",
-      }),
-    });
+    let data: any = {};
+    const storedKey = typeof window !== 'undefined' ? localStorage.getItem("SIH_GEMINI_API_KEY") : null;
+    let response;
 
-    if (!response.ok) {
-      throw new Error(`API responded with ${response.status}`);
+    if (storedKey) {
+      // Offline APK Mode: Direct call to Gemini REST API
+      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${storedKey}`;
+      
+      const prompt = `
+        You are a Sign Language interpreter. I have an array of words recognized from a continuous sign language gesture stream.
+        Convert these raw glosses into a grammatically correct, natural, and polite english sentence.
+        Do not add any preamble, conversational filler, or explanations. Just output the final sentence.
+        
+        Raw signs: [${tokensToSend.map(t => t.word).join(", ")}]
+      `;
+
+      response = await fetch(geminiEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.2 }
+        }),
+      });
+
+      if (!response.ok) throw new Error(`Gemini API responded with ${response.status}`);
+      
+      const geminiData = await response.json();
+      const text = geminiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || tokensToSend.map(t => t.word).join(" ");
+      
+      data = {
+        sentence: text.replace(/\n/g, ' '),
+        corrections: ["(Processed via Local Device API Key)"]
+      };
+
+    } else {
+      // Standard Vercel Backend Mode
+      response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tokens: tokensToSend.map(t => ({
+            word: t.word,
+            confidence: t.confidence,
+          })),
+          mergeLetters: reason === "manual",
+        }),
+      });
+
+      if (!response.ok) throw new Error(`API responded with ${response.status}`);
+      data = await response.json();
     }
 
-    const data = await response.json();
+
 
     const completedSentence: PhrasedSentence = {
       ...pendingSentence,

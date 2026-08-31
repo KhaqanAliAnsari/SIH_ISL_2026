@@ -307,18 +307,30 @@ self.onmessage = async (e: MessageEvent) => {
   try {
     if (type === 'LOAD_TEMPLATES') {
       const { apiBase } = payload;
-      // In a Web Worker, fetch works perfectly.
-      // Need origin because worker might be running on a blob URL or root
       const baseUrl = apiBase || self.location.origin;
-      const listRes = await fetch(`${baseUrl}/api/templates`);
-      if (!listRes.ok) throw new Error("Failed to fetch templates list");
-      
-      const fileList: string[] = await listRes.json();
+
+      // ─── Static Template Manifest ─────────────────────────────────
+      // These .npy files live in public/templates/ and are bundled into
+      // the APK's dist/templates/. No Express server needed.
+      const GESTURE_CLASSES = ['1', '2', '4', '8', 'bad', 'fine', 'good', 'hello', 'how', 'i', 'morning', 'no', 'thank_you', 'yes', 'you'];
+      const VARIATIONS_PER_CLASS = 10;
+      const fileList: string[] = [];
+      for (const cls of GESTURE_CLASSES) {
+        for (let v = 1; v <= VARIATIONS_PER_CLASS; v++) {
+          fileList.push(`reference_${cls}_${String(v).padStart(2, '0')}.npy`);
+        }
+      }
+
       const loadedClasses: Record<string, GestureTemplateClass> = {};
 
+      // Try static /templates/ path first (APK + Vite dev), fall back to /api/templates/ (Express dev)
       const fetchPromises = fileList.map(async (filename) => {
         try {
-          const res = await fetch(`${baseUrl}/api/templates/${filename}`);
+          let res = await fetch(`${baseUrl}/templates/${filename}`);
+          if (!res.ok) {
+            // Fallback to API route for Express dev server
+            res = await fetch(`${baseUrl}/api/templates/${filename}`);
+          }
           if (!res.ok) return null;
 
           const arrayBuffer = await res.arrayBuffer();
@@ -349,6 +361,7 @@ self.onmessage = async (e: MessageEvent) => {
       }
 
       templateClasses = loadedClasses;
+      console.log(`[DTW Worker] Loaded ${Object.keys(templateClasses).length} gesture classes, ${results.filter(r => r !== null).length} total variations`);
       self.postMessage({ id, type: 'LOAD_TEMPLATES_DONE', payload: Object.keys(templateClasses) });
     } 
     else if (type === 'PUSH_FRAME') {

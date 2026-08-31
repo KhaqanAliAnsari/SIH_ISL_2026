@@ -7,6 +7,7 @@ import {
   UserCheck,
   Smartphone,
   Shield,
+  Settings,
 } from "lucide-react";
 import { SessionStatus, DemoState } from "../types";
 
@@ -20,6 +21,7 @@ interface HeaderBarProps {
   empId: string;
   branch: string;
   onOpenCustomerView: () => void;
+  onOpenApiSettings: () => void;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -32,6 +34,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   empId,
   branch,
   onOpenCustomerView,
+  onOpenApiSettings,
 }) => {
   return (
     <header className="py-2 h-auto lg:h-16 bg-zinc-900/90 backdrop-blur-md border-b border-zinc-800 px-3 lg:px-5 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2 select-none shrink-0 z-20">
@@ -109,6 +112,14 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         >
           <Smartphone className="w-3.5 h-3.5 text-zinc-400" />
           <span className="hidden sm:inline">Customer Screen Preview</span>
+        </button>
+
+        <button
+          onClick={onOpenApiSettings}
+          className="p-1.5 bg-zinc-800/80 hover:bg-zinc-700/80 border border-zinc-700/80 rounded-md text-zinc-400 hover:text-amber-400 transition-colors cursor-pointer"
+          title="Configure API Keys (Judges Mode)"
+        >
+          <Settings className="w-4 h-4" />
         </button>
 
         <div className="text-right hidden sm:block border-l border-zinc-800 pl-3">

@@ -48,7 +48,45 @@ export interface HolisticResult {
 }
 
 const MEDIAPIPE_WASM_VERSION = "0.10.21";
-const MEDIAPIPE_WASM_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`;
+
+/**
+ * Prefer bundled local WASM (APK / offline) → CDN fallback for dev/browser.
+ * Local path resolves from public/models/wasm/ which is served at /models/wasm/.
+ * Run `node scripts/bundle-models.mjs` once to populate public/models/.
+ */
+import { Capacitor } from '@capacitor/core';
+
+function getWasmUrl(): string {
+  const isCapacitorNative = Capacitor.isNativePlatform();
+
+  if (isCapacitorNative) {
+    return '/models/wasm';
+  }
+  // In browser/dev: use local if available (detected at build time via VITE env),
+  // otherwise fall back to CDN.
+  const localWasm = '/models/wasm';
+  const cdnWasm = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`;
+  // Use local path if the bundle-models script has been run (public/models/wasm/ exists)
+  return import.meta.env.VITE_LOCAL_MODELS === 'true' ? localWasm : cdnWasm;
+}
+
+function getModelUrl(filename: string): string {
+  // @ts-ignore
+  const isCapacitorNative = typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNative;
+
+  if (isCapacitorNative) {
+    return `/models/${filename}`;
+  }
+  const localUrl = `/models/${filename}`;
+  const cdnBase = 'https://storage.googleapis.com/mediapipe-models';
+  const cdnPaths: Record<string, string> = {
+    'pose_landmarker_full.task': `${cdnBase}/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task`,
+    'hand_landmarker.task': `${cdnBase}/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
+  };
+  return import.meta.env.VITE_LOCAL_MODELS === 'true' ? localUrl : (cdnPaths[filename] ?? localUrl);
+}
+
+const MEDIAPIPE_WASM_URL = getWasmUrl();
 
 /**
  * Initialize the PoseLandmarker and HandLandmarker models on GPU.
@@ -64,7 +102,7 @@ export async function initHolisticLandmarker(): Promise<void> {
   const [pose, hand] = await Promise.all([
     PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task",
+        modelAssetPath: getModelUrl('pose_landmarker_full.task'),
         delegate: "GPU",
       },
       runningMode: "VIDEO",
@@ -75,7 +113,7 @@ export async function initHolisticLandmarker(): Promise<void> {
     }),
     HandLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+        modelAssetPath: getModelUrl('hand_landmarker.task'),
         delegate: "GPU",
       },
       runningMode: "VIDEO",

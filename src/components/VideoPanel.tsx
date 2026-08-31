@@ -9,8 +9,12 @@ import {
   Eye,
   Zap,
   Settings,
+  FlipHorizontal,
+  Lock,
+  Video,
 } from "lucide-react";
 import { DemoState, SentenceToken, SentenceEngineState } from "../types";
+import { Capacitor } from '@capacitor/core';
 import {
   initHolisticLandmarker,
   detectHolistic,
@@ -53,6 +57,7 @@ interface VideoPanelProps {
   onGestureRecognized?: (gesture: string, distance: number, confidence: number) => void;
   currentSentenceTokens?: SentenceToken[];
   sentenceEngineState?: SentenceEngineState;
+  forceStopCamera?: boolean;
 }
 
 // Fingertip + wrist landmark indices for larger dot rendering
@@ -72,6 +77,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   onGestureRecognized,
   currentSentenceTokens = [],
   sentenceEngineState = "IDLE",
+  forceStopCamera = false,
 }) => {
   const [useWebcam, setUseWebcam] = useState(false);
   const [showMesh, setShowMesh] = useState(true);
@@ -84,6 +90,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const [activeStopGesture, setActiveStopGesture] = useState<string>(getStopGestureName());
   const [showStopConfig, setShowStopConfig] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+
+  const isNative = Capacitor.isNativePlatform() || new URLSearchParams(window.location.search).has('native');
   const [isRecorderOpen, setIsRecorderOpen] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -151,7 +159,13 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         initModel();
         initTemplates();
 
-        const constraints = { video: { width: 1280, height: 720, frameRate: { ideal: 30, max: 30 } } };
+        const constraints = {
+          video: isNative
+            ? (Capacitor.isNativePlatform()
+              ? { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30, max: 30 } }
+              : { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30, max: 30 } })
+            : { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30, max: 30 } }
+        };
         let stream: MediaStream;
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -213,6 +227,22 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
     return () => { mounted = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // ─── Force Stop Camera Effect ──────────────────────────────────────
+  useEffect(() => {
+    if (forceStopCamera && useWebcam) {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      setUseWebcam(false);
+      setHandVisible(false);
+      setBufferFill(0);
+      isRunningRef.current = false;
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    }
+  }, [forceStopCamera, useWebcam]);
 
   // ─── Ultra-Fast Batched Landmark Drawing (Zero Heap Allocation) ────
   const drawLandmarks = useCallback(
@@ -489,7 +519,10 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   }, [lastMatch]);
 
   return (
-    <div className="col-span-12 lg:col-span-7 flex flex-col min-h-[40vh] lg:h-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden relative">
+    <div
+      className="col-span-12 lg:col-span-7 flex flex-col lg:h-full bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden relative"
+      style={isNative ? { minHeight: '75vh', flexShrink: 0 } : { minHeight: '40vh' }}
+    >
       {/* Video Overlay Top Header */}
       <div className="absolute top-0 left-0 right-0 px-3 py-2 bg-zinc-900/95 text-white z-20 flex items-center justify-between border-b border-zinc-800 shadow-none">
         {/* Record Indicator */}
@@ -648,8 +681,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           autoPlay
           playsInline
           muted
-          className={`w-full h-full object-cover ${useWebcam ? 'block' : 'hidden'}`}
-          style={{ transform: "scaleX(-1)" }}
+          className={`w-full h-full ${useWebcam ? 'block' : 'hidden'}`}
+          style={{ transform: 'scaleX(-1)', objectFit: 'cover' }}
         />
         {!useWebcam && (
           <div className="relative w-full h-full flex items-center justify-center bg-zinc-950 text-zinc-500">

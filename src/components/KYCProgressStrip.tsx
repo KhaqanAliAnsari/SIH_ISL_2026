@@ -1,6 +1,7 @@
 import React from "react";
 import { CheckCircle2, Loader2, AlertTriangle, FileCheck } from "lucide-react";
 import { ProgressStep } from "../types";
+import { Capacitor } from '@capacitor/core';
 
 interface KYCProgressStripProps {
   steps: ProgressStep[];
@@ -13,39 +14,15 @@ export const KYCProgressStrip: React.FC<KYCProgressStripProps> = ({
   currentStepIndex,
   onSelectStep,
 }) => {
+  const isNative = Capacitor.isNativePlatform();
+
   const confirmedCount = steps.filter((s) => s.status === "confirmed").length;
   const progressPercent = Math.round((confirmedCount / steps.length) * 100);
 
   return (
     <div className="w-full bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-2.5 select-none shrink-0 z-10 text-zinc-100">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-2 px-1">
-          <div className="flex items-center gap-2">
-            <FileCheck className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-bold uppercase tracking-wider text-white font-sans">
-              RBI V-CIP Progress Stepper
-            </span>
-            <span className="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono border border-zinc-700 font-semibold">
-              Structured KYC Audit
-            </span>
-          </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-zinc-300">
-            <div>
-              <span className="text-emerald-400 font-bold">
-                {confirmedCount}
-              </span>{" "}
-              / {steps.length} Steps Confirmed ({progressPercent}%)
-            </div>
-            <div className="w-24 bg-zinc-800 h-2 rounded overflow-hidden border border-zinc-700">
-              <div
-                className="bg-emerald-500 h-full transition-all duration-300 shadow-sm shadow-emerald-950"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
-          </div>
-        </div>
 
         {/* 7 Checkpoint Buttons */}
         <div className="flex items-stretch gap-2 overflow-x-auto pb-1 custom-scrollbar">
