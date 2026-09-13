@@ -1,5 +1,7 @@
 # SignKYC — Bank Official Console (V-CIP Assist View)
 
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/KhaqanAliAnsari/SIH_ISL_2026/releases/download/v1.0.0-dtw/app-debug.apk)
+
 > **Accessibility Workstation for Indian Sign Language (ISL) Video KYC Onboarding**
 
 ---
