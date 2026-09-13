@@ -13,18 +13,24 @@ import {
   Lock,
   Video,
 } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { DemoState, SentenceToken, SentenceEngineState } from "../types";
 import { Capacitor } from '@capacitor/core';
 import {
-  initHolisticLandmarker,
-  detectHolistic,
-  extractHolisticFeatureVector,
   isBodyDetected,
-  closeHolisticLandmarker,
+  extractHolisticFeatureVector,
+  initMainThreadLandmarker,
+  detectMainThread,
+  closeMainThreadLandmarker,
   HAND_CONNECTIONS,
   POSE_UPPER_BODY_CONNECTIONS,
   type HolisticResult,
 } from "../lib/holisticLandmarker";
+import {
+  initVisionWorker,
+  detectFrame,
+  closeVisionWorker,
+} from "../lib/visionEngine";
 import {
   loadTemplates,
   pushFrame,
@@ -127,17 +133,33 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const actualDrawsRef = useRef(0);
   const fpsFrameCountRef = useRef(0);
   const lastFpsTimeRef = useRef(0);
+  const [modelMode, setModelMode] = useState<"worker" | "main" | null>(null);
+  const [modelError, setModelError] = useState<string | null>(null);
+  const modelModeRef = useRef<"worker" | "main" | null>(null);
+  modelModeRef.current = modelMode;
+  const consecutiveWorkerErrorsRef = useRef(0);
 
   // ─── Initialize MediaPipe + Load Templates ─────────────────────────
   const initModel = useCallback(async () => {
     if (modelReady || modelLoading) return;
     setModelLoading(true);
+    setModelError(null);
     try {
-      await initHolisticLandmarker();
+      const { delegate } = await initVisionWorker();
       setModelReady(true);
-      console.log("[VideoPanel] MediaPipe Full initialized");
-    } catch (err) {
-      console.error("[VideoPanel] Failed to init models:", err);
+      setModelMode("worker");
+      console.log(`[VideoPanel] MediaPipe initialized in visionWorker (${delegate})`);
+    } catch (workerErr: any) {
+      console.warn("[VideoPanel] VisionWorker failed, attempting main-thread fallback:", workerErr);
+      try {
+        await initMainThreadLandmarker();
+        setModelReady(true);
+        setModelMode("main");
+        console.log("[VideoPanel] MediaPipe initialized on Main Thread fallback");
+      } catch (mainErr: any) {
+        console.error("[VideoPanel] Both worker and main-thread MediaPipe failed:", mainErr);
+        setModelError(mainErr?.message || workerErr?.message || "Failed to load MediaPipe");
+      }
     }
     setModelLoading(false);
   }, [modelReady, modelLoading]);
@@ -156,15 +178,15 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
   const toggleWebcam = async () => {
     if (!useWebcam) {
       try {
-        initModel();
-        initTemplates();
+        // Parallel model + template loading (Phase D2)
+        await Promise.all([initModel(), initTemplates()]);
 
         const constraints = {
           video: isNative
             ? (Capacitor.isNativePlatform()
               ? { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30, max: 30 } }
               : { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30, max: 30 } })
-            : { width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30, max: 30 } }
+            : { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30, max: 30 } }
         };
         let stream: MediaStream;
 
@@ -365,6 +387,7 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
 
   // ─── Detection + DTW Loop ──────────────────────────────────────────
   const isMatchingRef = useRef(false);
+  const isDetectingRef = useRef(false);
   const lastVideoTimeRef = useRef(-1);
 
   useEffect(() => {
@@ -398,73 +421,135 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         return;
       }
 
-      // ONLY process if the webcam actually produced a new frame!
-      // This prevents high-refresh-rate monitors (e.g. 144Hz) from pushing duplicate frames
-      // to the 30Hz video stream, which causes "2x speed" recording glitches.
       if (video.currentTime !== lastVideoTimeRef.current) {
-        lastVideoTimeRef.current = video.currentTime;
+        if (modelModeRef.current === "main") {
+          lastVideoTimeRef.current = video.currentTime;
+          const result = detectMainThread(video, performance.now());
+          const featureVec = extractHolisticFeatureVector(result);
+          const detected = isBodyDetected(featureVec);
 
-        // 1. Detect pose + hands synchronously on GPU (0ms latency)
-        const t0 = performance.now();
-        const result = detectHolistic(video, performance.now());
+          lastResultRef.current = result;
+          lastFeatureVecRef.current = featureVec;
+          handVisibleRef.current = detected;
 
-        // 2. Extract 106-dim feature vector
-        const featureVec = extractHolisticFeatureVector(result);
-        const detected = isBodyDetected(featureVec);
+          if (recorderFrameHandlerRef.current && featureVec) {
+            recorderFrameHandlerRef.current(featureVec);
+          }
 
-        lastResultRef.current = result;
-        lastFeatureVecRef.current = featureVec;
-        handVisibleRef.current = detected;
+          if (detected) {
+            drawLandmarksRef.current(ctx, result, canvas.width, canvas.height);
+          } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
 
-        // Dispatch frame to template recorder if active
-        if (recorderFrameHandlerRef.current) {
-          recorderFrameHandlerRef.current(featureVec);
-        }
+          if (dtwCooldown.current > 0) dtwCooldown.current--;
 
-        // 3. Render landmarks immediately onto canvas (zero-latency visual feedback)
-        if (detected) {
-          drawLandmarksRef.current(ctx, result, canvas.width, canvas.height);
-        } else {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-        // 4. Push to DTW buffer and match gestures via Web Worker
-        if (dtwCooldown.current > 0) dtwCooldown.current--;
-
-        if (detected && dtwCooldown.current === 0) {
-          // 15 FPS Downsampling: Only push every other frame
-          if (dtwEvalCounter.current % 2 === 0) {
+          if (detected && dtwCooldown.current === 0) {
             pushFrame(featureVec).then(fill => {
               bufferFillRef.current = fill;
             });
-          }
 
-          dtwEvalCounter.current++;
-          
-          if (dtwEvalCounter.current % 6 === 0 && !isMatchingRef.current) {
-            isMatchingRef.current = true;
-            matchGesture().then(match => {
-              isMatchingRef.current = false;
-              if (match.gesture) {
-                setLastMatch(match);
-                dtwCooldown.current = 30; // 1.0 second cooldown at 30fps
-                debounceGestureRef.current = null;
-                debounceCountRef.current = 0;
-                clearBuffer();
-                onGestureRecognizedRef.current?.(match.gesture, match.distance, match.confidence);
+            dtwEvalCounter.current++;
+            
+            if (dtwEvalCounter.current % 4 === 0 && !isMatchingRef.current) {
+              isMatchingRef.current = true;
+              matchGesture().then(match => {
+                isMatchingRef.current = false;
+                if (match.gesture) {
+                  setLastMatch(match);
+                  dtwCooldown.current = 30;
+                  debounceGestureRef.current = null;
+                  debounceCountRef.current = 0;
+                  clearBuffer();
+                  onGestureRecognizedRef.current?.(match.gesture, match.distance, match.confidence);
+                }
+              }).catch(err => {
+                console.error("Worker match failed:", err);
+                isMatchingRef.current = false;
+              });
+            }
+          } else {
+            bufferFillRef.current = getBufferFill();
+          }
+        } else if (!isDetectingRef.current) {
+          lastVideoTimeRef.current = video.currentTime;
+          isDetectingRef.current = true;
+
+          const t0 = performance.now();
+          createImageBitmap(video)
+            .then(bitmap => detectFrame(bitmap, performance.now()))
+            .then(visionResult => {
+              isDetectingRef.current = false;
+              if (!isRunningRef.current) return;
+              consecutiveWorkerErrorsRef.current = 0;
+
+              const { result, featureVec } = visionResult;
+              const detected = isBodyDetected(featureVec);
+
+              lastResultRef.current = result;
+              lastFeatureVecRef.current = featureVec;
+              handVisibleRef.current = detected;
+
+              // Dispatch frame to template recorder if active
+              if (recorderFrameHandlerRef.current && featureVec) {
+                recorderFrameHandlerRef.current(featureVec);
               }
-            }).catch(err => {
-              console.error("Worker match failed:", err);
-              isMatchingRef.current = false;
-            });
-          }
-        } else {
-          bufferFillRef.current = getBufferFill();
-        }
 
-        const t1 = performance.now();
-        if (Math.random() < 0.02) {
-          console.log(`[Profiler] Frame processing time: ${(t1 - t0).toFixed(1)}ms`);
+              // Render landmarks immediately onto canvas (zero UI block)
+              if (detected) {
+                drawLandmarksRef.current(ctx, result, canvas.width, canvas.height);
+              } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+              }
+
+              // Push to DTW buffer and match gestures via Web Worker
+              if (dtwCooldown.current > 0) dtwCooldown.current--;
+
+              if (detected && dtwCooldown.current === 0) {
+                pushFrame(featureVec).then(fill => {
+                  bufferFillRef.current = fill;
+                });
+
+                dtwEvalCounter.current++;
+                
+                if (dtwEvalCounter.current % 4 === 0 && !isMatchingRef.current) {
+                  isMatchingRef.current = true;
+                  matchGesture().then(match => {
+                    isMatchingRef.current = false;
+                    if (match.gesture) {
+                      setLastMatch(match);
+                      dtwCooldown.current = 30; // 1.0 second cooldown at 30fps
+                      debounceGestureRef.current = null;
+                      debounceCountRef.current = 0;
+                      clearBuffer();
+                      onGestureRecognizedRef.current?.(match.gesture, match.distance, match.confidence);
+                    }
+                  }).catch(err => {
+                    console.error("Worker match failed:", err);
+                    isMatchingRef.current = false;
+                  });
+                }
+              } else {
+                bufferFillRef.current = getBufferFill();
+              }
+
+              const t1 = performance.now();
+              if (Math.random() < 0.02) {
+                console.log(`[Profiler] Vision worker roundtrip: ${(t1 - t0).toFixed(1)}ms`);
+              }
+            })
+            .catch(err => {
+              isDetectingRef.current = false;
+              console.warn("[VideoPanel] Detection frame dropped:", err);
+              consecutiveWorkerErrorsRef.current++;
+              if (consecutiveWorkerErrorsRef.current > 5 && modelModeRef.current === "worker") {
+                console.warn("[VideoPanel] Repeated worker detection failures. Switching to main-thread fallback...");
+                consecutiveWorkerErrorsRef.current = 0;
+                initMainThreadLandmarker().then(() => {
+                  setModelMode("main");
+                }).catch(e => console.error("Main thread fallback also failed:", e));
+              }
+            });
         }
       }
 
@@ -504,7 +589,8 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
       }
-      closeHolisticLandmarker();
+      closeVisionWorker();
+      closeMainThreadLandmarker();
     };
   }, []);
 
@@ -538,10 +624,18 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
           {useWebcam && (
             <div className={`flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border ${modelReady
                 ? "bg-sky-500/10 text-sky-400 border-sky-500/30"
+                : modelError
+                ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
                 : "bg-zinc-800 text-zinc-400 border-zinc-700"
               }`}>
               <Zap className="w-3 h-3" />
-              {modelLoading ? "MediaPipe Full is Loading..." : modelReady ? "MediaPipe Active" : "AI Standby"}
+              {modelLoading
+                ? "MediaPipe is Loading..."
+                : modelReady
+                ? `MediaPipe Active (${modelMode === "worker" ? "Worker" : "Main"})`
+                : modelError
+                ? `Error: ${modelError.slice(0, 30)}`
+                : "AI Standby"}
             </div>
           )}
         </div>
@@ -727,19 +821,27 @@ export const VideoPanel: React.FC<VideoPanelProps> = ({
         )}
 
         {/* DTW Recognition Banner */}
-        {showRecognitionBanner && lastMatch?.gesture && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-            <div className="bg-zinc-900 text-white font-black text-sm px-6 py-3 rounded-xl border border-zinc-700 flex items-center gap-3 uppercase tracking-wider shadow-lg animate-pulse">
-              <CheckCircle2 className="w-6 h-6 text-white" />
-              <div>
-                <div className="text-base">GESTURE: {lastMatch.gesture.toUpperCase()}</div>
-                <div className="text-[10px] font-mono font-normal opacity-80 text-zinc-400">
-                  DTW: {lastMatch.distance.toFixed(2)} | Confidence: {lastMatch.confidence}%
+        <AnimatePresence>
+          {showRecognitionBanner && lastMatch?.gesture && (
+            <motion.div 
+              initial={{ opacity: 0, y: 30, scale: 0.9, filter: "blur(10px)", x: "-50%" }}
+              animate={{ opacity: 1, y: "-50%", scale: 1, filter: "blur(0px)", x: "-50%" }}
+              exit={{ opacity: 0, scale: 0.95, filter: "blur(5px)", transition: { ease: "easeOut", duration: 0.15 } }}
+              transition={{ type: "spring", damping: 0.8, duration: 0.4 }}
+              className="absolute top-1/2 left-1/2 z-30 pointer-events-none"
+            >
+              <div className="bg-zinc-900/90 backdrop-blur-md text-white font-black text-sm px-6 py-3 rounded-xl border border-zinc-700/80 flex items-center gap-3 uppercase tracking-wider shadow-[0_8px_30px_rgb(0,0,0,0.4)]">
+                <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                <div>
+                  <div className="text-base text-zinc-100">GESTURE: {lastMatch.gesture.toUpperCase()}</div>
+                  <div className="text-[10px] font-mono font-normal text-zinc-400">
+                    DTW: {lastMatch.distance.toFixed(2)} | Confidence: {lastMatch.confidence}%
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* LIVENESS CODE PROMPT OVERLAY */}
         {demoState === "liveness_code_step" && (

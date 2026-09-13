@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CheckCircle2, MessageSquare, Loader2, AlertCircle, Clock, History, X, Activity } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import type { PhrasedSentence, SentenceToken, SentenceEngineState } from "../types";
 import { manualDispatch, getStopGestureName } from "../lib/sentenceEngine";
 
@@ -62,22 +63,28 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
           ref={scrollRef}
           className="flex items-center gap-3 overflow-x-auto pb-1.5 custom-scrollbar"
         >
-          {sentences.map((sentence) => {
-            const isTimeout = sentence.corrections?.some(c => c.toLowerCase().includes("timeout") || c.toLowerCase().includes("separate"));
-            const isApiOffline = sentence.corrections?.some(c => c.toLowerCase().includes("api unavailable"));
-            
-            return (
-              <div 
-                key={sentence.id}
-                className={`flex-shrink-0 min-w-[280px] max-w-sm rounded-lg border p-3 flex flex-col gap-2 transition-all duration-300 transform hover:scale-[1.01] ${
-                  sentence.status === "pending" 
-                    ? "bg-indigo-950/40 border-indigo-500/50 animate-pulse text-indigo-200" 
-                    : (sentence.status === "error" || isApiOffline)
-                      ? "bg-rose-950/40 border-rose-500/50 text-rose-200"
-                      : "bg-zinc-950 border-zinc-800 hover:border-zinc-700 text-white shadow-sm"
-                }`}
-              >
-                {/* Header: Status & Timestamp */}
+          <AnimatePresence mode="popLayout">
+            {sentences.map((sentence) => {
+              const isTimeout = sentence.corrections?.some(c => c.toLowerCase().includes("timeout") || c.toLowerCase().includes("separate"));
+              const isApiOffline = sentence.corrections?.some(c => c.toLowerCase().includes("api unavailable"));
+              
+              return (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, x: -20 }}
+                  transition={{ type: "spring", damping: 1.0, bounce: 0.2, duration: 0.4 }}
+                  key={sentence.id}
+                  className={`flex-shrink-0 min-w-[280px] max-w-sm rounded-lg border p-3 flex flex-col gap-2 transition-colors duration-300 ${
+                    sentence.status === "pending" 
+                      ? "bg-indigo-950/40 border-indigo-500/50 animate-pulse text-indigo-200" 
+                      : (sentence.status === "error" || isApiOffline)
+                        ? "bg-rose-950/40 border-rose-500/50 text-rose-200"
+                        : "bg-zinc-950 border-zinc-800 hover:border-zinc-700 text-white shadow-sm"
+                  }`}
+                >
+                  {/* Header: Status & Timestamp */}
                 <div className="flex items-center justify-between text-[10px] font-mono">
                   <span className={`px-1.5 py-0.5 rounded font-bold flex items-center gap-1 border ${
                     sentence.status === "pending" ? "text-indigo-300 bg-indigo-900/60 border-indigo-700" :
@@ -109,9 +116,10 @@ export const PhrasedSentenceStrip: React.FC<PhrasedSentenceStripProps> = ({
                 <div className="text-[10px] font-mono text-zinc-400 truncate border-t border-zinc-800/80 pt-1.5 mt-auto">
                   Signed: {sentence.rawTokens.map(t => t.word).join(" → ")}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
+          </AnimatePresence>
 
           {(currentTokens.length > 0 || sentenceState === "DISPATCHING") && (
             <div className="flex-shrink-0 min-w-[280px] max-w-sm rounded-lg border border-sky-500/30 bg-sky-950/20 p-3 flex flex-col gap-2 shadow-sm transition-all">

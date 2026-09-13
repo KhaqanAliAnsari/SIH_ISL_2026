@@ -29,5 +29,10 @@ public class MainActivity extends BridgeActivity {
 
         // Enable mixed content for CDN model loading over https
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        // Boost WebView renderer process priority for smooth GPU inference (API 26+)
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            webView.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, true);
+        }
     }
 }

@@ -672,9 +672,9 @@
     "semantic_hash": ""
   },
   "src/lib/dtwWorker.ts": {
-    "mtime": 1789281487.981797,
-    "seen": 1789281572.0328407,
-    "ast_hash": "522a781f8114cd5514d1db23ea2126c4",
+    "mtime": 1788949902.6304512,
+    "seen": 1788950004.2034738,
+    "ast_hash": "9c66be2dd1257f00570a93a8f42004e7",
     "semantic_hash": ""
   },
   "src/lib/holisticLandmarker.ts": {
@@ -1644,8 +1644,8 @@
     "semantic_hash": ""
   },
   "android/app/capacitor.build.gradle": {
-    "mtime": 1789281528.824898,
-    "seen": 1789281572.0318615,
+    "mtime": 1788951585.4428003,
+    "seen": 1788951598.2890353,
     "ast_hash": "495f105471e2a44b0cb2bcbb804d8dfb",
     "semantic_hash": ""
   },
@@ -1674,8 +1674,8 @@
     "semantic_hash": ""
   },
   "android/capacitor.settings.gradle": {
-    "mtime": 1789281528.824898,
-    "seen": 1789281572.0320265,
+    "mtime": 1788951585.4425418,
+    "seen": 1788951598.289186,
     "ast_hash": "c990edcf9e862074b87716363ae1476a",
     "semantic_hash": ""
   },
@@ -1914,21 +1914,15 @@
     "semantic_hash": ""
   },
   "src/lib/visionWorker.ts": {
-    "mtime": 1789281507.9648213,
-    "seen": 1789281572.0329523,
-    "ast_hash": "677acc9a6edd760dc267e596ce923533",
+    "mtime": 1788951533.3879783,
+    "seen": 1788951598.2900488,
+    "ast_hash": "00a4ddaa76d075b86aa8151a5edbd6d7",
     "semantic_hash": ""
   },
   "needsTOBedone.md": {
     "mtime": 1788778267.3908312,
     "seen": 1788778296.6349194,
     "ast_hash": "9d0493c6a1e79caa0c411c0b622ffd9b",
-    "semantic_hash": ""
-  },
-  "isl_dtw/verify_template.py": {
-    "mtime": 1789281282.7920768,
-    "seen": 1789281572.0322497,
-    "ast_hash": "1742160efad205bbe1582ae64297afe0",
     "semantic_hash": ""
   }
 }

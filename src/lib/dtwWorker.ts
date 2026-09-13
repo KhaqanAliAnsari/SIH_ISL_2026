@@ -1,15 +1,15 @@
 /**
- * dtwWorker.ts
- *
- * Dedicated Web Worker for running heavy Dynamic Time Warping computations
- * without blocking the main browser UI thread.
- *
- * Performance notes:
- *   - Uses squared Euclidean distance (no per-cell Math.sqrt) for ~15-30% speedup.
- *   - Pre-allocated snapshot buffer avoids per-match GC pressure.
- *   - Sakoe-Chiba band (radius=5) constrains DTW from O(n²) to O(n·r).
- *   - Early cost pruning (maxCost) bails entire rows when no path can beat current best.
- */
+* dtwWorker.ts
+*
+* Dedicated Web Worker for running heavy Dynamic Time Warping computations
+* without blocking the main browser UI thread.
+*
+* Performance notes:
+*   - Uses squared Euclidean distance (no per-cell Math.sqrt) for ~15-30% speedup.
+*   - Pre-allocated snapshot buffer avoids per-match GC pressure.
+*   - Sakoe-Chiba band (radius=5) constrains DTW from O(n²) to O(n·r).
+*   - Early cost pruning (maxCost) bails entire rows when no path can beat current best.
+*/
 
 const BUFFER_SIZE = 90; // 3 seconds at 30 fps
 const DEFAULT_THRESHOLD = 30.0;
@@ -92,14 +92,14 @@ function parseNpy(buffer: ArrayBuffer): Float32Array[] {
   return frames;
 }
 
-function euclideanDistanceSq(a: Float32Array, b: Float32Array): number {
+function euclideanDistance(a: Float32Array, b: Float32Array): number {
   let sum0 = 0, sum1 = 0, sum2 = 0, sum3 = 0;
   const len = a.length;
   const blockEnd = len - (len % 4);
 
   let i = 0;
   for (; i < blockEnd; i += 4) {
-    const d0 = a[i]     - b[i];
+    const d0 = a[i] - b[i];
     const d1 = a[i + 1] - b[i + 1];
     const d2 = a[i + 2] - b[i + 2];
     const d3 = a[i + 3] - b[i + 3];
@@ -114,12 +114,16 @@ function euclideanDistanceSq(a: Float32Array, b: Float32Array): number {
     sum0 += d * d;
   }
 
-  return sum0 + sum1 + sum2 + sum3;
+  // Use proper Euclidean distance (with sqrt) to match the Python fastdtw
+  // pipeline which uses scipy.spatial.distance.euclidean.
+  // Without sqrt, accumulated DTW costs are on a completely different scale
+  // than the threshold (30.0), causing all classes to produce similar scores.
+  return Math.sqrt(sum0 + sum1 + sum2 + sum3);
 }
 
 function dtwDistance(
-  seq1: Float32Array[], 
-  seq2: Float32Array[], 
+  seq1: Float32Array[],
+  seq2: Float32Array[],
   maxCost: number = Infinity,
   seq1Start: number = 0,
   seq1Len: number = seq1.length
@@ -143,19 +147,19 @@ function dtwDistance(
     // (guarantees jStart=1 when i=1, and overlapping bounds for steep slopes)
     const jStart = Math.max(1, Math.floor((i - 1) * m / n) + 1 - r);
     const jEnd = Math.min(m, Math.ceil(i * m / n) + r);
-    
+
     let minRowCost = Infinity;
 
     for (let j = jStart; j <= jEnd; j++) {
-      // Squared Euclidean — avoids per-cell Math.sqrt() (~540k calls/match → 0)
-      const cost = euclideanDistanceSq(seq1[seq1Start + i - 1], seq2[j - 1]);
-      
+      // Euclidean distance — matches Python fastdtw(dist=euclidean)
+      const cost = euclideanDistance(seq1[seq1Start + i - 1], seq2[j - 1]);
+
       dtwCurrRow[j] = cost + Math.min(
-        dtwPrevRow[j],     
-        dtwCurrRow[j - 1], 
-        dtwPrevRow[j - 1]  
+        dtwPrevRow[j],
+        dtwCurrRow[j - 1],
+        dtwPrevRow[j - 1]
       );
-      
+
       if (dtwCurrRow[j] < minRowCost) {
         minRowCost = dtwCurrRow[j];
       }
@@ -220,7 +224,7 @@ function matchGesture() {
 
     for (const variation of templateClass.variations) {
       const tempLen = variation.sequence.length;
-      
+
       // Try 1.0× first — produces tighter early-prune maxCost for subsequent scales
       const lengthsToTry = [
         tempLen,
@@ -246,20 +250,20 @@ function matchGesture() {
 
         // Sliding Window: slide backwards up to 8 frames (~0.5s leniency at 15fps)
         const maxOffset = Math.min(8, seqLen - sliceLen);
-        
+
         for (let offset = 0; offset <= maxOffset; offset++) {
           const startIndex = seqLen - sliceLen - offset;
           const maxRawCost = (bestVariationDist / 30.0) * Math.max(sliceLen, tempLen);
           const rawDist = dtwDistance(snapshotBuffer, variation.sequence, maxRawCost, startIndex, sliceLen);
-          
+
           if (offset === 0 && i === 0) {
             baseRawDist = rawDist;
           }
 
-          if (rawDist === Infinity) continue; 
+          if (rawDist === Infinity) continue;
 
           const normDist = (rawDist / Math.max(sliceLen, tempLen)) * 30.0;
-          
+
           if (normDist < bestVariationDist) {
             bestVariationDist = normDist;
           }
@@ -277,23 +281,30 @@ function matchGesture() {
 
   result.distance = minDistance;
 
+  // Diagnostic: log top match distance every ~5 seconds (sampled)
+  if (Math.random() < 0.1 && bestGesture !== null) {
+    console.log(`[DTW Worker] Top match: "${bestGesture}" dist=${minDistance.toFixed(2)} threshold=${threshold} buffer=${seqLen}`);
+  }
+
   if (bestGesture !== null && minDistance < threshold) {
+    // Exponential decay confidence: gives meaningful separation between
+    // good matches (dist 3-10 → conf 70-95%) and noise (dist 20+ → conf <40%).
+    // Calibrated for proper Euclidean distance scale matching Python fastdtw.
     const calculatedConfidence = Math.max(
       0,
-      Math.min(100, Math.round(100 - (minDistance / threshold) * 50))
+      Math.min(100, Math.round(100 * Math.exp(-minDistance / (threshold * 0.3))))
     );
 
-    if (calculatedConfidence >= 90) {
+    // Confidence gate: 55+ requires dist ≤ ~5.4 at threshold=30.
+    // Same-class DTW with proper Euclidean: ~3-10, cross-class: ~15-25+.
+    if (calculatedConfidence >= 55) {
       result.gesture = bestGesture;
       result.confidence = calculatedConfidence;
       lastRecognitionTime = now;
-    }
-  }
-
-  // Debugging output
-  if (ringCount >= 8) {
-    if (Math.random() < 0.2) { // sample 20% to avoid spam
-      console.log(`[DTW Worker] matchGesture - minDistance: ${minDistance.toFixed(2)}, bestGesture: ${bestGesture}, ringCount: ${ringCount}`);
+      console.log(`[DTW Worker] ✅ RECOGNIZED: "${bestGesture}" dist=${minDistance.toFixed(2)} conf=${calculatedConfidence}%`);
+    } else if (calculatedConfidence >= 30) {
+      // Near-miss logging to help tune threshold
+      console.log(`[DTW Worker] Near-miss: "${bestGesture}" dist=${minDistance.toFixed(2)} conf=${calculatedConfidence}% (needs ≥55)`);
     }
   }
 
@@ -307,7 +318,22 @@ self.onmessage = async (e: MessageEvent) => {
   try {
     if (type === 'LOAD_TEMPLATES') {
       const { apiBase } = payload;
-      const baseUrl = apiBase || self.location.origin;
+
+      // Derive a robust base URL:
+      // 1. Prefer explicit apiBase passed from main thread (most reliable)
+      // 2. Try deriving from worker script URL
+      // 3. Last resort: use self.location.origin (may be null/blob in ES module workers)
+      let baseUrl = '';
+      if (apiBase && apiBase.length > 0) {
+        baseUrl = apiBase;
+      } else {
+        try {
+          baseUrl = new URL('.', self.location.href).origin;
+        } catch {
+          baseUrl = self.location.origin || '';
+        }
+      }
+      console.log(`[DTW Worker] Resolved baseUrl: "${baseUrl}"`);
 
       // ─── Static Template Manifest ─────────────────────────────────
       // These .npy files live in public/templates/ and are bundled into
@@ -322,30 +348,57 @@ self.onmessage = async (e: MessageEvent) => {
       }
 
       const loadedClasses: Record<string, GestureTemplateClass> = {};
+      let fetchSuccessCount = 0;
+      let fetchFailCount = 0;
 
-      // Try static /templates/ path first (APK + Vite dev), fall back to /api/templates/ (Express dev)
+      // Try multiple URL strategies for maximum compatibility:
+      // 1. Absolute URL with baseUrl (browser dev/production)
+      // 2. Relative /templates/ path (Capacitor APK serves at root)
+      // 3. /api/templates/ fallback (Express dev server)
       const fetchPromises = fileList.map(async (filename) => {
         try {
-          let res = await fetch(`${baseUrl}/templates/${filename}`);
-          if (!res.ok) {
-            // Fallback to API route for Express dev server
-            res = await fetch(`${baseUrl}/api/templates/${filename}`);
+          const urlsToTry = [
+            baseUrl ? `${baseUrl}/templates/${filename}` : null,
+            `/templates/${filename}`,
+            baseUrl ? `${baseUrl}/api/templates/${filename}` : null,
+            `/api/templates/${filename}`,
+          ].filter(Boolean) as string[];
+
+          let res: Response | null = null;
+          for (const url of urlsToTry) {
+            try {
+              const attempt = await fetch(url);
+              if (attempt.ok) {
+                res = attempt;
+                break;
+              }
+            } catch {
+              // Try next URL
+            }
           }
-          if (!res.ok) return null;
+
+          if (!res || !res.ok) {
+            fetchFailCount++;
+            return null;
+          }
 
           const arrayBuffer = await res.arrayBuffer();
           const rawFrames = parseNpy(arrayBuffer);
-          
-          // Downsample template to 15 FPS to match live buffer optimizations
-          const frames = rawFrames.filter((_, idx) => idx % 2 === 0);
+
+          // Use templates at original 30 FPS — must match the live buffer frame rate.
+          // Previous downsampling to 15 FPS (idx % 2 === 0) caused a 2× temporal
+          // mismatch: templates had 20 frames but live buffer had 40 for the same gesture.
+          const frames = rawFrames;
 
           let name = filename.replace(/^reference_/, "").replace(/\.npy$/, "");
           const match = name.match(/^(.+?)_\d+$/);
           if (match) {
             name = match[1];
           }
+          fetchSuccessCount++;
           return { className: name, variation: { filename, sequence: frames } };
         } catch (err) {
+          fetchFailCount++;
           return null;
         }
       });
@@ -361,9 +414,13 @@ self.onmessage = async (e: MessageEvent) => {
       }
 
       templateClasses = loadedClasses;
-      console.log(`[DTW Worker] Loaded ${Object.keys(templateClasses).length} gesture classes, ${results.filter(r => r !== null).length} total variations`);
+      const classCount = Object.keys(templateClasses).length;
+      console.log(`[DTW Worker] Loaded ${classCount} gesture classes, ${fetchSuccessCount} variations (${fetchFailCount} fetch failures)`);
+      if (classCount === 0) {
+        console.error(`[DTW Worker] ⚠️ ZERO templates loaded! Gesture recognition will NOT work. baseUrl was: "${baseUrl}". Tried fetching from /templates/ and /api/templates/.`);
+      }
       self.postMessage({ id, type: 'LOAD_TEMPLATES_DONE', payload: Object.keys(templateClasses) });
-    } 
+    }
     else if (type === 'PUSH_FRAME') {
       ringBuffer[ringHead] = payload; // Float32Array passed via message
       ringHead = (ringHead + 1) % BUFFER_SIZE;

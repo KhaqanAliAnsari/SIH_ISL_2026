@@ -19,8 +19,8 @@ const WASM_SRC = join(ROOT, 'node_modules', '@mediapipe', 'tasks-vision', 'wasm'
 
 const MODELS = [
   {
-    name: 'pose_landmarker_full.task',
-    url: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task',
+    name: 'pose_landmarker_lite.task',
+    url: 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',
   },
   {
     name: 'hand_landmarker.task',

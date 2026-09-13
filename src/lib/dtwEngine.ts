@@ -57,7 +57,10 @@ let cachedTemplateNames: string[] = [];
 let cachedBufferFill: number = 0;
 
 export async function loadTemplates(apiBase: string = ""): Promise<string[]> {
-  const names = await postToWorker<string[]>('LOAD_TEMPLATES', { apiBase });
+  // If no explicit apiBase provided, try to use window.location.origin
+  // This is critical for Capacitor APK where worker self.location.origin may be wrong
+  const effectiveBase = apiBase || (typeof window !== 'undefined' ? window.location.origin : '');
+  const names = await postToWorker<string[]>('LOAD_TEMPLATES', { apiBase: effectiveBase });
   cachedTemplateNames = names;
   return names;
 }
@@ -94,8 +97,8 @@ export async function setThreshold(t: number): Promise<void> {
 
 export async function matchGesture(): Promise<MatchResult> {
   const match = await postToWorker<MatchResult>('MATCH_GESTURE');
-  // Match clears buffer if successful (confidence >= 90)
-  if (match.confidence >= 90) {
+  // Match clears buffer if successful (confidence >= 55)
+  if (match.confidence >= 55) {
     cachedBufferFill = 0;
   }
   return match;

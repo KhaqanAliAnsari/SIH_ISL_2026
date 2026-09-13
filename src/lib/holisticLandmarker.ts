@@ -1,25 +1,25 @@
 /**
  * holisticLandmarker.ts
  *
- * Direct GPU-Accelerated Browser Implementation of MediaPipe Holistic.
+ * Feature extraction & topological constants for MediaPipe Holistic.
  * Mirrors the feature extraction logic from isl_dtw/utils.py:
  *   - 106-dim feature vector per frame
  *   - Pose (upper body + head anchors) normalized to mid-shoulder
  *   - Left/Right hands normalized to respective wrists
  *   - Zero-padded when parts are missing
- *   - Unrestricted 1:1 real-time GPU inference (0ms anchor latency)
+ *
+ * Primary inference execution is offloaded to visionWorker.ts.
+ * Fallback main-thread inference is provided in case the host device
+ * has WebGL/OffscreenCanvas disabled in WorkerGlobalScope.
  */
 
 import {
-  HandLandmarker,
   PoseLandmarker,
+  HandLandmarker,
   FilesetResolver,
   type NormalizedLandmark,
 } from "@mediapipe/tasks-vision";
-
-let poseLandmarker: PoseLandmarker | null = null;
-let handLandmarker: HandLandmarker | null = null;
-let lastTimestamp = 0;
+import { Capacitor } from '@capacitor/core';
 
 export const FEATURE_DIM = 106;
 
@@ -49,30 +49,19 @@ export interface HolisticResult {
 
 const MEDIAPIPE_WASM_VERSION = "0.10.21";
 
-/**
- * Prefer bundled local WASM (APK / offline) → CDN fallback for dev/browser.
- * Local path resolves from public/models/wasm/ which is served at /models/wasm/.
- * Run `node scripts/bundle-models.mjs` once to populate public/models/.
- */
-import { Capacitor } from '@capacitor/core';
-
-function getWasmUrl(): string {
+export function getWasmUrl(): string {
   const isCapacitorNative = Capacitor.isNativePlatform();
 
   if (isCapacitorNative) {
     return '/models/wasm';
   }
-  // In browser/dev: use local if available (detected at build time via VITE env),
-  // otherwise fall back to CDN.
   const localWasm = '/models/wasm';
   const cdnWasm = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`;
-  // Use local path if the bundle-models script has been run (public/models/wasm/ exists)
   return import.meta.env.VITE_LOCAL_MODELS === 'true' ? localWasm : cdnWasm;
 }
 
-function getModelUrl(filename: string): string {
-  // @ts-ignore
-  const isCapacitorNative = typeof window !== 'undefined' && window.Capacitor && window.Capacitor.isNative;
+export function getModelUrl(filename: string): string {
+  const isCapacitorNative = Capacitor.isNativePlatform();
 
   if (isCapacitorNative) {
     return `/models/${filename}`;
@@ -80,101 +69,11 @@ function getModelUrl(filename: string): string {
   const localUrl = `/models/${filename}`;
   const cdnBase = 'https://storage.googleapis.com/mediapipe-models';
   const cdnPaths: Record<string, string> = {
+    'pose_landmarker_lite.task': `${cdnBase}/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
     'pose_landmarker_full.task': `${cdnBase}/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task`,
     'hand_landmarker.task': `${cdnBase}/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
   };
   return import.meta.env.VITE_LOCAL_MODELS === 'true' ? localUrl : (cdnPaths[filename] ?? localUrl);
-}
-
-const MEDIAPIPE_WASM_URL = getWasmUrl();
-
-/**
- * Initialize the PoseLandmarker and HandLandmarker models on GPU.
- */
-export async function initHolisticLandmarker(): Promise<void> {
-  if (poseLandmarker && handLandmarker) return;
-
-  const t0 = performance.now();
-  console.log("[Holistic] Initializing GPU-accelerated MediaPipe models...");
-
-  const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_WASM_URL);
-
-  const [pose, hand] = await Promise.all([
-    PoseLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath: getModelUrl('pose_landmarker_full.task'),
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numPoses: 1,
-      minPoseDetectionConfidence: 0.5,
-      minPosePresenceConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    }),
-    HandLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath: getModelUrl('hand_landmarker.task'),
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numHands: 2,
-      minHandDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    }),
-  ]);
-
-  poseLandmarker = pose;
-  handLandmarker = hand;
-
-  const t1 = performance.now();
-  console.log(`[Holistic] Models ready on GPU in ${(t1 - t0).toFixed(0)}ms`);
-}
-
-/**
- * Detect pose and hands from a video element at full real-time speed.
- * Processes every single frame with 0ms latency.
- */
-export function detectHolistic(videoElement: HTMLVideoElement, timestamp: number): HolisticResult {
-  const result: HolisticResult = {
-    pose: null,
-    leftHand: null,
-    rightHand: null,
-  };
-
-  if (!poseLandmarker || !handLandmarker) return result;
-
-  try {
-    let now = timestamp;
-    if (now <= lastTimestamp) {
-      now = lastTimestamp + 1;
-    }
-    lastTimestamp = now;
-
-    // Run both pose and hand detection synchronously on GPU
-    const poseResult = poseLandmarker.detectForVideo(videoElement, now);
-    const handResult = handLandmarker.detectForVideo(videoElement, now);
-
-    if (poseResult.landmarks && poseResult.landmarks.length > 0) {
-      result.pose = poseResult.landmarks[0];
-    }
-
-    if (handResult.landmarks && handResult.handednesses) {
-      for (let i = 0; i < handResult.landmarks.length; i++) {
-        const hand = handResult.landmarks[i];
-        const category = handResult.handednesses[i][0].categoryName;
-        if (category === "Left" && !result.leftHand) {
-          result.leftHand = hand;
-        } else if (category === "Right" && !result.rightHand) {
-          result.rightHand = hand;
-        }
-      }
-    }
-
-    return result;
-  } catch (err) {
-    console.warn("[Holistic] Detection frame dropped:", err);
-    return result;
-  }
 }
 
 /**
@@ -206,20 +105,7 @@ export function extractHolisticFeatureVector(result: HolisticResult): Float32Arr
     offset += 22; // skip pose block
   }
 
-  // 2. Left Hand (42 dims)
-  if (result.leftHand && result.leftHand.length >= 21) {
-    const wristX = 1.0 - result.leftHand[0].x;
-    const wristY = result.leftHand[0].y;
-
-    for (let i = 0; i < 21; i++) {
-      featureVector[offset++] = (1.0 - result.leftHand[i].x) - wristX;
-      featureVector[offset++] = result.leftHand[i].y - wristY;
-    }
-  } else {
-    offset += 42; // skip left hand
-  }
-
-  // 3. Right Hand (42 dims)
+  // 2. Right Hand (Physical Right Hand) -> Maps to Python's left_hand block
   if (result.rightHand && result.rightHand.length >= 21) {
     const wristX = 1.0 - result.rightHand[0].x;
     const wristY = result.rightHand[0].y;
@@ -227,6 +113,19 @@ export function extractHolisticFeatureVector(result: HolisticResult): Float32Arr
     for (let i = 0; i < 21; i++) {
       featureVector[offset++] = (1.0 - result.rightHand[i].x) - wristX;
       featureVector[offset++] = result.rightHand[i].y - wristY;
+    }
+  } else {
+    offset += 42; // skip
+  }
+
+  // 3. Left Hand (Physical Left Hand) -> Maps to Python's right_hand block
+  if (result.leftHand && result.leftHand.length >= 21) {
+    const wristX = 1.0 - result.leftHand[0].x;
+    const wristY = result.leftHand[0].y;
+
+    for (let i = 0; i < 21; i++) {
+      featureVector[offset++] = (1.0 - result.leftHand[i].x) - wristX;
+      featureVector[offset++] = result.leftHand[i].y - wristY;
     }
   }
 
@@ -243,17 +142,120 @@ export function isBodyDetected(featureVector: Float32Array): boolean {
   return false;
 }
 
-/**
- * Cleanup the landmarker instances.
- */
-export function closeHolisticLandmarker(): void {
-  if (poseLandmarker) {
-    poseLandmarker.close();
-    poseLandmarker = null;
+// ─── Main Thread Fallback ──────────────────────────────────────────────
+let mainPoseLandmarker: PoseLandmarker | null = null;
+let mainHandLandmarker: HandLandmarker | null = null;
+let mainLastTimestamp = 0;
+
+export async function initMainThreadLandmarker(): Promise<void> {
+  if (mainPoseLandmarker && mainHandLandmarker) return;
+  console.log("[Holistic] Initializing main-thread fallback MediaPipe models...");
+  const wasmUrl = getWasmUrl();
+  const vision = await FilesetResolver.forVisionTasks(wasmUrl);
+  const poseModel = getModelUrl('pose_landmarker_lite.task');
+  const handModel = getModelUrl('hand_landmarker.task');
+
+  try {
+    [mainPoseLandmarker, mainHandLandmarker] = await Promise.all([
+      PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: poseModel,
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numPoses: 1,
+        minPoseDetectionConfidence: 0.5,
+        minPosePresenceConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      }),
+      HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: handModel,
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numHands: 2,
+        minHandDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      }),
+    ]);
+  } catch (gpuErr) {
+    console.warn("[Holistic] Main-thread GPU delegate failed, falling back to CPU:", gpuErr);
+    [mainPoseLandmarker, mainHandLandmarker] = await Promise.all([
+      PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: poseModel,
+          delegate: "CPU",
+        },
+        runningMode: "VIDEO",
+        numPoses: 1,
+        minPoseDetectionConfidence: 0.5,
+        minPosePresenceConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      }),
+      HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: handModel,
+          delegate: "CPU",
+        },
+        runningMode: "VIDEO",
+        numHands: 2,
+        minHandDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      }),
+    ]);
   }
-  if (handLandmarker) {
-    handLandmarker.close();
-    handLandmarker = null;
+  console.log("[Holistic] Main-thread fallback models ready");
+}
+
+export function detectMainThread(video: HTMLVideoElement, timestamp: number): HolisticResult {
+  const result: HolisticResult = { pose: null, leftHand: null, rightHand: null };
+  if (!mainPoseLandmarker || !mainHandLandmarker) return result;
+
+  let now = timestamp;
+  if (now <= mainLastTimestamp) now = mainLastTimestamp + 1;
+  mainLastTimestamp = now;
+
+  try {
+    const poseResult = mainPoseLandmarker.detectForVideo(video, now);
+    if (poseResult.landmarks && poseResult.landmarks.length > 0) {
+      result.pose = poseResult.landmarks[0];
+    }
+    const handResult = mainHandLandmarker.detectForVideo(video, now);
+    if (handResult.landmarks && handResult.handednesses) {
+      for (let i = 0; i < handResult.landmarks.length; i++) {
+        const hand = handResult.landmarks[i];
+        const category = handResult.handednesses[i]?.[0]?.categoryName;
+        // Front-facing selfie camera: MediaPipe HandLandmarker assumes an unmirrored
+        // input when predicting handedness, so the user's physical right hand is
+        // reported as "Left", and physical left hand is reported as "Right".
+        // Invert to map to the user's actual physical hands:
+        if (category === "Left") {
+          if (!result.rightHand) result.rightHand = hand;
+          else if (!result.leftHand) result.leftHand = hand;
+        } else if (category === "Right") {
+          if (!result.leftHand) result.leftHand = hand;
+          else if (!result.rightHand) result.rightHand = hand;
+        } else {
+          if (!result.rightHand) result.rightHand = hand;
+          else if (!result.leftHand) result.leftHand = hand;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("[MainThreadLandmarker] Frame dropped:", err);
   }
-  lastTimestamp = 0;
+  return result;
+}
+
+export function closeMainThreadLandmarker(): void {
+  if (mainPoseLandmarker) {
+    mainPoseLandmarker.close();
+    mainPoseLandmarker = null;
+  }
+  if (mainHandLandmarker) {
+    mainHandLandmarker.close();
+    mainHandLandmarker = null;
+  }
+  mainLastTimestamp = 0;
 }

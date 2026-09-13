@@ -660,27 +660,27 @@
     "semantic_hash": ""
   },
   "src/components/VideoPanel.tsx": {
-    "mtime": 1788951562.855034,
-    "seen": 1788951598.2899463,
-    "ast_hash": "04716afda529ffa2885b9096270517de",
+    "mtime": 1788779893.7326949,
+    "seen": 1788779948.9512854,
+    "ast_hash": "0f4c8d696791404020ed4f7d994b0eed",
     "semantic_hash": ""
   },
   "src/lib/dtwEngine.ts": {
-    "mtime": 1788951570.3807976,
-    "seen": 1788951598.2899487,
-    "ast_hash": "ffb9c77482a5a0841ac0906d462f8c7a",
+    "mtime": 1788949920.9210982,
+    "seen": 1788950004.203471,
+    "ast_hash": "93e224220def8c2e6554c439d65a9210",
     "semantic_hash": ""
   },
   "src/lib/dtwWorker.ts": {
-    "mtime": 1789281487.981797,
-    "seen": 1789281572.0328407,
-    "ast_hash": "522a781f8114cd5514d1db23ea2126c4",
+    "mtime": 1788949902.6304512,
+    "seen": 1788950004.2034738,
+    "ast_hash": "9c66be2dd1257f00570a93a8f42004e7",
     "semantic_hash": ""
   },
   "src/lib/holisticLandmarker.ts": {
-    "mtime": 1788951541.7437074,
-    "seen": 1788951598.2899761,
-    "ast_hash": "acd62c7929047cd1ef41582f8ae65809",
+    "mtime": 1788779869.0749032,
+    "seen": 1788779948.951337,
+    "ast_hash": "5e81f04c9b88d986ce3b6ebc4050008c",
     "semantic_hash": ""
   },
   "src/lib/sentenceEngine.ts": {
@@ -1644,8 +1644,8 @@
     "semantic_hash": ""
   },
   "android/app/capacitor.build.gradle": {
-    "mtime": 1789281528.824898,
-    "seen": 1789281572.0318615,
+    "mtime": 1788949985.073915,
+    "seen": 1788950004.2025504,
     "ast_hash": "495f105471e2a44b0cb2bcbb804d8dfb",
     "semantic_hash": ""
   },
@@ -1674,8 +1674,8 @@
     "semantic_hash": ""
   },
   "android/capacitor.settings.gradle": {
-    "mtime": 1789281528.824898,
-    "seen": 1789281572.0320265,
+    "mtime": 1788949985.072915,
+    "seen": 1788950004.202698,
     "ast_hash": "c990edcf9e862074b87716363ae1476a",
     "semantic_hash": ""
   },
@@ -1914,21 +1914,15 @@
     "semantic_hash": ""
   },
   "src/lib/visionWorker.ts": {
-    "mtime": 1789281507.9648213,
-    "seen": 1789281572.0329523,
-    "ast_hash": "677acc9a6edd760dc267e596ce923533",
+    "mtime": 1788779723.638186,
+    "seen": 1788779948.9513936,
+    "ast_hash": "49fdad7258df6d03a570ba7d7f5e9c70",
     "semantic_hash": ""
   },
   "needsTOBedone.md": {
     "mtime": 1788778267.3908312,
     "seen": 1788778296.6349194,
     "ast_hash": "9d0493c6a1e79caa0c411c0b622ffd9b",
-    "semantic_hash": ""
-  },
-  "isl_dtw/verify_template.py": {
-    "mtime": 1789281282.7920768,
-    "seen": 1789281572.0322497,
-    "ast_hash": "1742160efad205bbe1582ae64297afe0",
     "semantic_hash": ""
   }
 }
